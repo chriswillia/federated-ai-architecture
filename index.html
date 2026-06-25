@@ -1451,12 +1451,16 @@
       <!-- Hero -->
       <section class="hero" style="display:block; margin-bottom: 18px;">
         <div class="hero-card">
-          <h2 style="margin: 0 0 6px 0;">Develop once. Run anywhere. Govern centrally.</h2>
+          <h2 style="margin: 0 0 6px 0;">Central governance. Decentralized innovation.</h2>
           <p style="margin: 0; color: var(--cp-text-muted); max-width: 880px;">
-            A federated multi-agent platform where agents are <strong>built in one place</strong>,
-            <strong>run anywhere</strong> (cloud, on-prem, SaaS), <strong>reach data wherever it lives</strong>,
-            and are <strong>governed by a single control plane</strong>. Use the panel below to walk a customer
-            through the conversation they want to have.
+            Today, AI capabilities and data are fragmented across Azure, AWS, GCP, SaaS, and on-prem —
+            each with its own identities, tools, and silos, driving inconsistent governance and inefficiency.
+            A <strong>federated AI architecture</strong> unifies a single <strong>control plane</strong> for
+            <strong>identity, governance, and observability</strong> across clouds, while domain teams stay
+            free to build on the platforms best suited to their work.
+            <strong>Foundational capabilities are centralized; application development is decentralized</strong>
+            — combining <strong>central trust and compliance</strong> with <strong>local agility</strong>.
+            Use the panel below to walk a customer through the conversation they want to have.
           </p>
         </div>
       </section>
@@ -1709,52 +1713,39 @@
           ],
         },
         {
-          id: "control",
-          title: "One control plane",
-          desc: "Identity, governance, and security — managed in one place.",
-          color: "--layer-control",
-          colorSoft: "--layer-control-soft",
-          shape: "◇",
-          caption: {
-            label: "NIST AI RMF",
-            tags: ["Govern", "Map", "Measure", "Manage"],
-          },
+          id: "model",
+          title: "Where agents are built",
+          desc: "The development platform for AI agents and the models behind them.",
+          color: "--layer-model",
+          colorSoft: "--layer-model-soft",
+          shape: "△",
           platforms: [
-            { name: "Microsoft Agent 365", vendor: "microsoft" },
-            { name: "Microsoft Foundry", vendor: "microsoft" },
-            { name: "Microsoft Entra ID", vendor: "microsoft" },
-            { name: "Microsoft Purview", vendor: "microsoft" },
+            { name: "Azure AI Foundry", vendor: "microsoft" },
+            { name: "Copilot Studio", vendor: "microsoft" },
+            { name: "AWS Bedrock", vendor: "aws" },
+            { name: "Google Vertex AI", vendor: "gcp" },
           ],
           nodes: [
             {
-              id: "identity",
-              title: "Identity",
-              icon: "identity",
-              sub: "One sign-in and one set of roles that works across every cloud.",
-              tech: ["Microsoft Entra ID", "AWS IAM", "GCP IAM"],
+              id: "dev-platform",
+              title: "Agent Development Platform",
+              icon: "train",
+              sub: "One place to build agents — Copilot Studio for business users, Foundry for pro developers. Logic, prompts, and skills stored centrally.",
+              tech: ["M365 Copilot", "Copilot Studio", "Azure AI Foundry", "Semantic Kernel"],
             },
             {
-              id: "governance",
-              title: "Microsoft Agent 365 + Foundry Control Plane",
-              icon: "policy",
-              sub: "The Microsoft anchor for managing agents organization-wide — register, govern, trace, evaluate, and monitor every agent in one place.",
-              tech: ["Microsoft Agent 365", "Microsoft Foundry Control Plane", "Microsoft Purview", "Azure Policy"],
+              id: "models",
+              title: "Model Choice",
+              icon: "registry",
+              sub: "Pick the right model for each job from a governed catalog — OpenAI, Anthropic, Google, open-weight.",
+              tech: ["Azure OpenAI", "AWS Bedrock", "Vertex AI", "Anthropic"],
             },
             {
-              id: "security",
-              title: "Security & Monitoring",
-              icon: "observe",
-              sub: "See what every agent is doing, catch problems early, and respond fast.",
-              tech: ["Microsoft Defender", "Sentinel", "OpenTelemetry", "AI Red Teaming Agent"],
-              note: "Addresses OWASP LLM06 — Excessive Agency",
-            },
-            {
-              id: "cost",
-              title: "Cost & Token Control",
-              icon: "cost",
-              sub: "Track token spend per agent, route to the right model for the job, and bill back to the business owner.",
-              tech: ["Tag taxonomy", "Model routing", "Showback dashboards"],
-              note: "Addresses OWASP LLM10 — Unbounded Consumption",
+              id: "runtime",
+              title: "Where Agents Run",
+              icon: "agent",
+              sub: "Agents run on the cloud or environment that fits the job, while still following central policy.",
+              tech: ["Azure", "AWS", "GCP", "On-prem", "Edge"],
             },
           ],
         },
@@ -1803,43 +1794,6 @@
           ],
         },
         {
-          id: "model",
-          title: "Where agents are built",
-          desc: "The development platform for AI agents and the models behind them.",
-          color: "--layer-model",
-          colorSoft: "--layer-model-soft",
-          shape: "△",
-          platforms: [
-            { name: "Azure AI Foundry", vendor: "microsoft" },
-            { name: "Copilot Studio", vendor: "microsoft" },
-            { name: "AWS Bedrock", vendor: "aws" },
-            { name: "Google Vertex AI", vendor: "gcp" },
-          ],
-          nodes: [
-            {
-              id: "dev-platform",
-              title: "Agent Development Platform",
-              icon: "train",
-              sub: "One place to build agents — Copilot Studio for business users, Foundry for pro developers. Logic, prompts, and skills stored centrally.",
-              tech: ["M365 Copilot", "Copilot Studio", "Azure AI Foundry", "Semantic Kernel"],
-            },
-            {
-              id: "models",
-              title: "Model Choice",
-              icon: "registry",
-              sub: "Pick the right model for each job from a governed catalog — OpenAI, Anthropic, Google, open-weight.",
-              tech: ["Azure OpenAI", "AWS Bedrock", "Vertex AI", "Anthropic"],
-            },
-            {
-              id: "runtime",
-              title: "Where Agents Run",
-              icon: "agent",
-              sub: "Agents run on the cloud or environment that fits the job, while still following central policy.",
-              tech: ["Azure", "AWS", "GCP", "On-prem", "Edge"],
-            },
-          ],
-        },
-        {
           id: "data",
           title: "Where the data lives",
           desc: "The business systems and data stores agents reach into.",
@@ -1881,6 +1835,56 @@
               icon: "lineage",
               sub: "Know what data exists, who owns it, and how it's been used by agents and models.",
               tech: ["Microsoft Purview", "OpenLineage"],
+            },
+          ],
+        },
+        {
+          id: "control",
+          title: "One control plane",
+          desc: "Identity, governance, and security — managed in one place.",
+          color: "--layer-control",
+          colorSoft: "--layer-control-soft",
+          shape: "◇",
+          caption: {
+            label: "NIST AI RMF",
+            tags: ["Govern", "Map", "Measure", "Manage"],
+          },
+          platforms: [
+            { name: "Microsoft Agent 365", vendor: "microsoft" },
+            { name: "Microsoft Foundry", vendor: "microsoft" },
+            { name: "Microsoft Entra ID", vendor: "microsoft" },
+            { name: "Microsoft Purview", vendor: "microsoft" },
+          ],
+          nodes: [
+            {
+              id: "identity",
+              title: "Identity",
+              icon: "identity",
+              sub: "One sign-in and one set of roles that works across every cloud.",
+              tech: ["Microsoft Entra ID", "AWS IAM", "GCP IAM"],
+            },
+            {
+              id: "governance",
+              title: "Microsoft Agent 365 + Foundry Control Plane",
+              icon: "policy",
+              sub: "The Microsoft anchor for managing agents organization-wide — register, govern, trace, evaluate, and monitor every agent in one place.",
+              tech: ["Microsoft Agent 365", "Microsoft Foundry Control Plane", "Microsoft Purview", "Azure Policy"],
+            },
+            {
+              id: "security",
+              title: "Security & Monitoring",
+              icon: "observe",
+              sub: "See what every agent is doing, catch problems early, and respond fast.",
+              tech: ["Microsoft Defender", "Sentinel", "OpenTelemetry", "AI Red Teaming Agent"],
+              note: "Addresses OWASP LLM06 — Excessive Agency",
+            },
+            {
+              id: "cost",
+              title: "Cost & Token Control",
+              icon: "cost",
+              sub: "Track token spend per agent, route to the right model for the job, and bill back to the business owner.",
+              tech: ["Tag taxonomy", "Model routing", "Showback dashboards"],
+              note: "Addresses OWASP LLM10 — Unbounded Consumption",
             },
           ],
         },
