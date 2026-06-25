@@ -1042,6 +1042,119 @@
         margin-left: auto;
       }
 
+      /* Plane caption (e.g., NIST RMF mapping) */
+      .plane-caption {
+        margin: 6px 22px 0 22px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        background: var(--cp-surface-soft);
+        border: 1px dashed var(--cp-border);
+        color: var(--cp-text-muted);
+        font-size: 11.5px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .plane-caption strong {
+        color: var(--cp-text);
+        font-weight: 600;
+      }
+      .plane-caption .rmf-tag {
+        display: inline-block;
+        padding: 1px 8px;
+        border-radius: 999px;
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        color: var(--cp-text);
+        font-weight: 600;
+      }
+
+      /* Node note (e.g., OWASP risk tag) */
+      .node-note {
+        margin-top: 6px;
+        font-size: 11px;
+        color: var(--cp-warning);
+        font-style: italic;
+      }
+
+      /* Tensions section */
+      .tensions {
+        margin: 28px 22px 0 22px;
+        padding: 18px 20px 20px 20px;
+        border-radius: 14px;
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-left: 4px solid var(--cp-warning);
+      }
+      .tensions h2 {
+        margin: 0 0 4px 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--cp-text);
+      }
+      .tensions .tensions-sub {
+        margin: 0 0 14px 0;
+        font-size: 12.5px;
+        color: var(--cp-text-muted);
+      }
+      .tensions-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 12px;
+      }
+      .tension-card {
+        padding: 12px 14px;
+        border-radius: 10px;
+        background: var(--cp-surface-soft);
+        border: 1px solid var(--cp-border);
+      }
+      .tension-card .tension-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--cp-text);
+        margin-bottom: 4px;
+      }
+      .tension-card .tension-body {
+        font-size: 12px;
+        color: var(--cp-text-muted);
+        line-height: 1.45;
+      }
+
+      /* References section */
+      .references {
+        margin: 24px 22px 0 22px;
+        padding: 16px 20px 18px 20px;
+        border-radius: 14px;
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+      }
+      .references h2 {
+        margin: 0 0 10px 0;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--cp-text);
+      }
+      .references ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 8px 18px;
+      }
+      .references li {
+        font-size: 12px;
+        color: var(--cp-text-muted);
+        line-height: 1.4;
+      }
+      .references a {
+        color: var(--cp-link, var(--layer-control));
+        text-decoration: none;
+      }
+      .references a:hover {
+        text-decoration: underline;
+      }
+
       /* Reduce motion */
       @media (prefers-reduced-motion: reduce) {
         * {
@@ -1114,7 +1227,7 @@
             <div class="kpi">
               <div class="label">Govern</div>
               <div class="value">1</div>
-              <div class="sub">A365 · Entra · Purview · Defender · Sentinel</div>
+              <div class="sub">Agent 365 · Foundry · Entra · Purview · Defender</div>
             </div>
           </div>
         </div>
@@ -1245,6 +1358,45 @@
       </section>
 
       <!-- Pillars removed for simplicity -->
+
+      <section class="tensions" aria-labelledby="tensions-heading">
+        <h2 id="tensions-heading">Honest tensions</h2>
+        <p class="tensions-sub">A federated AI environment is the right direction, but it isn't free of trade-offs. Five contradictions worth naming up front.</p>
+        <div class="tensions-grid">
+          <div class="tension-card">
+            <div class="tension-title">Single control plane vs vendor reality</div>
+            <div class="tension-body">Every hyperscaler ships its own control surface. "One control plane" is an outcome — it requires integration glue, not just a logo.</div>
+          </div>
+          <div class="tension-card">
+            <div class="tension-title">Workload identity is harder than it sounds</div>
+            <div class="tension-body">Human SSO is solved. Federating identities for agents — across Entra, AWS IAM, GCP IAM, and SaaS — is still emerging and operationally fragile.</div>
+          </div>
+          <div class="tension-card">
+            <div class="tension-title">Citizen development vs governance load</div>
+            <div class="tension-body">Letting business users build agents accelerates value and multiplies what governance, security, and FinOps must inspect. Plan for the load.</div>
+          </div>
+          <div class="tension-card">
+            <div class="tension-title">Cost attribution at agent granularity</div>
+            <div class="tension-body">Token-level showback per agent, per user, per business unit isn't standard yet. Tags, model routing, and bill-back discipline are still bespoke.</div>
+          </div>
+          <div class="tension-card">
+            <div class="tension-title">MCP and A2A overlap at the edges</div>
+            <div class="tension-body">The protocols are complementary in theory (tool calls vs agent collaboration), but their boundaries blur in practice. Expect overlap and version churn.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="references" aria-labelledby="references-heading">
+        <h2 id="references-heading">References</h2>
+        <ul>
+          <li><a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener noreferrer">Model Context Protocol (MCP) — Anthropic</a></li>
+          <li><a href="https://a2aproject.github.io/A2A/" target="_blank" rel="noopener noreferrer">Agent2Agent (A2A) Protocol — Google</a></li>
+          <li><a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noopener noreferrer">NIST AI Risk Management Framework (AI RMF 1.0)</a></li>
+          <li><a href="https://genai.owasp.org/llm-top-10/" target="_blank" rel="noopener noreferrer">OWASP Top 10 for LLM Applications (2025)</a></li>
+          <li><a href="https://learn.microsoft.com/en-us/azure/ai-foundry/" target="_blank" rel="noopener noreferrer">Microsoft Foundry documentation</a></li>
+          <li><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/" target="_blank" rel="noopener noreferrer">Microsoft Copilot Studio documentation</a></li>
+        </ul>
+      </section>
     </main>
 
     <footer class="app">
@@ -1374,11 +1526,15 @@
           color: "--layer-control",
           colorSoft: "--layer-control-soft",
           shape: "◇",
+          caption: {
+            label: "NIST AI RMF",
+            tags: ["Govern", "Map", "Measure", "Manage"],
+          },
           platforms: [
-            { name: "Azure AI Foundry (A365)", vendor: "microsoft" },
+            { name: "Microsoft Agent 365", vendor: "microsoft" },
+            { name: "Microsoft Foundry", vendor: "microsoft" },
             { name: "Microsoft Entra ID", vendor: "microsoft" },
             { name: "Microsoft Purview", vendor: "microsoft" },
-            { name: "Defender + Sentinel", vendor: "microsoft" },
           ],
           nodes: [
             {
@@ -1390,17 +1546,18 @@
             },
             {
               id: "governance",
-              title: "Governance & Policy",
+              title: "Microsoft Agent 365 + Foundry Control Plane",
               icon: "policy",
-              sub: "Set the rules once — about data, models, and agents — and have them applied everywhere.",
-              tech: ["Azure AI Foundry (A365)", "Microsoft Purview", "Azure Policy"],
+              sub: "The Microsoft anchor for managing agents organization-wide — register, govern, trace, evaluate, and monitor every agent in one place.",
+              tech: ["Microsoft Agent 365", "Microsoft Foundry Control Plane", "Microsoft Purview", "Azure Policy"],
             },
             {
               id: "security",
               title: "Security & Monitoring",
               icon: "observe",
               sub: "See what every agent is doing, catch problems early, and respond fast.",
-              tech: ["Microsoft Defender", "Sentinel", "OpenTelemetry"],
+              tech: ["Microsoft Defender", "Sentinel", "OpenTelemetry", "AI Red Teaming Agent"],
+              note: "Addresses OWASP LLM06 — Excessive Agency",
             },
             {
               id: "cost",
@@ -1408,6 +1565,7 @@
               icon: "cost",
               sub: "Track token spend per agent, route to the right model for the job, and bill back to the business owner.",
               tech: ["Tag taxonomy", "Model routing", "Showback dashboards"],
+              note: "Addresses OWASP LLM10 — Unbounded Consumption",
             },
           ],
         },
@@ -1426,11 +1584,18 @@
           ],
           nodes: [
             {
-              id: "protocols",
-              title: "Agent Protocols (MCP, A2A)",
+              id: "mcp",
+              title: "Tool Binding (MCP)",
               icon: "protocol",
-              sub: "Open standards that let agents call tools and other agents — regardless of where they run.",
-              tech: ["Model Context Protocol (MCP)", "Agent2Agent (A2A)"],
+              sub: "Agents call tools, data, and prompts through the Model Context Protocol — the \"USB-C for AI applications.\"",
+              tech: ["Model Context Protocol", "Tool / Resource / Prompt servers", "Copilot Studio MCP support"],
+            },
+            {
+              id: "a2a",
+              title: "Agent Collaboration (A2A)",
+              icon: "protocol",
+              sub: "Agents discover and delegate to other agents using Agent Cards — across SAP Joule, Salesforce Agentforce, ServiceNow, and your own.",
+              tech: ["Agent2Agent (A2A)", "Agent Cards", "HTTP / SSE / JSON-RPC", "Task / Artifact lifecycle"],
             },
             {
               id: "apis",
@@ -1444,7 +1609,7 @@
               title: "SDKs & Tool Registry",
               icon: "tool",
               sub: "The libraries developers use to build agents, and a shared catalog of approved tools.",
-              tech: ["M365 Agent SDK", "Semantic Kernel", "Signed tool manifests"],
+              tech: ["M365 Agent SDK", "Microsoft Agents Framework", "Semantic Kernel", "Signed tool manifests"],
             },
           ],
         },
@@ -1494,6 +1659,7 @@
           shape: "▽",
           platforms: [
             { name: "Microsoft Graph (M365)", vendor: "microsoft" },
+            { name: "Foundry IQ", vendor: "microsoft" },
             { name: "SAP", vendor: "sap" },
             { name: "Salesforce", vendor: "salesforce" },
             { name: "Snowflake / Databricks", vendor: "snowflake" },
@@ -1505,6 +1671,13 @@
               icon: "catalog",
               sub: "The business apps and on-prem databases agents read from and write to — M365, SAP, Salesforce, ServiceNow, on-prem.",
               tech: ["Microsoft Graph", "SAP", "Salesforce Data Cloud", "ServiceNow", "On-prem DBs"],
+            },
+            {
+              id: "knowledge-grounding",
+              title: "Knowledge & Grounding (Foundry IQ)",
+              icon: "registry",
+              sub: "The retrieval layer between raw data and agents — vector indices, RAG, and curated knowledge bases so answers are grounded in source-of-truth content.",
+              tech: ["Microsoft Foundry IQ", "Azure AI Search", "Vector indices", "RAG pipelines"],
             },
             {
               id: "analytics-data",
@@ -1541,10 +1714,12 @@
             .map((n) => {
               const badges = [];
               if (n.gap) badges.push(`<span class="badge">${n.gap}</span>`);
+              const noteHtml = n.note ? `<div class="node-note">${n.note}</div>` : "";
               return `
               <button class="node" data-plane="${p.id}" data-node="${n.id}" style="--plane-color: var(${p.color}); --plane-soft: var(${p.colorSoft});">
                 <div class="node-title"><span class="node-icon">${ICONS[n.icon] || ICONS.app}</span>${n.title}</div>
                 <div class="node-sub">${n.sub}</div>
+                ${noteHtml}
                 <div class="badge-row">${badges.join("")}</div>
               </button>`;
             })
@@ -1558,6 +1733,9 @@
           const platformStrip = platforms
             ? `<div class="platforms"><span class="label">Examples</span>${platforms}</div>`
             : "";
+          const captionStrip = p.caption
+            ? `<div class="plane-caption"><strong>${p.caption.label}:</strong>${p.caption.tags.map((t) => `<span class="rmf-tag">${t}</span>`).join("")}</div>`
+            : "";
           return `
             <div class="plane" data-plane-id="${p.id}" style="--plane-color: var(${p.color}); --plane-soft: var(${p.colorSoft});">
               <div class="plane-header">
@@ -1567,6 +1745,7 @@
                 <div class="plane-meta">${p.nodes.length} components</div>
               </div>
               ${platformStrip}
+              ${captionStrip}
               <div class="nodes">${nodes}</div>
             </div>`;
         }).join("");
@@ -1631,11 +1810,12 @@
         ["m365-copilot", "identity"],
         ["m365-copilot", "governance"],
         ["m365-copilot", "systems-of-record"],
-        ["m365-copilot", "protocols"],
+        ["m365-copilot", "mcp"],
         ["vertical-copilots", "dev-platform"],
         ["vertical-copilots", "identity"],
         ["vertical-copilots", "governance"],
         ["vertical-copilots", "apis"],
+        ["vertical-copilots", "a2a"],
         ["vertical-copilots", "systems-of-record"],
         ["human-oversight", "governance"],
         ["human-oversight", "security"],
@@ -1644,22 +1824,33 @@
         ["dev-platform", "runtime"],
         ["dev-platform", "tools-sdks"],
         ["dev-platform", "governance"],
+        ["dev-platform", "knowledge-grounding"],
         ["models", "runtime"],
         ["models", "cost"],
         ["runtime", "identity"],
         ["runtime", "governance"],
         ["runtime", "security"],
         ["runtime", "cost"],
-        ["runtime", "protocols"],
+        ["runtime", "mcp"],
+        ["runtime", "a2a"],
         ["runtime", "apis"],
+        ["runtime", "knowledge-grounding"],
         ["runtime", "systems-of-record"],
         ["runtime", "analytics-data"],
         // Fabric to data/runtime
-        ["protocols", "tools-sdks"],
-        ["protocols", "systems-of-record"],
+        ["mcp", "tools-sdks"],
+        ["mcp", "systems-of-record"],
+        ["mcp", "knowledge-grounding"],
+        ["a2a", "tools-sdks"],
+        ["a2a", "identity"],
+        ["a2a", "governance"],
         ["apis", "systems-of-record"],
         ["apis", "analytics-data"],
         ["apis", "identity"],
+        // Knowledge & grounding reach
+        ["knowledge-grounding", "systems-of-record"],
+        ["knowledge-grounding", "analytics-data"],
+        ["knowledge-grounding", "catalog-lineage"],
         // Data plane internals
         ["systems-of-record", "catalog-lineage"],
         ["analytics-data", "catalog-lineage"],
@@ -1698,7 +1889,9 @@
             { node: "vertical-copilots", text: "A sales rep asks Salesforce Agentforce for a full customer view." },
             { node: "identity", text: "One sign-in lets the agent act on the rep's behalf across every system." },
             { node: "dev-platform", text: "The Customer 360 agent was built once in Foundry; deployed to Salesforce, Teams, and the web." },
-            { node: "protocols", text: "MCP and A2A let the agent invoke tools and partner agents wherever they live." },
+            { node: "a2a", text: "Through Agent2Agent, it discovers and delegates to SAP Joule and Salesforce Agentforce via their Agent Cards." },
+            { node: "mcp", text: "It also calls tools and prompts on the corporate MCP servers — same agent, different protocol." },
+            { node: "knowledge-grounding", text: "Foundry IQ grounds the answer in curated knowledge so the rep sees source-of-truth content, not hallucinations." },
             { node: "systems-of-record", text: "Pulls live data from Salesforce, SAP, M365, and an on-prem order DB." },
             { node: "analytics-data", text: "Joins behavioral usage data from Snowflake and Fabric." },
             { node: "catalog-lineage", text: "Purview tracks lineage so the rep — and auditors — know where each fact came from." },
