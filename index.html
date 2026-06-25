@@ -1174,6 +1174,228 @@
         text-decoration: underline;
       }
 
+      /* ---- Challenge selector (seller tool) ---- */
+      .challenges {
+        margin: 0 0 16px 0;
+      }
+      .challenges-head h2 {
+        margin: 0 0 4px 0;
+        font-size: 18px;
+        font-weight: 600;
+      }
+      .challenges-head p {
+        margin: 0 0 14px 0;
+        color: var(--cp-text-muted);
+        font-size: 13px;
+        max-width: 760px;
+      }
+      .challenge-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 12px;
+      }
+      .challenge-card {
+        appearance: none;
+        text-align: left;
+        font-family: inherit;
+        color: var(--cp-text);
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-left: 4px solid var(--accent, var(--cp-accent));
+        border-radius: 10px;
+        padding: 14px 14px 12px 14px;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        min-height: 110px;
+        transition: transform 80ms ease, box-shadow 120ms ease, border-color 120ms ease, background 120ms ease;
+      }
+      .challenge-card:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      }
+      .challenge-card.active {
+        background: color-mix(in srgb, var(--accent, var(--cp-accent)) 8%, var(--cp-surface));
+        box-shadow: 0 0 0 2px var(--accent, var(--cp-accent));
+      }
+      .challenge-quote {
+        font-size: 13.5px;
+        font-weight: 600;
+        line-height: 1.35;
+        color: var(--cp-text);
+      }
+      .challenge-meta {
+        font-size: 11.5px;
+        color: var(--cp-text-muted);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: auto;
+      }
+      .challenge-meta .dot {
+        width: 8px; height: 8px; border-radius: 50%;
+        background: var(--accent, var(--cp-accent));
+        display: inline-block;
+      }
+      .challenge-card.more {
+        background: var(--cp-surface-soft);
+        border-left-color: var(--cp-text-muted);
+        cursor: default;
+      }
+      .challenge-card.more:hover { transform: none; box-shadow: none; }
+      .more-list {
+        margin: 0;
+        padding-left: 16px;
+        font-size: 11.5px;
+        color: var(--cp-text-muted);
+        display: grid;
+        gap: 2px;
+      }
+      .more-list li { line-height: 1.4; }
+
+      /* Active challenge panel */
+      .challenge-panel {
+        margin-top: 14px;
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-left: 4px solid var(--accent, var(--cp-accent));
+        border-radius: 12px;
+        padding: 16px 18px 18px 18px;
+      }
+      .challenge-panel[hidden] { display: none; }
+      .cp-head {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .cp-quote {
+        flex: 1;
+        font-size: 15.5px;
+        font-weight: 600;
+        line-height: 1.35;
+      }
+      .cp-clear {
+        appearance: none;
+        background: transparent;
+        border: 1px solid var(--cp-border);
+        border-radius: 999px;
+        width: 26px;
+        height: 26px;
+        cursor: pointer;
+        color: var(--cp-text-muted);
+        font-size: 16px;
+        line-height: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .cp-clear:hover { color: var(--cp-text); border-color: var(--cp-accent); }
+      .cp-answer {
+        margin-top: 10px;
+        padding: 10px 12px;
+        background: color-mix(in srgb, var(--accent, var(--cp-accent)) 6%, var(--cp-surface-soft));
+        border-radius: 8px;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+      .cp-row {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr;
+        gap: 18px;
+        margin-top: 14px;
+      }
+      @media (max-width: 800px) {
+        .cp-row { grid-template-columns: 1fr; }
+      }
+      .cp-block h4 {
+        margin: 0 0 6px 0;
+        font-size: 10.5px;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        color: var(--cp-text-muted);
+        font-weight: 700;
+      }
+      .cp-block ul {
+        margin: 0;
+        padding-left: 18px;
+        display: grid;
+        gap: 4px;
+      }
+      .cp-block li {
+        font-size: 12.5px;
+        line-height: 1.45;
+      }
+      .cp-pointat {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .pa-chip {
+        font-size: 11.5px;
+        padding: 3px 9px;
+        border-radius: 999px;
+        background: var(--cp-surface-soft);
+        border: 1px solid var(--cp-border);
+        color: var(--cp-text);
+      }
+      .cp-see {
+        margin-top: 12px;
+        font-size: 12.5px;
+      }
+      .cp-see a {
+        color: var(--accent, var(--cp-link, var(--layer-control)));
+        text-decoration: none;
+        font-weight: 600;
+      }
+      .cp-see a:hover { text-decoration: underline; }
+
+      /* Node highlight state when a challenge is active */
+      .node.cha-target {
+        box-shadow: 0 0 0 2px var(--accent, var(--cp-accent));
+        background: color-mix(in srgb, var(--accent, var(--cp-accent)) 6%, var(--cp-surface));
+      }
+      .node.cha-dim {
+        opacity: 0.32;
+        filter: saturate(0.55);
+      }
+
+      /* Collapsible details */
+      details.collapsible {
+        margin: 24px 22px 0 22px;
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-radius: 14px;
+        padding: 0 20px;
+      }
+      details.collapsible[open] { padding-bottom: 18px; }
+      details.collapsible > summary {
+        list-style: none;
+        cursor: pointer;
+        padding: 14px 0;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--cp-text);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      details.collapsible > summary::-webkit-details-marker { display: none; }
+      details.collapsible > summary::before {
+        content: "▸";
+        color: var(--cp-text-muted);
+        transition: transform 120ms ease;
+        display: inline-block;
+        font-size: 12px;
+      }
+      details.collapsible[open] > summary::before { transform: rotate(90deg); }
+      details.collapsible > summary .sum-meta {
+        margin-left: auto;
+        font-weight: 400;
+        font-size: 12px;
+        color: var(--cp-text-muted);
+      }
+
       /* Reduce motion */
       @media (prefers-reduced-motion: reduce) {
         * {
@@ -1189,7 +1411,7 @@
           <div class="brand-mark">AI</div>
           <div class="brand-text">
             <h1>Federated AI Environment</h1>
-            <p>Current-state reference architecture</p>
+            <p>Seller reference for customer conversations</p>
           </div>
         </div>
         <div class="header-spacer"></div>
@@ -1208,128 +1430,40 @@
 
     <main>
       <!-- Hero -->
-      <section class="hero">
+      <section class="hero" style="display:block; margin-bottom: 18px;">
         <div class="hero-card">
-          <div class="pill-row" style="margin-bottom: 10px">
-            <span class="pill"><span class="dot" style="background: var(--cp-accent)"></span> Enterprise Architect view</span>
-            <span class="pill"><span class="dot" style="background: var(--layer-control)"></span> One control plane</span>
-            <span class="pill"><span class="dot" style="background: var(--layer-model)"></span> Many execution planes</span>
-          </div>
-          <h2>Develop once. Run anywhere. Govern centrally.</h2>
-          <p>
-            A federated multi-agent ecosystem where agents are <strong>built in one place</strong>
-            (M365 Copilot, Copilot Studio, Azure AI Foundry), <strong>run across many environments</strong>
-            (Azure, AWS, GCP, on-prem, edge), <strong>access data in the SaaS systems of record</strong>
-            (M365 Graph, SAP, Salesforce, ServiceNow), and are <strong>governed by a single control plane</strong>
-            for identity, policy, and security.
+          <h2 style="margin: 0 0 6px 0;">Develop once. Run anywhere. Govern centrally.</h2>
+          <p style="margin: 0; color: var(--cp-text-muted); max-width: 880px;">
+            A federated multi-agent platform where agents are <strong>built in one place</strong>,
+            <strong>run anywhere</strong> (cloud, on-prem, SaaS), <strong>reach data wherever it lives</strong>,
+            and are <strong>governed by a single control plane</strong>. Use the panel below to walk a customer
+            through the conversation they want to have.
           </p>
-          <div class="pill-row">
-            <span class="pill">Single dev surface</span>
-            <span class="pill">Portable runtime</span>
-            <span class="pill">SaaS-aware data access</span>
-            <span class="pill">Federated identity &amp; policy</span>
-          </div>
-        </div>
-        <div class="hero-card">
-          <div class="kpi-grid">
-            <div class="kpi">
-              <div class="label">Build</div>
-              <div class="value">1</div>
-              <div class="sub">M365 Copilot + Copilot Studio + Foundry</div>
-            </div>
-            <div class="kpi">
-              <div class="label">Run</div>
-              <div class="value">N</div>
-              <div class="sub">Azure · AWS · GCP · On-prem · Edge</div>
-            </div>
-            <div class="kpi">
-              <div class="label">Access</div>
-              <div class="value">SaaS</div>
-              <div class="sub">M365 · SAP · Salesforce · ServiceNow</div>
-            </div>
-            <div class="kpi">
-              <div class="label">Govern</div>
-              <div class="value">1</div>
-              <div class="sub">Agent 365 · Foundry · Entra · Purview · Defender</div>
-            </div>
-          </div>
         </div>
       </section>
 
-      <!-- Story flow -->
-      <section class="flow-wrap" aria-label="Agent lifecycle flow">
-        <div class="flow-head">
-          <h3>The federated agent lifecycle</h3>
-          <span class="subtitle">How an agent moves from build, to runtime, to SaaS data — under one governance plane.</span>
+      <!-- Customer challenge selector (seller tool) -->
+      <section class="challenges" aria-labelledby="challenges-heading">
+        <div class="challenges-head">
+          <h2 id="challenges-heading">Talk to customers about…</h2>
+          <p>Pick a customer challenge. We'll surface the answer, the talking points, and highlight the architecture pieces that solve it.</p>
         </div>
-        <div class="flow">
-          <div class="flow-row">
-            <div class="flow-step flow-build">
-              <div class="flow-step-head">
-                <span class="flow-step-num">1</span>
-                <span class="flow-step-title">Build</span>
-              </div>
-              <div class="flow-step-body">
-                <strong>Single dev surface</strong>
-                <span>M365 Copilot, Copilot Studio, Azure AI Foundry, Semantic Kernel</span>
-              </div>
-              <div class="flow-step-foot">Author agents, skills, prompts, evals once.</div>
-            </div>
-            <div class="flow-arrow" aria-hidden="true">→</div>
-            <div class="flow-step flow-publish">
-              <div class="flow-step-head">
-                <span class="flow-step-num">2</span>
-                <span class="flow-step-title">Publish</span>
-              </div>
-              <div class="flow-step-body">
-                <strong>Federated catalog</strong>
-                <span>Signed agents + tools in A365 / Foundry registry, governed by central policy.</span>
-              </div>
-              <div class="flow-step-foot">Versioned, signed, policy-checked.</div>
-            </div>
-            <div class="flow-arrow" aria-hidden="true">→</div>
-            <div class="flow-step flow-run">
-              <div class="flow-step-head">
-                <span class="flow-step-num">3</span>
-                <span class="flow-step-title">Run</span>
-              </div>
-              <div class="flow-step-body">
-                <strong>Multi-runtime execution</strong>
-                <span>Azure · AWS Bedrock · Vertex AI · On-prem · Edge</span>
-              </div>
-              <div class="flow-step-foot">Run where data, latency, and cost dictate.</div>
-            </div>
-            <div class="flow-arrow" aria-hidden="true">→</div>
-            <div class="flow-step flow-access">
-              <div class="flow-step-head">
-                <span class="flow-step-num">4</span>
-                <span class="flow-step-title">Access</span>
-              </div>
-              <div class="flow-step-body">
-                <strong>SaaS systems of record</strong>
-                <span>M365 Graph · SAP · Salesforce · ServiceNow · Snowflake</span>
-              </div>
-              <div class="flow-step-foot">Governed connectors; no copy-out.</div>
-            </div>
-            <div class="flow-arrow" aria-hidden="true">→</div>
-            <div class="flow-step flow-deliver">
-              <div class="flow-step-head">
-                <span class="flow-step-num">5</span>
-                <span class="flow-step-title">Deliver</span>
-              </div>
-              <div class="flow-step-body">
-                <strong>Where the user is</strong>
-                <span>M365 Copilot · Teams · SAP Joule · Salesforce Agentforce · Custom apps</span>
-              </div>
-              <div class="flow-step-foot">Same agent, many surfaces.</div>
-            </div>
+        <div class="challenge-grid" id="challengeGrid"></div>
+        <div class="challenge-panel" id="challengePanel" hidden>
+          <div class="cp-head">
+            <div class="cp-quote" id="cpQuote"></div>
+            <button class="cp-clear" id="cpClear" type="button" title="Clear selection" aria-label="Clear selection">×</button>
           </div>
-          <div class="flow-govern" aria-label="Control plane spanning all steps">
-            <div class="flow-govern-rail"></div>
-            <div class="flow-govern-label">
-              <strong>Single control plane</strong>
-              <span>Identity · Policy · Data Governance · Observability · Security</span>
-              <span class="flow-govern-plat">Entra ID · Purview · Defender for Cloud · Sentinel · A365 · OPA/Cedar</span>
+          <div class="cp-answer" id="cpAnswer"></div>
+          <div class="cp-row">
+            <div class="cp-block">
+              <h4>Talking points</h4>
+              <ul id="cpPoints"></ul>
+            </div>
+            <div class="cp-block">
+              <h4>Point to in the architecture</h4>
+              <div class="cp-pointat" id="cpPointAt"></div>
+              <div class="cp-see" id="cpSeeItWork"></div>
             </div>
           </div>
         </div>
@@ -1346,9 +1480,8 @@
       </section>
       <section class="canvas-wrap" aria-label="Federated AI architecture diagram">
         <div class="canvas-head">
-          <h3>Federated AI reference architecture</h3>
-          <span class="subtitle">Click any component to drill into capabilities, gaps, and target state.</span>
-          <div class="legend" id="legend"></div>
+          <h3>The architecture, in five layers</h3>
+          <span class="subtitle">Hover for relationships. Click any component for detail.</span>
         </div>
 
         <div class="planes" id="planes"></div>
@@ -1382,44 +1515,50 @@
 
       <!-- Pillars removed for simplicity -->
 
-      <section class="tensions" aria-labelledby="tensions-heading">
-        <h2 id="tensions-heading">Honest tensions</h2>
-        <p class="tensions-sub">A federated AI environment is the right direction, but it isn't free of trade-offs. Five contradictions worth naming up front.</p>
-        <div class="tensions-grid">
-          <div class="tension-card">
-            <div class="tension-title">Single control plane vs vendor reality</div>
-            <div class="tension-body">Every hyperscaler ships its own control surface. "One control plane" is an outcome — it requires integration glue, not just a logo.</div>
+      <details class="collapsible" id="tensions-details">
+        <summary>Honest tensions <span class="sum-meta">5 trade-offs worth naming up front</span></summary>
+        <section class="tensions" aria-labelledby="tensions-heading" style="margin: 0; padding: 0; background: transparent; border: none; border-left: none; border-radius: 0;">
+          <h2 id="tensions-heading" style="display: none;">Honest tensions</h2>
+          <p class="tensions-sub">A federated AI environment is the right direction, but it isn't free of trade-offs. Five contradictions worth naming up front.</p>
+          <div class="tensions-grid">
+            <div class="tension-card">
+              <div class="tension-title">Single control plane vs vendor reality</div>
+              <div class="tension-body">Every hyperscaler ships its own control surface. "One control plane" is an outcome — it requires integration glue, not just a logo.</div>
+            </div>
+            <div class="tension-card">
+              <div class="tension-title">Workload identity is harder than it sounds</div>
+              <div class="tension-body">Human SSO is solved. Federating identities for agents — across Entra, AWS IAM, GCP IAM, and SaaS — is still emerging and operationally fragile.</div>
+            </div>
+            <div class="tension-card">
+              <div class="tension-title">Citizen development vs governance load</div>
+              <div class="tension-body">Letting business users build agents accelerates value and multiplies what governance, security, and FinOps must inspect. Plan for the load.</div>
+            </div>
+            <div class="tension-card">
+              <div class="tension-title">Cost attribution at agent granularity</div>
+              <div class="tension-body">Token-level showback per agent, per user, per business unit isn't standard yet. Tags, model routing, and bill-back discipline are still bespoke.</div>
+            </div>
+            <div class="tension-card">
+              <div class="tension-title">MCP and A2A overlap at the edges</div>
+              <div class="tension-body">The protocols are complementary in theory (tool calls vs agent collaboration), but their boundaries blur in practice. Expect overlap and version churn.</div>
+            </div>
           </div>
-          <div class="tension-card">
-            <div class="tension-title">Workload identity is harder than it sounds</div>
-            <div class="tension-body">Human SSO is solved. Federating identities for agents — across Entra, AWS IAM, GCP IAM, and SaaS — is still emerging and operationally fragile.</div>
-          </div>
-          <div class="tension-card">
-            <div class="tension-title">Citizen development vs governance load</div>
-            <div class="tension-body">Letting business users build agents accelerates value and multiplies what governance, security, and FinOps must inspect. Plan for the load.</div>
-          </div>
-          <div class="tension-card">
-            <div class="tension-title">Cost attribution at agent granularity</div>
-            <div class="tension-body">Token-level showback per agent, per user, per business unit isn't standard yet. Tags, model routing, and bill-back discipline are still bespoke.</div>
-          </div>
-          <div class="tension-card">
-            <div class="tension-title">MCP and A2A overlap at the edges</div>
-            <div class="tension-body">The protocols are complementary in theory (tool calls vs agent collaboration), but their boundaries blur in practice. Expect overlap and version churn.</div>
-          </div>
-        </div>
-      </section>
+        </section>
+      </details>
 
-      <section class="references" aria-labelledby="references-heading">
-        <h2 id="references-heading">References</h2>
-        <ul>
-          <li><a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener noreferrer">Model Context Protocol (MCP) — Anthropic</a></li>
-          <li><a href="https://a2aproject.github.io/A2A/" target="_blank" rel="noopener noreferrer">Agent2Agent (A2A) Protocol — Google</a></li>
-          <li><a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noopener noreferrer">NIST AI Risk Management Framework (AI RMF 1.0)</a></li>
-          <li><a href="https://genai.owasp.org/llm-top-10/" target="_blank" rel="noopener noreferrer">OWASP Top 10 for LLM Applications (2025)</a></li>
-          <li><a href="https://learn.microsoft.com/en-us/azure/ai-foundry/" target="_blank" rel="noopener noreferrer">Microsoft Foundry documentation</a></li>
-          <li><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/" target="_blank" rel="noopener noreferrer">Microsoft Copilot Studio documentation</a></li>
-        </ul>
-      </section>
+      <details class="collapsible" id="references-details">
+        <summary>References <span class="sum-meta">Specs and primary sources</span></summary>
+        <section class="references" aria-labelledby="references-heading" style="margin: 0; padding: 0; background: transparent; border: none; border-radius: 0;">
+          <h2 id="references-heading" style="display: none;">References</h2>
+          <ul>
+            <li><a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener noreferrer">Model Context Protocol (MCP) — Anthropic</a></li>
+            <li><a href="https://a2aproject.github.io/A2A/" target="_blank" rel="noopener noreferrer">Agent2Agent (A2A) Protocol — Google</a></li>
+            <li><a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noopener noreferrer">NIST AI Risk Management Framework (AI RMF 1.0)</a></li>
+            <li><a href="https://genai.owasp.org/llm-top-10/" target="_blank" rel="noopener noreferrer">OWASP Top 10 for LLM Applications (2025)</a></li>
+            <li><a href="https://learn.microsoft.com/en-us/azure/ai-foundry/" target="_blank" rel="noopener noreferrer">Microsoft Foundry documentation</a></li>
+            <li><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/" target="_blank" rel="noopener noreferrer">Microsoft Copilot Studio documentation</a></li>
+          </ul>
+        </section>
+      </details>
     </main>
 
     <footer class="app">
@@ -1725,6 +1864,7 @@
       const legendEl = document.getElementById("legend");
 
       function renderLegend() {
+        if (!legendEl) return;
         legendEl.innerHTML = PLANES.map(
           (p) =>
             `<span class="legend-item"><span class="swatch" style="background: var(${p.color})"></span>${p.title.split(" ")[0]}</span>`,
@@ -1762,10 +1902,8 @@
           return `
             <div class="plane" data-plane-id="${p.id}" style="--plane-color: var(${p.color}); --plane-soft: var(${p.colorSoft});">
               <div class="plane-header">
-                <div class="plane-shape" aria-hidden="true">${p.shape}</div>
                 <div class="plane-title">${p.title}</div>
                 <div class="plane-desc">${p.desc}</div>
-                <div class="plane-meta">${p.nodes.length} components</div>
               </div>
               ${platformStrip}
               ${captionStrip}
@@ -2012,16 +2150,16 @@
         activeSourceId = null;
       }
 
-      // Wire hover on each node (skip if scenario is playing — we don't want hover to fight)
+      // Wire hover on each node (skip if scenario is playing or challenge is active)
       function wireHover() {
         document.querySelectorAll(allNodesSel).forEach((btn) => {
           btn.addEventListener("mouseenter", () => {
-            if (scenarioPlaying) return;
+            if (scenarioPlaying || challengeActive) return;
             highlightTrace(btn.dataset.node);
           });
         });
         planesEl.addEventListener("mouseleave", () => {
-          if (scenarioPlaying) return;
+          if (scenarioPlaying || challengeActive) return;
           clearTrace();
         });
       }
@@ -2038,6 +2176,8 @@
 
       function playScenario(key) {
         stopScenario();
+        // A scenario walkthrough takes over the canvas — clear any active challenge.
+        if (challengeActive) applyChallenge(null);
         document.querySelectorAll(".scenario-btn").forEach((b) =>
           b.classList.toggle("active", b.dataset.scenario === key),
         );
@@ -2087,6 +2227,161 @@
         btn.addEventListener("click", () => openNode(btn.dataset.plane, btn.dataset.node));
       });
       wireHover();
+
+      // ---------- Customer challenge selector (seller tool) ----------
+      let challengeActive = false;
+
+      const CHALLENGES = [
+        {
+          id: "platform",
+          accent: "--layer-model",
+          metaLayer: "Build plane",
+          customerQuote: "We want a singular Agent Development Platform.",
+          shortAnswer:
+            "One place to build agents. Foundry for pro developers, Copilot Studio for business users \u2014 with logic, prompts, skills, and evals stored centrally and reusable across surfaces.",
+          pointAt: ["dev-platform", "tools-sdks", "governance"],
+          points: [
+            "Code-first (Foundry, Microsoft Agents Framework, Semantic Kernel) and no-code (Copilot Studio) share the same governance and lifecycle umbrella.",
+            "Citizen developers don't go around IT \u2014 their agents inherit the same identity, policies, and approved tools as pro-built ones.",
+            "Agents are versioned, signed, and registered centrally; the same agent can be deployed to Teams, the web, or a partner SaaS surface.",
+            "Foundry Control Plane gives you the registry, lifecycle, traces, evals, and the AI Red Teaming Agent in one place.",
+          ],
+          seeItWork: { label: "M365 HR Benefits Agent", href: "use-cases.html#m365-hr" },
+        },
+        {
+          id: "multi-cloud",
+          accent: "--layer-fabric",
+          metaLayer: "Fabric & runtime",
+          customerQuote: "We want to develop agents across clouds and SaaS apps.",
+          shortAnswer:
+            "Build once, deploy anywhere. The same agent runs on Azure, AWS, GCP, on-prem, or inside Salesforce, SAP, and ServiceNow \u2014 reaching data wherever it lives.",
+          pointAt: ["runtime", "mcp", "a2a", "apis", "vertical-copilots", "systems-of-record"],
+          points: [
+            "Runtime is decoupled from build \u2014 agents execute on the cloud, on-prem, or edge that fits the workload and data residency rules.",
+            "MCP (Model Context Protocol) binds agents to tools and data in a vendor-neutral way \u2014 same agent, any source.",
+            "A2A (Agent2Agent) lets your agents discover and delegate to SAP Joule, Salesforce Agentforce, and ServiceNow Now Assist via Agent Cards.",
+            "API Management and federated workload identity keep auth and policy consistent at every edge.",
+          ],
+          seeItWork: { label: "SAP Procurement Approval Agent", href: "use-cases.html#sap-po" },
+        },
+        {
+          id: "cost",
+          accent: "--layer-experience",
+          metaLayer: "Cost & FinOps",
+          customerQuote: "We want control over token usage and cost/billing.",
+          shortAnswer:
+            "See every token, route to the right-sized model, and bill back to the business owner \u2014 so spend stays predictable even as agents proliferate.",
+          pointAt: ["cost", "models", "governance", "runtime"],
+          points: [
+            "Tag taxonomy by agent, user, business unit, and use case \u2014 showback isn't bespoke per agent.",
+            "Model routing sends simple tasks to small / cheap models and reserves frontier models for cases that need them.",
+            "Foundry Control Plane gives one unified view of token usage, latency, and quality across every agent and runtime.",
+            "Maps to OWASP LLM10 \u2014 Unbounded Consumption \u2014 so runaway cost is a security concern, not just a finance one.",
+          ],
+          seeItWork: { label: "Cost-aware expense agent", href: "use-cases.html" },
+        },
+        {
+          id: "control",
+          accent: "--layer-control",
+          metaLayer: "Control plane",
+          customerQuote: "We want a unified control plane for identity, governance, and security.",
+          shortAnswer:
+            "One identity, one set of policies, one trace per agent \u2014 across every cloud and SaaS app, aligned to NIST AI RMF.",
+          pointAt: ["identity", "governance", "security", "catalog-lineage"],
+          points: [
+            "Entra ID anchors identity and federates with AWS IAM, GCP IAM, and SAP IAS for both humans and workloads.",
+            "Microsoft Agent 365 + Foundry Control Plane provide registration, trace, evaluation, monitoring, and red-teaming in one place.",
+            "Purview captures data lineage; Sentinel and Defender give SOC visibility for every agent action.",
+            "Aligns to NIST AI RMF (Govern \u00b7 Map \u00b7 Measure \u00b7 Manage) and addresses OWASP LLM06 \u2014 Excessive Agency.",
+          ],
+          seeItWork: { label: "ServiceNow IT Incident Triage Agent", href: "use-cases.html#servicenow-incident" },
+        },
+      ];
+
+      const MORE_TOPICS = [
+        "Reduce GenAI risk (OWASP, red-teaming, evals)",
+        "On-prem grounding with sensitive data (Foundry Local)",
+        "Pilot \u2192 production agent rollout at scale",
+        "Multi-modal & voice agents",
+        "Citizen developer enablement & guardrails",
+        "Agent observability, traces, and quality evals",
+      ];
+
+      const challengeGrid = document.getElementById("challengeGrid");
+      const challengePanel = document.getElementById("challengePanel");
+      const cpQuote = document.getElementById("cpQuote");
+      const cpAnswer = document.getElementById("cpAnswer");
+      const cpPoints = document.getElementById("cpPoints");
+      const cpPointAt = document.getElementById("cpPointAt");
+      const cpSeeItWork = document.getElementById("cpSeeItWork");
+      const cpClear = document.getElementById("cpClear");
+
+      function nodeLabelById(id) {
+        for (const p of PLANES) {
+          for (const n of p.nodes) if (n.id === id) return n.title;
+        }
+        return id;
+      }
+
+      function renderChallenges() {
+        if (!challengeGrid) return;
+        const cards = CHALLENGES.map((c) => `
+          <button type="button" class="challenge-card" data-challenge="${c.id}" style="--accent: var(${c.accent});">
+            <div class="challenge-quote">“${c.customerQuote}”</div>
+            <div class="challenge-meta"><span class="dot"></span>${c.metaLayer}</div>
+          </button>
+        `).join("");
+        const moreCard = `
+          <div class="challenge-card more" aria-label="More conversation topics">
+            <div class="challenge-quote">+ More conversations</div>
+            <ul class="more-list">${MORE_TOPICS.map((t) => `<li>${t}</li>`).join("")}</ul>
+          </div>
+        `;
+        challengeGrid.innerHTML = cards + moreCard;
+        challengeGrid.querySelectorAll("button.challenge-card").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const id = btn.dataset.challenge;
+            if (btn.classList.contains("active")) applyChallenge(null);
+            else applyChallenge(id);
+          });
+        });
+      }
+
+      function applyChallenge(id) {
+        const c = CHALLENGES.find((x) => x.id === id);
+        challengeGrid.querySelectorAll(".challenge-card").forEach((b) =>
+          b.classList.toggle("active", b.dataset && b.dataset.challenge === id),
+        );
+        if (!c) {
+          challengeActive = false;
+          challengePanel.hidden = true;
+          document.querySelectorAll(".node").forEach((n) => {
+            n.classList.remove("cha-target", "cha-dim");
+          });
+          document.documentElement.style.removeProperty("--accent");
+          return;
+        }
+        challengeActive = true;
+        // Stop any scenario walkthrough or hover trace.
+        stopScenario();
+        clearTrace();
+        document.documentElement.style.setProperty("--accent", `var(${c.accent})`);
+        const targets = new Set(c.pointAt);
+        document.querySelectorAll(".node").forEach((n) => {
+          const nid = n.dataset.node;
+          n.classList.toggle("cha-target", targets.has(nid));
+          n.classList.toggle("cha-dim", !targets.has(nid));
+        });
+        cpQuote.textContent = `\u201c${c.customerQuote}\u201d`;
+        cpAnswer.innerHTML = `<strong>The short answer.</strong> ${c.shortAnswer}`;
+        cpPoints.innerHTML = c.points.map((p) => `<li>${p}</li>`).join("");
+        cpPointAt.innerHTML = c.pointAt.map((nid) => `<span class="pa-chip">${nodeLabelById(nid)}</span>`).join("");
+        cpSeeItWork.innerHTML = `<strong>See it in action:</strong> <a href="${c.seeItWork.href}">${c.seeItWork.label} \u2192</a>`;
+        challengePanel.hidden = false;
+      }
+
+      if (cpClear) cpClear.addEventListener("click", () => applyChallenge(null));
+      renderChallenges();
     </script>
   </body>
 </html>
