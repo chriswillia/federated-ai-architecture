@@ -776,6 +776,109 @@
         border-top: 1px solid var(--cp-border);
       }
 
+      /* ---------- Interactivity overlay ---------- */
+      .canvas-wrap { position: relative; }
+      .planes { position: relative; }
+      .planes-overlay {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 5;
+        overflow: visible;
+      }
+      .planes-overlay path {
+        fill: none;
+        stroke: var(--cp-accent);
+        stroke-width: 1.75;
+        stroke-dasharray: 6 5;
+        opacity: 0.85;
+        animation: trace-dash 1.4s linear infinite;
+      }
+      @keyframes trace-dash {
+        to { stroke-dashoffset: -22; }
+      }
+      .node.dimmed {
+        opacity: 0.28;
+        filter: grayscale(50%);
+      }
+      .node.traced {
+        border-color: var(--plane-color);
+        box-shadow: 0 0 0 2px var(--plane-soft), 0 6px 18px rgba(0, 0, 0, 0.08);
+        z-index: 4;
+      }
+      .node.traced-active {
+        border-color: var(--cp-accent);
+        box-shadow: 0 0 0 3px var(--cp-accent-soft), 0 8px 24px rgba(0, 0, 0, 0.12);
+        transform: translateY(-2px);
+        z-index: 6;
+      }
+
+      /* ---------- Scenarios bar ---------- */
+      .scenarios {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+        padding: 12px 16px;
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-radius: 14px;
+        box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.14);
+      }
+      .scenarios .label {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--cp-text-soft);
+        margin-right: 4px;
+      }
+      .scenario-btn {
+        appearance: none;
+        background: var(--cp-bg-elevated);
+        border: 1px solid var(--cp-border);
+        border-radius: 999px;
+        padding: 6px 14px;
+        cursor: pointer;
+        font: inherit;
+        font-size: 12.5px;
+        color: var(--cp-text);
+      }
+      .scenario-btn:hover {
+        border-color: var(--cp-accent);
+        color: var(--cp-accent);
+      }
+      .scenario-btn.active {
+        background: var(--cp-accent);
+        color: var(--cp-accent-fg);
+        border-color: var(--cp-accent);
+      }
+      .scenario-btn.clear {
+        margin-left: 4px;
+        background: transparent;
+        color: var(--cp-text-muted);
+      }
+      .scenario-caption {
+        margin-left: auto;
+        font-size: 12.5px;
+        color: var(--cp-text-muted);
+        min-height: 18px;
+        text-align: right;
+        flex-basis: 100%;
+        order: 99;
+        padding-top: 4px;
+      }
+      .scenario-caption strong {
+        color: var(--cp-accent);
+        margin-right: 6px;
+      }
+      .interact-hint {
+        font-size: 11.5px;
+        color: var(--cp-text-soft);
+        margin-bottom: 12px;
+        text-align: center;
+      }
+
       /* ---------- Story flow ---------- */
       .flow-wrap {
         background: var(--cp-surface);
@@ -1097,6 +1200,14 @@
       </section>
 
       <!-- Architecture canvas -->
+      <section class="scenarios" aria-label="Customer scenarios">
+        <span class="label">Walk a scenario</span>
+        <button class="scenario-btn" data-scenario="citizen">Citizen-built HR agent</button>
+        <button class="scenario-btn" data-scenario="customer360">Multi-source customer 360</button>
+        <button class="scenario-btn" data-scenario="expense">Cost-aware expense agent</button>
+        <button class="scenario-btn clear" data-scenario="clear">Clear</button>
+        <span class="scenario-caption" id="scenarioCaption">Tip: hover any component to see what it connects to. Click for details.</span>
+      </section>
       <section class="canvas-wrap" aria-label="Federated AI architecture diagram">
         <div class="canvas-head">
           <h3>Federated AI reference architecture</h3>
@@ -1291,6 +1402,13 @@
               sub: "See what every agent is doing, catch problems early, and respond fast.",
               tech: ["Microsoft Defender", "Sentinel", "OpenTelemetry"],
             },
+            {
+              id: "cost",
+              title: "Cost & Token Control",
+              icon: "cost",
+              sub: "Track token spend per agent, route to the right model for the job, and bill back to the business owner.",
+              tech: ["Tag taxonomy", "Model routing", "Showback dashboards"],
+            },
           ],
         },
         {
@@ -1348,8 +1466,8 @@
               id: "dev-platform",
               title: "Agent Development Platform",
               icon: "train",
-              sub: "One place to build agents — M365 Copilot and Copilot Studio for low-code, Foundry for pro-code.",
-              tech: ["M365 Copilot", "Copilot Studio", "Azure AI Foundry"],
+              sub: "One place to build agents — Copilot Studio for business users, Foundry for pro developers. Logic, prompts, and skills stored centrally.",
+              tech: ["M365 Copilot", "Copilot Studio", "Azure AI Foundry", "Semantic Kernel"],
             },
             {
               id: "models",
@@ -1385,8 +1503,8 @@
               id: "systems-of-record",
               title: "Systems of Record",
               icon: "catalog",
-              sub: "The business apps agents read from and write to — M365, SAP, Salesforce, ServiceNow.",
-              tech: ["Microsoft Graph", "SAP", "Salesforce Data Cloud", "ServiceNow"],
+              sub: "The business apps and on-prem databases agents read from and write to — M365, SAP, Salesforce, ServiceNow, on-prem.",
+              tech: ["Microsoft Graph", "SAP", "Salesforce Data Cloud", "ServiceNow", "On-prem DBs"],
             },
             {
               id: "analytics-data",
@@ -1502,7 +1620,249 @@
       document.getElementById("themeToggle").addEventListener("click", () => {
         const cur = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
         document.documentElement.setAttribute("data-theme", cur);
+        // Force a redraw of any active trace so colors update
+        if (activeSourceId) drawConnectorsFor(activeSourceId);
       });
+
+      // ---------- Relationships (which nodes touch which) ----------
+      const LINKS = [
+        // Experience -> Build / Control / Data
+        ["m365-copilot", "dev-platform"],
+        ["m365-copilot", "identity"],
+        ["m365-copilot", "governance"],
+        ["m365-copilot", "systems-of-record"],
+        ["m365-copilot", "protocols"],
+        ["vertical-copilots", "dev-platform"],
+        ["vertical-copilots", "identity"],
+        ["vertical-copilots", "governance"],
+        ["vertical-copilots", "apis"],
+        ["vertical-copilots", "systems-of-record"],
+        ["human-oversight", "governance"],
+        ["human-oversight", "security"],
+        // Build plane internals
+        ["dev-platform", "models"],
+        ["dev-platform", "runtime"],
+        ["dev-platform", "tools-sdks"],
+        ["dev-platform", "governance"],
+        ["models", "runtime"],
+        ["models", "cost"],
+        ["runtime", "identity"],
+        ["runtime", "governance"],
+        ["runtime", "security"],
+        ["runtime", "cost"],
+        ["runtime", "protocols"],
+        ["runtime", "apis"],
+        ["runtime", "systems-of-record"],
+        ["runtime", "analytics-data"],
+        // Fabric to data/runtime
+        ["protocols", "tools-sdks"],
+        ["protocols", "systems-of-record"],
+        ["apis", "systems-of-record"],
+        ["apis", "analytics-data"],
+        ["apis", "identity"],
+        // Data plane internals
+        ["systems-of-record", "catalog-lineage"],
+        ["analytics-data", "catalog-lineage"],
+        ["catalog-lineage", "governance"],
+        // Control plane reach
+        ["identity", "systems-of-record"],
+        ["security", "systems-of-record"],
+        ["security", "analytics-data"],
+        ["cost", "governance"],
+      ];
+      const LINK_MAP = new Map();
+      LINKS.forEach(([a, b]) => {
+        if (!LINK_MAP.has(a)) LINK_MAP.set(a, new Set());
+        if (!LINK_MAP.has(b)) LINK_MAP.set(b, new Set());
+        LINK_MAP.get(a).add(b);
+        LINK_MAP.get(b).add(a);
+      });
+
+      // ---------- Scenarios ----------
+      const SCENARIOS = {
+        citizen: {
+          title: "Citizen-built HR agent",
+          steps: [
+            { node: "human-oversight", text: "An HR business analyst — not a developer — wants an agent to answer benefits questions." },
+            { node: "dev-platform", text: "They build it in Copilot Studio. Logic, prompts, and skills are stored centrally with full lifecycle management." },
+            { node: "governance", text: "Foundry / Purview applies approved policies and data classifications automatically." },
+            { node: "identity", text: "Entra ID controls who can use the agent and what data it can see, per role." },
+            { node: "systems-of-record", text: "Agent reaches into M365 Graph and the on-prem HRIS via governed connectors." },
+            { node: "cost", text: "Token spend is tagged and billed back to the HR cost center." },
+            { node: "m365-copilot", text: "Employees use it in Teams. Same simple chat surface, no separate app to learn." },
+          ],
+        },
+        customer360: {
+          title: "Multi-source customer 360",
+          steps: [
+            { node: "vertical-copilots", text: "A sales rep asks Salesforce Agentforce for a full customer view." },
+            { node: "identity", text: "One sign-in lets the agent act on the rep's behalf across every system." },
+            { node: "dev-platform", text: "The Customer 360 agent was built once in Foundry; deployed to Salesforce, Teams, and the web." },
+            { node: "protocols", text: "MCP and A2A let the agent invoke tools and partner agents wherever they live." },
+            { node: "systems-of-record", text: "Pulls live data from Salesforce, SAP, M365, and an on-prem order DB." },
+            { node: "analytics-data", text: "Joins behavioral usage data from Snowflake and Fabric." },
+            { node: "catalog-lineage", text: "Purview tracks lineage so the rep — and auditors — know where each fact came from." },
+          ],
+        },
+        expense: {
+          title: "Cost-aware expense agent",
+          steps: [
+            { node: "m365-copilot", text: "Employee submits an expense by chatting with M365 Copilot in Teams." },
+            { node: "dev-platform", text: "The expense agent was built in Copilot Studio and registered centrally." },
+            { node: "models", text: "Simple OCR uses a small model; tricky disputes route to a larger one — managed automatically." },
+            { node: "cost", text: "Every token is tagged to Finance. The team sees per-agent and per-user cost in real time." },
+            { node: "apis", text: "Agent posts via API Management to SAP and the corporate card system." },
+            { node: "systems-of-record", text: "SAP records the expense; Outlook delivers the approval." },
+            { node: "security", text: "Sentinel logs the full chain; Defender flags anything anomalous." },
+          ],
+        },
+      };
+
+      // ---------- Hover-to-trace + connector drawing ----------
+      const allNodesSel = ".node";
+      let overlay = null;
+      let activeSourceId = null;
+      let scenarioTimer = null;
+      let scenarioPlaying = false;
+
+      function ensureOverlay() {
+        if (overlay && overlay.isConnected) return overlay;
+        overlay = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        overlay.setAttribute("class", "planes-overlay");
+        overlay.setAttribute("id", "planesOverlay");
+        overlay.setAttribute("aria-hidden", "true");
+        planesEl.appendChild(overlay);
+        return overlay;
+      }
+
+      function nodeCenter(id, planesRect) {
+        const el = document.querySelector(`.node[data-node="${id}"]`);
+        if (!el) return null;
+        const r = el.getBoundingClientRect();
+        return {
+          el,
+          x: r.left + r.width / 2 - planesRect.left,
+          y: r.top + r.height / 2 - planesRect.top,
+          top: r.top - planesRect.top,
+          bottom: r.bottom - planesRect.top,
+        };
+      }
+
+      function drawConnectorsFor(sourceId, extraTargets = null) {
+        ensureOverlay();
+        overlay.innerHTML = "";
+        const planesRect = planesEl.getBoundingClientRect();
+        overlay.setAttribute("width", planesRect.width);
+        overlay.setAttribute("height", planesRect.height);
+        overlay.setAttribute("viewBox", `0 0 ${planesRect.width} ${planesRect.height}`);
+        const src = nodeCenter(sourceId, planesRect);
+        if (!src) return;
+        const targets = extraTargets || [...(LINK_MAP.get(sourceId) || [])];
+        targets.forEach((tid) => {
+          const t = nodeCenter(tid, planesRect);
+          if (!t) return;
+          const midY = (src.y + t.y) / 2;
+          // Curved bezier with vertical bend so the line reads as "flowing between planes"
+          const d = `M ${src.x} ${src.y} C ${src.x} ${midY}, ${t.x} ${midY}, ${t.x} ${t.y}`;
+          const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+          path.setAttribute("d", d);
+          overlay.appendChild(path);
+        });
+      }
+
+      function highlightTrace(sourceId, options = {}) {
+        const { active = false, trailNodes = [] } = options;
+        const linked = LINK_MAP.get(sourceId) || new Set();
+        document.querySelectorAll(allNodesSel).forEach((n) => {
+          n.classList.remove("traced", "traced-active", "dimmed");
+          const id = n.dataset.node;
+          if (id === sourceId) {
+            n.classList.add(active ? "traced-active" : "traced");
+          } else if (linked.has(id) || trailNodes.includes(id)) {
+            n.classList.add("traced");
+          } else {
+            n.classList.add("dimmed");
+          }
+        });
+        activeSourceId = sourceId;
+        drawConnectorsFor(sourceId);
+      }
+
+      function clearTrace() {
+        document.querySelectorAll(allNodesSel).forEach((n) =>
+          n.classList.remove("traced", "traced-active", "dimmed"),
+        );
+        if (overlay) overlay.innerHTML = "";
+        activeSourceId = null;
+      }
+
+      // Wire hover on each node (skip if scenario is playing — we don't want hover to fight)
+      function wireHover() {
+        document.querySelectorAll(allNodesSel).forEach((btn) => {
+          btn.addEventListener("mouseenter", () => {
+            if (scenarioPlaying) return;
+            highlightTrace(btn.dataset.node);
+          });
+        });
+        planesEl.addEventListener("mouseleave", () => {
+          if (scenarioPlaying) return;
+          clearTrace();
+        });
+      }
+
+      // ---------- Scenario walkthrough ----------
+      const captionEl = document.getElementById("scenarioCaption");
+      const defaultCaption = captionEl ? captionEl.innerHTML : "";
+
+      function stopScenario() {
+        if (scenarioTimer) clearTimeout(scenarioTimer);
+        scenarioTimer = null;
+        scenarioPlaying = false;
+      }
+
+      function playScenario(key) {
+        stopScenario();
+        document.querySelectorAll(".scenario-btn").forEach((b) =>
+          b.classList.toggle("active", b.dataset.scenario === key),
+        );
+        if (key === "clear") {
+          clearTrace();
+          captionEl.innerHTML = defaultCaption;
+          return;
+        }
+        const scenario = SCENARIOS[key];
+        if (!scenario) return;
+        scenarioPlaying = true;
+        let i = 0;
+        const tick = () => {
+          if (i >= scenario.steps.length) {
+            scenarioPlaying = false;
+            return;
+          }
+          const step = scenario.steps[i];
+          const trail = scenario.steps.slice(0, i).map((s) => s.node);
+          highlightTrace(step.node, { active: true, trailNodes: trail });
+          captionEl.innerHTML = `<strong>${i + 1}/${scenario.steps.length} · ${scenario.title}</strong>${step.text}`;
+          i++;
+          scenarioTimer = setTimeout(tick, 2200);
+        };
+        tick();
+      }
+
+      document.querySelectorAll(".scenario-btn").forEach((b) => {
+        b.addEventListener("click", () => playScenario(b.dataset.scenario));
+      });
+
+      // Redraw connectors on resize / scroll so lines stay aligned
+      let resizeRaf = null;
+      function scheduleRedraw() {
+        if (resizeRaf) cancelAnimationFrame(resizeRaf);
+        resizeRaf = requestAnimationFrame(() => {
+          if (activeSourceId) drawConnectorsFor(activeSourceId);
+        });
+      }
+      window.addEventListener("resize", scheduleRedraw);
+      window.addEventListener("scroll", scheduleRedraw, { passive: true });
 
       // ---------- Wire up ----------
       renderLegend();
@@ -1510,6 +1870,7 @@
       document.querySelectorAll(".node").forEach((btn) => {
         btn.addEventListener("click", () => openNode(btn.dataset.plane, btn.dataset.node));
       });
+      wireHover();
     </script>
   </body>
 </html>
