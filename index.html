@@ -1270,65 +1270,6 @@
         background: var(--accent, var(--cp-accent));
         display: inline-block;
       }
-      .challenge-card.more {
-        background: var(--cp-surface-soft);
-        border-left-color: var(--cp-text-muted);
-        cursor: default;
-      }
-      .challenge-card.more:hover { transform: none; box-shadow: none; }
-      .more-list {
-        margin: 0;
-        padding-left: 16px;
-        font-size: 11.5px;
-        color: var(--cp-text-muted);
-        display: grid;
-        gap: 2px;
-      }
-      .more-list li { line-height: 1.4; }
-      .more-head {
-        margin: 24px 0 10px 0;
-        padding-top: 18px;
-        border-top: 1px dashed var(--cp-border);
-      }
-      .more-head h3 {
-        margin: 0 0 2px 0;
-        font-size: 14px;
-        font-weight: 600;
-        color: var(--cp-text);
-      }
-      .more-head p {
-        margin: 0;
-        color: var(--cp-text-muted);
-        font-size: 12px;
-      }
-      .more-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 10px;
-      }
-      .more-card {
-        background: var(--cp-surface);
-        border: 1px solid var(--cp-border);
-        border-left: 3px solid var(--cp-text-muted);
-        border-radius: 10px;
-        padding: 10px 12px 12px 12px;
-      }
-      .more-card h4 {
-        margin: 0 0 6px 0;
-        font-size: 12.5px;
-        font-weight: 600;
-        color: var(--cp-text);
-      }
-      .more-card ul {
-        margin: 0;
-        padding-left: 16px;
-        font-size: 12px;
-        color: var(--cp-text-muted);
-        display: grid;
-        gap: 4px;
-      }
-      .more-card ul li { line-height: 1.4; }
-      .more-card ul li strong { color: var(--cp-text); font-weight: 600; }
 
       /* Active challenge panel */
       .challenge-panel {
@@ -1545,11 +1486,6 @@
             </div>
           </div>
         </div>
-        <div class="more-head">
-          <h3>More conversations</h3>
-          <p>Other openings when the customer takes the conversation somewhere different.</p>
-        </div>
-        <div class="more-grid" id="moreGrid"></div>
       </section>
 
       <!-- Architecture canvas -->
@@ -2388,51 +2324,90 @@
           ],
           seeItWork: { label: "ServiceNow IT Incident Triage Agent", href: "use-cases.html#servicenow-incident" },
         },
-      ];
-
-      const MORE_TOPICS = [
         {
-          title: "GenAI Risk / Security",
-          questions: [
+          id: "risk",
+          accent: "--layer-control",
+          metaLayer: "GenAI risk & security",
+          customerQuote: "We need to manage GenAI risk — prompt injection, leakage, rogue agents.",
+          shortAnswer:
+            "Real-time monitoring, red-teaming, and runtime guardrails — from Foundry safety evals to Defender / Sentinel coverage for every agent action.",
+          pointAt: ["security", "governance", "identity"],
+          points: [
             "How are you protecting against <strong>prompt injection, data leakage, or rogue agent behavior</strong>?",
             "Do you have <strong>real-time monitoring and threat detection</strong> for agent activity?",
           ],
+          seeItWork: { label: "ServiceNow IT Incident Triage Agent", href: "use-cases.html#servicenow-incident" },
         },
         {
-          title: "Sensitive Data / On-Prem",
-          questions: [
+          id: "sensitive",
+          accent: "--layer-data",
+          metaLayer: "Sensitive data & on-prem",
+          customerQuote: "We can’t move sensitive data to the cloud just to use agents.",
+          shortAnswer:
+            "Ground agents in data that stays where it lives — Foundry Local + private MCP servers + Purview policies, with full lineage end to end.",
+          pointAt: ["knowledge-grounding", "catalog-lineage", "runtime", "mcp"],
+          points: [
             "How are you ensuring agents respect <strong>data boundaries, labels, and compliance policies</strong>?",
-            "Can you track <strong>data flow from input \u2192 agent \u2192 output</strong> across systems?",
+            "Can you track <strong>data flow from input → agent → output</strong> across systems?",
           ],
+          seeItWork: { label: "Citizen-built HR Benefits Agent", href: "scenarios/citizen-hr.html" },
         },
         {
-          title: "Scale (Pilot \u2192 Production)",
-          questions: [
+          id: "scale",
+          accent: "--layer-model",
+          metaLayer: "Pilot → production",
+          customerQuote: "Pilots work — production at scale is where it falls apart.",
+          shortAnswer:
+            "Central registry, signed releases, pre-prod evals, consumption limits, and approval workflows turn one-off pilots into a managed agent portfolio.",
+          pointAt: ["dev-platform", "governance", "cost"],
+          points: [
             "What changes when you move from pilot to production in terms of <strong>governance and control</strong>?",
             "How do you prevent <strong>agent sprawl and unmanaged growth</strong>?",
           ],
+          seeItWork: { label: "Multi-source Customer 360", href: "scenarios/customer360.html" },
         },
         {
-          title: "Multi-modal / Advanced Agents",
-          questions: [
+          id: "modal",
+          accent: "--layer-experience",
+          metaLayer: "Multi-modal & advanced",
+          customerQuote: "Voice, vision, and tool-using agents are next — not just chat.",
+          shortAnswer:
+            "Multi-modal agents inherit the same identity, policy, cost tagging, and trace fabric as text agents — no parallel control plane.",
+          pointAt: ["models", "runtime", "tools-sdks"],
+          points: [
             "Do you have visibility into <strong>how different agent types behave and interact</strong>?",
             "Can you enforce <strong>security and governance consistently across modalities</strong>?",
           ],
+          seeItWork: { label: "Use cases (M365 / SAP / ServiceNow)", href: "use-cases.html" },
         },
         {
-          title: "Citizen Dev + Guardrails",
-          questions: [
+          id: "citizen-dev",
+          accent: "--layer-model",
+          metaLayer: "Citizen dev + guardrails",
+          customerQuote: "Citizen builders need to move fast — without breaking things.",
+          shortAnswer:
+            "Copilot Studio for builders, central registry + signed MCP catalog + admin approval policies — fast paths with guardrails built in.",
+          pointAt: ["dev-platform", "tools-sdks", "governance", "human-oversight"],
+          points: [
             "How are you enabling builders while still enforcing <strong>enterprise guardrails and policies</strong>?",
             "Can new agents be created without <strong>security review or central visibility</strong>?",
           ],
+          seeItWork: { label: "Citizen-built HR Benefits Agent", href: "scenarios/citizen-hr.html" },
         },
         {
-          title: "Observability / Tracing / Quality",
-          questions: [
-            "Can you trace <strong>prompt \u2192 reasoning \u2192 tool \u2192 result \u2192 output</strong> for your agents?",
+          id: "observability",
+          accent: "--layer-control",
+          metaLayer: "Observability & quality",
+          customerQuote: "We can’t debug or measure what our agents actually do.",
+          shortAnswer:
+            "Foundry traces every step — prompt, reasoning, tool calls, results — and pairs it with evals for quality, safety, and cost across every runtime.",
+          pointAt: ["governance", "catalog-lineage", "cost"],
+          points: [
+            "Can you trace <strong>prompt → reasoning → tool → result → output</strong> for your agents?",
             "Do you have a way to <strong>measure agent effectiveness, reliability, and risk</strong>?",
             "How are you identifying <strong>which agents deliver value vs. introduce risk</strong>?",
           ],
+          seeItWork: { label: "Cost-aware Expense Agent", href: "scenarios/expense.html" },
         },
       ];
 
@@ -2470,16 +2445,6 @@
         });
       }
 
-      function renderMoreTopics() {
-        const el = document.getElementById("moreGrid");
-        if (!el) return;
-        el.innerHTML = MORE_TOPICS.map((t) => `
-          <div class="more-card">
-            <h4>${t.title}</h4>
-            <ul>${t.questions.map((q) => `<li>${q}</li>`).join("")}</ul>
-          </div>
-        `).join("");
-      }
 
       function applyChallenge(id) {
         const c = CHALLENGES.find((x) => x.id === id);
@@ -2516,7 +2481,6 @@
 
       if (cpClear) cpClear.addEventListener("click", () => applyChallenge(null));
       renderChallenges();
-      renderMoreTopics();
     </script>
   </body>
 </html>
