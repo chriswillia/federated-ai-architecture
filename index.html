@@ -891,6 +891,38 @@
         color: var(--cp-accent);
         margin-right: 6px;
       }
+      .scenario-links {
+        flex-basis: 100%;
+        order: 98;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px 8px;
+        padding-top: 4px;
+        font-size: 12px;
+      }
+      .scenario-links .lbl {
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-size: 10.5px;
+        font-weight: 700;
+        color: var(--cp-text-soft);
+      }
+      .scenario-links a {
+        color: var(--cp-link);
+        text-decoration: none;
+        padding: 2px 10px;
+        border: 1px solid var(--cp-border);
+        border-radius: 999px;
+        background: var(--cp-bg-elevated);
+      }
+      .scenario-links a:hover {
+        border-color: var(--cp-accent);
+        color: var(--cp-accent);
+      }
+      .scenario-links .sep {
+        color: var(--cp-text-soft);
+      }
       .interact-hint {
         font-size: 11.5px;
         color: var(--cp-text-soft);
@@ -1476,6 +1508,14 @@
         <button class="scenario-btn" data-scenario="customer360">Multi-source customer 360</button>
         <button class="scenario-btn" data-scenario="expense">Cost-aware expense agent</button>
         <button class="scenario-btn clear" data-scenario="clear">Clear</button>
+        <div class="scenario-links" aria-label="Full reference architectures">
+          <span class="lbl">Full reference architecture &rarr;</span>
+          <a href="scenarios/citizen-hr.html">Citizen HR agent</a>
+          <span class="sep">&middot;</span>
+          <a href="scenarios/customer360.html">Customer 360</a>
+          <span class="sep">&middot;</span>
+          <a href="scenarios/expense.html">Expense agent</a>
+        </div>
         <span class="scenario-caption" id="scenarioCaption">Tip: hover any component to see what it connects to. Click for details.</span>
       </section>
       <section class="canvas-wrap" aria-label="Federated AI architecture diagram">

@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Citizen-built HR Benefits Agent · Federated AI Environment</title>
+    <meta name="description" content="Detailed reference architecture for an HR business analyst building a benefits Q&A agent in Copilot Studio that runs in M365 Copilot, grounds answers in Foundry IQ, and is governed by the federated AI control plane." />
+    <script>
+      (function () {
+        try {
+          var url = new URL(window.location.href);
+          var t = url.searchParams.get("scoutTheme");
+          if (t === "dark" || t === "light") {
+            document.documentElement.setAttribute("data-theme", t);
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <style>
+      :root {
+        --cp-bg: #faf9f8;
+        --cp-surface: #ffffff;
+        --cp-surface-soft: #f3f2f1;
+        --cp-text: #201f1e;
+        --cp-text-muted: #605e5c;
+        --cp-border: #e1dfdd;
+        --cp-accent: #0078d4;
+        --cp-success: #107c10;
+        --cp-warning: #ca5010;
+        --cp-danger: #a4262c;
+        --cp-link: #0078d4;
+
+        --layer-experience: #d97706;
+        --layer-experience-soft: #fef3c7;
+        --layer-control: #2563eb;
+        --layer-control-soft: #dbeafe;
+        --layer-fabric: #0891b2;
+        --layer-fabric-soft: #cffafe;
+        --layer-data: #16a34a;
+        --layer-data-soft: #dcfce7;
+        --layer-model: #65a30d;
+        --layer-model-soft: #ecfccb;
+
+        --scenario-accent: var(--layer-model);
+      }
+      [data-theme="dark"] {
+        --cp-bg: #1b1a19;
+        --cp-surface: #252423;
+        --cp-surface-soft: #2d2c2b;
+        --cp-text: #f3f2f1;
+        --cp-text-muted: #c8c6c4;
+        --cp-border: #3b3a39;
+        --cp-accent: #4cc2ff;
+        --cp-success: #6ccb5f;
+        --cp-warning: #f7894a;
+        --cp-danger: #ef6f6c;
+        --cp-link: #4cc2ff;
+        --layer-experience: #fbbf24;
+        --layer-experience-soft: #423016;
+        --layer-control: #60a5fa;
+        --layer-control-soft: #1e2a4a;
+        --layer-fabric: #22d3ee;
+        --layer-fabric-soft: #103442;
+        --layer-data: #4ade80;
+        --layer-data-soft: #133b22;
+        --layer-model: #a3e635;
+        --layer-model-soft: #1e3010;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme]) {
+          --cp-bg: #1b1a19; --cp-surface: #252423; --cp-surface-soft: #2d2c2b;
+          --cp-text: #f3f2f1; --cp-text-muted: #c8c6c4; --cp-border: #3b3a39;
+          --cp-accent: #4cc2ff; --cp-link: #4cc2ff;
+          --layer-experience: #fbbf24; --layer-experience-soft: #423016;
+          --layer-control: #60a5fa; --layer-control-soft: #1e2a4a;
+          --layer-fabric: #22d3ee; --layer-fabric-soft: #103442;
+          --layer-data: #4ade80; --layer-data-soft: #133b22;
+          --layer-model: #a3e635; --layer-model-soft: #1e3010;
+        }
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; padding: 0; background: var(--cp-bg); color: var(--cp-text); font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "SF Pro Text", Roboto, Arial, sans-serif; font-size: 14px; line-height: 1.5; }
+      a { color: var(--cp-link); }
+
+      header.app { position: sticky; top: 0; z-index: 20; background: var(--cp-surface); border-bottom: 1px solid var(--cp-border); }
+      .header-inner { max-width: 1400px; margin: 0 auto; padding: 12px 22px; display: flex; align-items: center; gap: 14px; }
+      .brand { display: flex; align-items: center; gap: 12px; }
+      .brand-mark { width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg, var(--cp-accent), var(--scenario-accent)); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; letter-spacing: 0.5px; }
+      .brand-text h1 { margin: 0; font-size: 15px; font-weight: 600; }
+      .brand-text p { margin: 0; font-size: 11.5px; color: var(--cp-text-muted); }
+      .header-spacer { flex: 1; }
+      .nav-link { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; font-size: 12.5px; font-weight: 500; color: var(--cp-text); background: var(--cp-surface-soft); border: 1px solid var(--cp-border); border-radius: 8px; text-decoration: none; }
+      .nav-link:hover { border-color: var(--cp-accent); color: var(--cp-accent); }
+      .icon-btn { width: 32px; height: 32px; border-radius: 8px; background: var(--cp-surface-soft); border: 1px solid var(--cp-border); color: var(--cp-text); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+      .icon-btn:hover { background: var(--cp-surface); border-color: var(--cp-accent); }
+
+      main { max-width: 1400px; margin: 0 auto; padding: 0; }
+
+      .page-hero { padding: 24px 22px 8px 22px; border-left: 4px solid var(--scenario-accent); background: color-mix(in srgb, var(--scenario-accent) 4%, var(--cp-bg)); margin: 18px 22px 0 22px; border-radius: 12px; padding: 18px 22px; }
+      .crumbs { font-size: 12px; color: var(--cp-text-muted); margin-bottom: 6px; }
+      .crumbs a { color: var(--cp-link); text-decoration: none; }
+      .crumbs a:hover { text-decoration: underline; }
+      .page-hero h2 { margin: 0 0 6px 0; font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
+      .page-hero .subtitle { margin: 0 0 10px 0; font-size: 13.5px; color: var(--cp-text-muted); max-width: 920px; }
+      .page-hero .lead { margin: 0; font-size: 13.5px; max-width: 920px; }
+
+      .addresses { margin: 14px 22px 0 22px; padding: 12px 16px; background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 10px; display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; font-size: 12px; }
+      .addresses .label { color: var(--cp-text-muted); text-transform: uppercase; letter-spacing: 0.5px; font-size: 10.5px; font-weight: 700; }
+      .addresses .chip { font-size: 12px; padding: 4px 10px; background: var(--cp-surface-soft); border: 1px solid var(--cp-border); border-radius: 999px; color: var(--cp-text); text-decoration: none; }
+      .addresses .chip:hover { border-color: var(--scenario-accent); color: var(--scenario-accent); }
+
+      .at-a-glance { margin: 16px 22px 0 22px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+      .aag-card { padding: 10px 14px; background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 10px; }
+      .aag-card .aag-label { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--cp-text-muted); font-weight: 700; }
+      .aag-card .aag-value { font-size: 13.5px; font-weight: 600; margin-top: 4px; }
+      .aag-card .aag-detail { font-size: 11.5px; color: var(--cp-text-muted); margin-top: 2px; }
+
+      section.section { margin: 24px 22px 0 22px; }
+      section.section h3 { margin: 0 0 4px 0; font-size: 16px; font-weight: 600; }
+      section.section .section-sub { margin: 0 0 12px 0; font-size: 12.5px; color: var(--cp-text-muted); }
+
+      /* Components by layer */
+      .components-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+      @media (max-width: 1100px) { .components-grid { grid-template-columns: repeat(2, 1fr); } }
+      @media (max-width: 600px)  { .components-grid { grid-template-columns: 1fr; } }
+      .layer-col { background: var(--cp-surface); border: 1px solid var(--cp-border); border-top: 3px solid var(--layer-color); border-radius: 10px; padding: 12px 12px 14px 12px; display: flex; flex-direction: column; gap: 8px; }
+      .layer-col .layer-name { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--layer-color); }
+      .layer-col .comp { padding: 8px 10px; background: var(--cp-surface-soft); border: 1px solid var(--cp-border); border-radius: 8px; }
+      .layer-col .comp .name { font-size: 12.5px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+      .layer-col .comp .role { font-size: 11.5px; color: var(--cp-text-muted); margin-top: 2px; line-height: 1.35; }
+      .vdot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+
+      /* Flow swimlane */
+      .flow-wrap { overflow-x: auto; }
+      .flow-grid { position: relative; display: grid; gap: 12px 14px; padding: 16px; background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 12px; grid-template-columns: 110px repeat(var(--steps), minmax(150px, 1fr)); grid-auto-rows: minmax(72px, auto); }
+      .lane-bg { background: var(--cp-surface-soft); border-left: 3px solid var(--lane-color); border-radius: 6px; z-index: 0; align-self: stretch; }
+      .lane-label { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--lane-color); align-self: center; padding: 0 10px; z-index: 2; }
+      .flow-step { position: relative; z-index: 3; padding: 8px 10px 9px 10px; background: var(--cp-surface); border: 1px solid var(--cp-border); border-left: 3px solid var(--lane-color); border-radius: 8px; align-self: center; box-shadow: 0 1px 2px rgba(0,0,0,0.04); display: flex; flex-direction: column; gap: 3px; min-height: 60px; }
+      .flow-step .step-head { display: flex; align-items: center; gap: 6px; }
+      .flow-step .num { display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px; background: var(--lane-color); color: #fff; font-size: 10.5px; font-weight: 700; }
+      .flow-step .step-title { font-size: 12.5px; font-weight: 600; line-height: 1.25; }
+      .flow-step .step-detail { font-size: 11.5px; color: var(--cp-text-muted); line-height: 1.35; }
+      .flow-overlay { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+
+      /* Outcomes and considerations */
+      .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+      .out-card { padding: 12px 14px; background: var(--cp-surface); border: 1px solid var(--cp-border); border-left: 3px solid var(--cp-success); border-radius: 10px; }
+      .out-card .out-title { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+      .out-card .out-body { font-size: 12px; color: var(--cp-text-muted); line-height: 1.45; }
+      .cons-card { padding: 12px 14px; background: var(--cp-surface); border: 1px solid var(--cp-border); border-left: 3px solid var(--cp-warning); border-radius: 10px; }
+      .cons-card .out-title { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+      .cons-card .out-body { font-size: 12px; color: var(--cp-text-muted); line-height: 1.45; }
+
+      /* Related */
+      .related { margin: 24px 22px 0 22px; padding: 14px 18px; background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 10px; display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; font-size: 12.5px; }
+      .related .label { color: var(--cp-text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; font-size: 10.5px; }
+      .related a { color: var(--cp-link); text-decoration: none; padding: 4px 10px; border-radius: 6px; background: var(--cp-surface-soft); border: 1px solid var(--cp-border); }
+      .related a:hover { border-color: var(--scenario-accent); color: var(--scenario-accent); }
+
+      footer.app { margin: 28px 22px 22px 22px; padding: 16px 0 0 0; border-top: 1px solid var(--cp-border); font-size: 12px; color: var(--cp-text-muted); display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+      footer.app a { color: var(--cp-link); text-decoration: none; }
+      footer.app a:hover { text-decoration: underline; }
+
+      @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+    </style>
+  </head>
+  <body>
+    <header class="app">
+      <div class="header-inner">
+        <div class="brand">
+          <div class="brand-mark">AI</div>
+          <div class="brand-text">
+            <h1>Federated AI Environment</h1>
+            <p>Scenario reference architecture</p>
+          </div>
+        </div>
+        <div class="header-spacer"></div>
+        <a class="nav-link" href="../index.html" title="Back to reference architecture">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Reference architecture
+        </a>
+        <a class="nav-link" href="../use-cases.html">Use cases</a>
+        <button class="icon-btn" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-hero">
+        <div class="crumbs"><a href="../index.html">Reference architecture</a> &nbsp;/&nbsp; Scenarios &nbsp;/&nbsp; Citizen-built HR Benefits Agent</div>
+        <h2>Citizen-built HR Benefits Agent</h2>
+        <p class="subtitle">A business analyst — not a developer — ships an enterprise-grade agent in Teams.</p>
+        <p class="lead">
+          An HR business analyst builds a benefits Q&amp;A agent in <strong>Copilot Studio</strong>. Employees ask it in
+          <strong>M365 Copilot</strong> (Teams). The agent grounds answers in HR knowledge through <strong>Foundry IQ</strong>,
+          and only reaches into <strong>Microsoft Graph</strong> or the <strong>on-prem HRIS</strong> when it needs personal
+          data — under one identity, one cost owner, and full lineage.
+        </p>
+      </section>
+
+      <section class="addresses" aria-label="Customer challenges addressed">
+        <span class="label">Addresses</span>
+        <a class="chip" href="../index.html#challenges-heading">&ldquo;Singular Agent Development Platform&rdquo;</a>
+        <a class="chip" href="../index.html#challenges-heading">&ldquo;Unified Control Plane&rdquo;</a>
+        <a class="chip" href="../index.html#challenges-heading">&ldquo;Citizen-developer enablement&rdquo;</a>
+      </section>
+
+      <section class="at-a-glance" aria-label="At a glance">
+        <div class="aag-card"><div class="aag-label">Built by</div><div class="aag-value">HR business analyst</div><div class="aag-detail">No-code in Copilot Studio</div></div>
+        <div class="aag-card"><div class="aag-label">Used by</div><div class="aag-value">All employees</div><div class="aag-detail">M365 Copilot in Teams</div></div>
+        <div class="aag-card"><div class="aag-label">Runs on</div><div class="aag-value">Foundry Agent Service</div><div class="aag-detail">Azure (M365 tenant)</div></div>
+        <div class="aag-card"><div class="aag-label">Touches data in</div><div class="aag-value">M365 Graph + HRIS</div><div class="aag-detail">Foundry IQ grounding · on-prem HRIS</div></div>
+        <div class="aag-card"><div class="aag-label">Cost owner</div><div class="aag-value">HR cost center</div><div class="aag-detail">Token tags · monthly showback</div></div>
+      </section>
+
+      <section class="section" aria-label="Components">
+        <h3>Reference architecture &middot; Components by layer</h3>
+        <p class="section-sub">Every product or service this scenario depends on, grouped by where it lives in the federated architecture.</p>
+        <div class="components-grid" id="components"></div>
+      </section>
+
+      <section class="section" aria-label="Flow">
+        <h3>The flow</h3>
+        <p class="section-sub">How a single question becomes a grounded, governed, cost-tagged answer.</p>
+        <div class="flow-wrap"><div class="flow-grid" id="flow"></div></div>
+      </section>
+
+      <section class="section" aria-label="Outcomes">
+        <h3>What success looks like</h3>
+        <div class="card-grid">
+          <div class="out-card"><div class="out-title">Built in days, not quarters</div><div class="out-body">A non-developer ships a real, governed agent in Copilot Studio. No IT backlog, no shadow IT.</div></div>
+          <div class="out-card"><div class="out-title">Same governance as pro-built agents</div><div class="out-body">Inherits identity, policy, lineage, evaluation, and tracing from the central control plane — automatically.</div></div>
+          <div class="out-card"><div class="out-title">Lower HR ticket volume</div><div class="out-body">Self-serve answers in Teams reduce repeat questions to the HR service desk.</div></div>
+          <div class="out-card"><div class="out-title">Auditable answers with citations</div><div class="out-body">Every response is grounded in a source-of-truth document and logged in Purview for compliance.</div></div>
+        </div>
+      </section>
+
+      <section class="section" aria-label="Considerations">
+        <h3>Considerations</h3>
+        <div class="card-grid">
+          <div class="cons-card"><div class="out-title">Citizen-developer enablement</div><div class="out-body">A make-vs-buy decision sits next to a help-vs-supervise one. Plan templates, guardrails, and an approval workflow before publishing.</div></div>
+          <div class="cons-card"><div class="out-title">Curated MCP server catalog</div><div class="out-body">Citizen developers should not be picking arbitrary MCP servers. Curate an approved set with signed manifests.</div></div>
+          <div class="cons-card"><div class="out-title">PII handling discipline</div><div class="out-body">Reads from HRIS and Graph mean personal data is in scope. Set classification, retention, and DLP policy in Purview up front.</div></div>
+          <div class="cons-card"><div class="out-title">HRIS connector security</div><div class="out-body">On-prem HRIS access usually means a service principal or a private endpoint. Decide who rotates secrets and who can connect.</div></div>
+        </div>
+      </section>
+
+      <section class="related" aria-label="Related">
+        <span class="label">Related</span>
+        <a href="../index.html">Reference architecture</a>
+        <a href="customer360.html">Multi-source Customer 360</a>
+        <a href="expense.html">Cost-aware Expense Agent</a>
+        <a href="../use-cases.html">M365 / SAP / ServiceNow flow examples</a>
+      </section>
+
+      <footer class="app">
+        <span>Federated AI Environment &middot; <a href="../index.html">Back to reference architecture</a></span>
+        <span style="margin-left: auto;">Illustrative reference &mdash; product capabilities evolve.</span>
+      </footer>
+    </main>
+
+    <script>
+      const root = document.documentElement;
+      const themeBtn = document.getElementById("themeToggle");
+      themeBtn.addEventListener("click", () => {
+        const cur = root.getAttribute("data-theme");
+        const next = cur === "dark" ? "light" : cur === "light" ? "dark" : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "light" : "dark");
+        root.setAttribute("data-theme", next);
+      });
+
+      const VENDORS = {
+        microsoft: "#0078d4", sap: "#0a6ed1", salesforce: "#00a1e0",
+        servicenow: "#62d84e", snowflake: "#29b5e8", aws: "#ff9900",
+        gcp: "#4285f4", oss: "#888888",
+      };
+
+      const LAYERS = [
+        { id: "exp", label: "Experience", color: "--layer-experience" },
+        { id: "ctl", label: "Control",    color: "--layer-control"    },
+        { id: "fab", label: "Fabric",     color: "--layer-fabric"     },
+        { id: "bld", label: "Build",      color: "--layer-model"      },
+        { id: "dat", label: "Data",       color: "--layer-data"       },
+      ];
+
+      const COMPONENTS = {
+        exp: [
+          { name: "M365 Copilot in Teams", vendor: "microsoft", role: "Where employees ask benefits questions in chat." },
+          { name: "Outlook (notifications)", vendor: "microsoft", role: "Optional channel for follow-ups and approvals." },
+        ],
+        ctl: [
+          { name: "Microsoft Entra ID", vendor: "microsoft", role: "Authenticates employees; resolves roles and agent scopes." },
+          { name: "Foundry Control Plane", vendor: "microsoft", role: "Registers, traces, evaluates, and monitors the HR agent." },
+          { name: "Microsoft Purview", vendor: "microsoft", role: "Captures data access and lineage; classifies PII." },
+          { name: "Cost tags (HR cost center)", vendor: "microsoft", role: "Tags token usage so spend bills back to HR." },
+        ],
+        fab: [
+          { name: "HR knowledge MCP server", vendor: "oss", role: "Exposes HR policy documents and FAQ tools to the agent." },
+          { name: "Azure API Management", vendor: "microsoft", role: "Gateway to the on-prem HRIS with consistent auth + policy." },
+        ],
+        bld: [
+          { name: "Copilot Studio (HR-owned)", vendor: "microsoft", role: "No-code authoring of the agent, prompts, and skills." },
+          { name: "Microsoft Agents Framework", vendor: "microsoft", role: "Optional pro-dev extensions when HR wants custom logic." },
+          { name: "Foundry Agent Service", vendor: "microsoft", role: "Hosts and orchestrates the agent at runtime." },
+        ],
+        dat: [
+          { name: "Foundry IQ", vendor: "microsoft", role: "Vector index + RAG over HR policy documents for grounding." },
+          { name: "Microsoft Graph", vendor: "microsoft", role: "Reads employee profile, manager, calendar where personal answers need it." },
+          { name: "On-prem HRIS", vendor: "oss", role: "Authoritative source for benefits, PTO balance, and personal data." },
+        ],
+      };
+
+      const FLOW_STEPS = [
+        { lane: "exp", title: "Ask in Teams", detail: "Employee asks M365 Copilot a benefits question in Teams chat." },
+        { lane: "ctl", title: "Authenticate", detail: "Entra ID resolves the employee's identity and the agent's allowed scopes." },
+        { lane: "bld", title: "Route to agent", detail: "The HR-built Copilot Studio agent picks up the request in Foundry Agent Service." },
+        { lane: "fab", title: "Call tools (MCP)", detail: "Agent invokes the curated HR knowledge MCP server through Model Context Protocol." },
+        { lane: "dat", title: "Ground answer", detail: "Foundry IQ retrieves the relevant policy chunks from a vector index." },
+        { lane: "dat", title: "Read records", detail: "For personal queries, reads Microsoft Graph or the on-prem HRIS through governed connectors." },
+        { lane: "ctl", title: "Govern & log", detail: "Foundry Control Plane traces the conversation; Purview records data lineage and classification." },
+        { lane: "ctl", title: "Charge back", detail: "Token spend is tagged to the HR cost center for monthly showback." },
+        { lane: "exp", title: "Answer in Teams", detail: "Employee receives a grounded answer with citations back to the policy source." },
+      ];
+
+      // --- Render components grid ---
+      const compsEl = document.getElementById("components");
+      compsEl.innerHTML = LAYERS.map((L) => {
+        const items = (COMPONENTS[L.id] || [])
+          .map((c) => `
+            <div class="comp">
+              <div class="name"><span class="vdot" style="background:${VENDORS[c.vendor] || "#888"}"></span>${c.name}</div>
+              <div class="role">${c.role}</div>
+            </div>
+          `).join("");
+        return `
+          <div class="layer-col" style="--layer-color: var(${L.color});">
+            <div class="layer-name">${L.label}</div>
+            ${items}
+          </div>
+        `;
+      }).join("");
+
+      // --- Render flow swimlane ---
+      const flowEl = document.getElementById("flow");
+      flowEl.style.setProperty("--steps", FLOW_STEPS.length);
+
+      LAYERS.forEach((lane, i) => {
+        const bg = document.createElement("div");
+        bg.className = "lane-bg";
+        bg.style.gridRow = String(i + 1);
+        bg.style.gridColumn = "1 / -1";
+        bg.style.setProperty("--lane-color", `var(${lane.color})`);
+        flowEl.appendChild(bg);
+        const lbl = document.createElement("div");
+        lbl.className = "lane-label";
+        lbl.style.gridRow = String(i + 1);
+        lbl.style.gridColumn = "1";
+        lbl.style.setProperty("--lane-color", `var(${lane.color})`);
+        lbl.textContent = lane.label;
+        flowEl.appendChild(lbl);
+      });
+
+      FLOW_STEPS.forEach((s, idx) => {
+        const laneIdx = LAYERS.findIndex((l) => l.id === s.lane);
+        if (laneIdx < 0) return;
+        const step = document.createElement("div");
+        step.className = "flow-step";
+        step.dataset.step = String(idx + 1);
+        step.style.gridRow = String(laneIdx + 1);
+        step.style.gridColumn = String(idx + 2);
+        step.style.setProperty("--lane-color", `var(${LAYERS[laneIdx].color})`);
+        step.innerHTML = `
+          <div class="step-head"><span class="num">${idx + 1}</span><span class="step-title">${s.title}</span></div>
+          <div class="step-detail">${s.detail}</div>
+        `;
+        flowEl.appendChild(step);
+      });
+
+      const ns = "http://www.w3.org/2000/svg";
+      const svg = document.createElementNS(ns, "svg");
+      svg.classList.add("flow-overlay");
+      svg.setAttribute("aria-hidden", "true");
+      flowEl.appendChild(svg);
+
+      function drawConnectors() {
+        const rect = flowEl.getBoundingClientRect();
+        svg.setAttribute("width", String(rect.width));
+        svg.setAttribute("height", String(rect.height));
+        svg.innerHTML = "";
+        const defs = document.createElementNS(ns, "defs");
+        defs.innerHTML = `
+          <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--cp-text-muted)"/>
+          </marker>`;
+        svg.appendChild(defs);
+        const steps = Array.from(flowEl.querySelectorAll(".flow-step")).sort((a, b) => Number(a.dataset.step) - Number(b.dataset.step));
+        for (let i = 0; i < steps.length - 1; i++) {
+          const a = steps[i].getBoundingClientRect();
+          const b = steps[i + 1].getBoundingClientRect();
+          const ax = a.right - rect.left, ay = a.top + a.height / 2 - rect.top;
+          const bx = b.left - rect.left,  by = b.top + b.height / 2 - rect.top;
+          const dx = Math.max(20, (bx - ax) / 2);
+          const path = document.createElementNS(ns, "path");
+          path.setAttribute("d", `M ${ax} ${ay} C ${ax + dx} ${ay}, ${bx - dx} ${by}, ${bx} ${by}`);
+          path.setAttribute("fill", "none");
+          path.setAttribute("stroke", "var(--cp-text-muted)");
+          path.setAttribute("stroke-width", "1.6");
+          path.setAttribute("stroke-dasharray", "4 3");
+          path.setAttribute("stroke-linecap", "round");
+          path.setAttribute("opacity", "0.75");
+          path.setAttribute("marker-end", "url(#arrow)");
+          svg.appendChild(path);
+        }
+      }
+
+      requestAnimationFrame(drawConnectors);
+      window.addEventListener("load", drawConnectors);
+      let resizeTimer = null;
+      window.addEventListener("resize", () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(drawConnectors, 80); });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cost-aware Expense Agent · Federated AI Environment</title>
+    <meta name="description" content="Detailed reference architecture for a cost-aware expense agent: per-token bill-back, model routing for cheap vs. complex paths, and showback dashboards inside Teams." />
+    <script>
+      (function () {
+        try {
+          var url = new URL(window.location.href);
+          var t = url.searchParams.get("scoutTheme");
+          if (t === "dark" || t === "light") {
+            document.documentElement.setAttribute("data-theme", t);
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <style>
+      :root {
+        --cp-bg: #faf9f8;
+        --cp-surface: #ffffff;
+        --cp-surface-soft: #f3f2f1;
+        --cp-text: #201f1e;
+        --cp-text-muted: #605e5c;
+        --cp-border: #e1dfdd;
+        --cp-accent: #0078d4;
+        --cp-success: #107c10;
+        --cp-warning: #ca5010;
+        --cp-danger: #a4262c;
+        --cp-link: #0078d4;
+        --layer-experience: #d97706; --layer-experience-soft: #fef3c7;
+        --layer-control: #2563eb;    --layer-control-soft: #dbeafe;
+        --layer-fabric: #0891b2;     --layer-fabric-soft: #cffafe;
+        --layer-data: #16a34a;       --layer-data-soft: #dcfce7;
+        --layer-model: #65a30d;      --layer-model-soft: #ecfccb;
+        --scenario-accent: var(--layer-control);
+      }
+      [data-theme="dark"] {
+        --cp-bg: #1b1a19; --cp-surface: #252423; --cp-surface-soft: #2d2c2b;
+        --cp-text: #f3f2f1; --cp-text-muted: #c8c6c4; --cp-border: #3b3a39;
+        --cp-accent: #4cc2ff; --cp-link: #4cc2ff;
+        --cp-success: #6ccb5f; --cp-warning: #f7894a; --cp-danger: #ef6f6c;
+        --layer-experience: #fbbf24; --layer-experience-soft: #423016;
+        --layer-control: #60a5fa;    --layer-control-soft: #1e2a4a;
+        --layer-fabric: #22d3ee;     --layer-fabric-soft: #103442;
+        --layer-data: #4ade80;       --layer-data-soft: #133b22;
+        --layer-model: #a3e635;      --layer-model-soft: #1e3010;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme]) {
+          --cp-bg: #1b1a19; --cp-surface: #252423; --cp-surface-soft: #2d2c2b;
+          --cp-text: #f3f2f1; --cp-text-muted: #c8c6c4; --cp-border: #3b3a39;
+          --cp-accent: #4cc2ff; --cp-link: #4cc2ff;
+          --layer-experience: #fbbf24; --layer-experience-soft: #423016;
+          --layer-control: #60a5fa; --layer-control-soft: #1e2a4a;
+          --layer-fabric: #22d3ee; --layer-fabric-soft: #103442;
+          --layer-data: #4ade80; --layer-data-soft: #133b22;
+          --layer-model: #a3e635; --layer-model-soft: #1e3010;
+        }
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; padding: 0; background: var(--cp-bg); color: var(--cp-text); font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "SF Pro Text", Roboto, Arial, sans-serif; font-size: 14px; line-height: 1.5; }
+      a { color: var(--cp-link); }
+      header.app { position: sticky; top: 0; z-index: 20; background: var(--cp-surface); border-bottom: 1px solid var(--cp-border); }
+      .header-inner { max-width: 1400px; margin: 0 auto; padding: 12px 22px; display: flex; align-items: center; gap: 14px; }
+      .brand { display: flex; align-items: center; gap: 12px; }
+      .brand-mark { width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg, var(--cp-accent), var(--scenario-accent)); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; }
+      .brand-text h1 { margin: 0; font-size: 15px; font-weight: 600; }
+      .brand-text p { margin: 0; font-size: 11.5px; color: var(--cp-text-muted); }
+      .header-spacer { flex: 1; }
+      .nav-link { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; font-size: 12.5px; font-weight: 500; color: var(--cp-text); background: var(--cp-surface-soft); border: 1px solid var(--cp-border); border-radius: 8px; text-decoration: none; }
+      .nav-link:hover { border-color: var(--cp-accent); color: var(--cp-accent); }
+      .icon-btn { width: 32px; height: 32px; border-radius: 8px; background: var(--cp-surface-soft); border: 1px solid var(--cp-border); color: var(--cp-text); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+      .icon-btn:hover { background: var(--cp-surface); border-color: var(--cp-accent); }
+      main { max-width: 1400px; margin: 0 auto; padding: 0; }
+      .page-hero { margin: 18px 22px 0 22px; background: color-mix(in srgb, var(--scenario-accent) 4%, var(--cp-bg)); border-left: 4px solid var(--scenario-accent); border-radius: 12px; padding: 18px 22px; }
+      .crumbs { font-size: 12px; color: var(--cp-text-muted); margin-bottom: 6px; }
+      .crumbs a { color: var(--cp-link); text-decoration: none; }
+      .crumbs a:hover { text-decoration: underline; }
+      .page-hero h2 { margin: 0 0 6px 0; font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
+      .page-hero .subtitle { margin: 0 0 10px 0; font-size: 13.5px; color: var(--cp-text-muted); max-width: 920px; }
+      .page-hero .lead { margin: 0; font-size: 13.5px; max-width: 920px; }
+      .addresses { margin: 14px 22px 0 22px; padding: 12px 16px; background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 10px; display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; font-size: 12px; }
+      .addresses .label { color: var(--cp-text-muted); text-transform: uppercase; letter-spacing: 0.5px; font-size: 10.5px; font-weight: 700; }
+      .addresses .chip { font-size: 12px; padding: 4px 10px; background: var(--cp-surface-soft); border: 1px solid var(--cp-border); border-radius: 999px; color: var(--cp-text); text-decoration: none; }
+      .addresses .chip:hover { border-color: var(--scenario-accent); color: var(--scenario-accent); }
+      .at-a-glance { margin: 16px 22px 0 22px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+      .aag-card { padding: 10px 14px; background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 10px; }
+      .aag-card .aag-label { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--cp-text-muted); font-weight: 700; }
+      .aag-card .aag-value { font-size: 13.5px; font-weight: 600; margin-top: 4px; }
+      .aag-card .aag-detail { font-size: 11.5px; color: var(--cp-text-muted); margin-top: 2px; }
+      section.section { margin: 24px 22px 0 22px; }
+      section.section h3 { margin: 0 0 4px 0; font-size: 16px; font-weight: 600; }
+      section.section .section-sub { margin: 0 0 12px 0; font-size: 12.5px; color: var(--cp-text-muted); }
+      .components-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+      @media (max-width: 1100px) { .components-grid { grid-template-columns: repeat(2, 1fr); } }
+      @media (max-width: 600px)  { .components-grid { grid-template-columns: 1fr; } }
+      .layer-col { background: var(--cp-surface); border: 1px solid var(--cp-border); border-top: 3px solid var(--layer-color); border-radius: 10px; padding: 12px 12px 14px 12px; display: flex; flex-direction: column; gap: 8px; }
+      .layer-col .layer-name { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--layer-color); }
+      .layer-col .comp { padding: 8px 10px; background: var(--cp-surface-soft); border: 1px solid var(--cp-border); border-radius: 8px; }
+      .layer-col .comp .name { font-size: 12.5px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+      .layer-col .comp .role { font-size: 11.5px; color: var(--cp-text-muted); margin-top: 2px; line-height: 1.35; }
+      .vdot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+      .flow-wrap { overflow-x: auto; }
+      .flow-grid { position: relative; display: grid; gap: 12px 14px; padding: 16px; background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 12px; grid-template-columns: 110px repeat(var(--steps), minmax(150px, 1fr)); grid-auto-rows: minmax(72px, auto); }
+      .lane-bg { background: var(--cp-surface-soft); border-left: 3px solid var(--lane-color); border-radius: 6px; z-index: 0; align-self: stretch; }
+      .lane-label { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--lane-color); align-self: center; padding: 0 10px; z-index: 2; }
+      .flow-step { position: relative; z-index: 3; padding: 8px 10px 9px 10px; background: var(--cp-surface); border: 1px solid var(--cp-border); border-left: 3px solid var(--lane-color); border-radius: 8px; align-self: center; box-shadow: 0 1px 2px rgba(0,0,0,0.04); display: flex; flex-direction: column; gap: 3px; min-height: 60px; }
+      .flow-step .step-head { display: flex; align-items: center; gap: 6px; }
+      .flow-step .num { display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px; background: var(--lane-color); color: #fff; font-size: 10.5px; font-weight: 700; }
+      .flow-step .step-title { font-size: 12.5px; font-weight: 600; line-height: 1.25; }
+      .flow-step .step-detail { font-size: 11.5px; color: var(--cp-text-muted); line-height: 1.35; }
+      .flow-overlay { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+      .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+      .out-card { padding: 12px 14px; background: var(--cp-surface); border: 1px solid var(--cp-border); border-left: 3px solid var(--cp-success); border-radius: 10px; }
+      .out-card .out-title { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+      .out-card .out-body { font-size: 12px; color: var(--cp-text-muted); line-height: 1.45; }
+      .cons-card { padding: 12px 14px; background: var(--cp-surface); border: 1px solid var(--cp-border); border-left: 3px solid var(--cp-warning); border-radius: 10px; }
+      .cons-card .out-title { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+      .cons-card .out-body { font-size: 12px; color: var(--cp-text-muted); line-height: 1.45; }
+      .related { margin: 24px 22px 0 22px; padding: 14px 18px; background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 10px; display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; font-size: 12.5px; }
+      .related .label { color: var(--cp-text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; font-size: 10.5px; }
+      .related a { color: var(--cp-link); text-decoration: none; padding: 4px 10px; border-radius: 6px; background: var(--cp-surface-soft); border: 1px solid var(--cp-border); }
+      .related a:hover { border-color: var(--scenario-accent); color: var(--scenario-accent); }
+      footer.app { margin: 28px 22px 22px 22px; padding: 16px 0 0 0; border-top: 1px solid var(--cp-border); font-size: 12px; color: var(--cp-text-muted); display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+      footer.app a { color: var(--cp-link); text-decoration: none; }
+      footer.app a:hover { text-decoration: underline; }
+      @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+    </style>
+  </head>
+  <body>
+    <header class="app">
+      <div class="header-inner">
+        <div class="brand">
+          <div class="brand-mark">AI</div>
+          <div class="brand-text">
+            <h1>Federated AI Environment</h1>
+            <p>Scenario reference architecture</p>
+          </div>
+        </div>
+        <div class="header-spacer"></div>
+        <a class="nav-link" href="../index.html" title="Back to reference architecture">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Reference architecture
+        </a>
+        <a class="nav-link" href="../use-cases.html">Use cases</a>
+        <button class="icon-btn" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-hero">
+        <div class="crumbs"><a href="../index.html">Reference architecture</a> &nbsp;/&nbsp; Scenarios &nbsp;/&nbsp; Cost-aware Expense Agent</div>
+        <h2>Cost-aware Expense Agent</h2>
+        <p class="subtitle">Per-token bill-back, model routing for cheap vs. complex paths, and showback dashboards in Teams.</p>
+        <p class="lead">
+          An employee submits expenses in <strong>M365 Copilot</strong> (Teams). A Finance-owned <strong>Copilot Studio</strong> agent
+          routes simple OCR work to a small model and escalates disputes to a larger one. Every token is tagged to Finance,
+          policy is checked against <strong>Foundry IQ</strong>, calls to <strong>SAP S/4HANA</strong> and the corporate-card system
+          are governed through <strong>Azure API Management</strong>, and <strong>Sentinel</strong> logs the chain end-to-end.
+        </p>
+      </section>
+
+      <section class="addresses" aria-label="Customer challenges addressed">
+        <span class="label">Addresses</span>
+        <a class="chip" href="../index.html#challenges-heading">&ldquo;Control over token usage and cost/billing&rdquo;</a>
+        <a class="chip" href="../index.html#challenges-heading">&ldquo;Unified Control Plane&rdquo;</a>
+        <a class="chip" href="../index.html#challenges-heading">&ldquo;Sustainable agent operations&rdquo;</a>
+      </section>
+
+      <section class="at-a-glance" aria-label="At a glance">
+        <div class="aag-card"><div class="aag-label">Built by</div><div class="aag-value">Finance + IT</div><div class="aag-detail">Copilot Studio + Agents Framework</div></div>
+        <div class="aag-card"><div class="aag-label">Used by</div><div class="aag-value">All employees</div><div class="aag-detail">Submit expenses in Teams; approvers in Outlook</div></div>
+        <div class="aag-card"><div class="aag-label">Runs on</div><div class="aag-value">Foundry Agent Service</div><div class="aag-detail">Routed across small + large models</div></div>
+        <div class="aag-card"><div class="aag-label">Touches data in</div><div class="aag-value">SAP S/4HANA + AmEx + Graph</div><div class="aag-detail">Policy in Foundry IQ; approvers from Graph</div></div>
+        <div class="aag-card"><div class="aag-label">Cost owner</div><div class="aag-value">Finance (with showback)</div><div class="aag-detail">Per-user, per-receipt token tagging</div></div>
+      </section>
+
+      <section class="section" aria-label="Components">
+        <h3>Reference architecture &middot; Components by layer</h3>
+        <p class="section-sub">A familiar agent, with cost controls and observability wired into every layer.</p>
+        <div class="components-grid" id="components"></div>
+      </section>
+
+      <section class="section" aria-label="Flow">
+        <h3>The flow</h3>
+        <p class="section-sub">Receipts in, model-routed parsing, policy checks, SAP posting, and per-employee cost tagging.</p>
+        <div class="flow-wrap"><div class="flow-grid" id="flow"></div></div>
+      </section>
+
+      <section class="section" aria-label="Outcomes">
+        <h3>What success looks like</h3>
+        <div class="card-grid">
+          <div class="out-card"><div class="out-title">Token spend, attributed</div><div class="out-body">Each expense submission tags tokens to employee, cost center, and agent &mdash; Finance sees who and what is driving cost.</div></div>
+          <div class="out-card"><div class="out-title">Lower per-receipt cost</div><div class="out-body">Routing cheap OCR work to a small model can cut model spend 50&ndash;80% while still using a larger model for disputed items.</div></div>
+          <div class="out-card"><div class="out-title">SOX-compliant audit trail</div><div class="out-body">Sentinel logs every step; Purview records data movement &mdash; auditable in the same controls Finance already uses.</div></div>
+          <div class="out-card"><div class="out-title">Faster approval cycle</div><div class="out-body">Policy checks and approver routing happen in the agent &mdash; reimbursement time goes from days to hours.</div></div>
+        </div>
+      </section>
+
+      <section class="section" aria-label="Considerations">
+        <h3>Considerations</h3>
+        <div class="card-grid">
+          <div class="cons-card"><div class="out-title">Model routing rules need tuning</div><div class="out-body">Choosing when to escalate to a larger model is a real product decision. Expect 4&ndash;8 weeks of evaluation in Foundry to get it right.</div></div>
+          <div class="cons-card"><div class="out-title">Showback dashboards are bespoke today</div><div class="out-body">Foundry Control Plane gives raw token telemetry. A polished per-employee/cost-center showback UI is still custom build.</div></div>
+          <div class="cons-card"><div class="out-title">Disputed expenses &rarr; human in loop</div><div class="out-body">Don't auto-approve disputes. Always route to a human and log the decision; it's both a policy and OWASP LLM06 (Sensitive Disclosure) mitigation.</div></div>
+          <div class="cons-card"><div class="out-title">OWASP LLM10 (Unbounded Consumption)</div><div class="out-body">Cap tokens per user per day, alert on anomalies in Sentinel, and rate-limit the agent at API Management to prevent runaway spend.</div></div>
+        </div>
+      </section>
+
+      <section class="related" aria-label="Related">
+        <span class="label">Related</span>
+        <a href="../index.html">Reference architecture</a>
+        <a href="citizen-hr.html">Citizen-built HR Benefits Agent</a>
+        <a href="customer360.html">Multi-source Customer 360</a>
+        <a href="../use-cases.html">Use cases (M365 / SAP / ServiceNow)</a>
+      </section>
+
+      <footer class="app">
+        <span>Federated AI Environment &middot; <a href="../index.html">Back to reference architecture</a></span>
+        <span style="margin-left: auto;">Illustrative reference &mdash; product capabilities evolve.</span>
+      </footer>
+    </main>
+
+    <script>
+      const root = document.documentElement;
+      const themeBtn = document.getElementById("themeToggle");
+      themeBtn.addEventListener("click", () => {
+        const cur = root.getAttribute("data-theme");
+        const next = cur === "dark" ? "light" : cur === "light" ? "dark" : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "light" : "dark");
+        root.setAttribute("data-theme", next);
+      });
+
+      const VENDORS = {
+        microsoft: "#0078d4", sap: "#0a6ed1", salesforce: "#00a1e0",
+        servicenow: "#62d84e", snowflake: "#29b5e8", aws: "#ff9900",
+        gcp: "#4285f4", oss: "#888888",
+      };
+      const LAYERS = [
+        { id: "exp", label: "Experience", color: "--layer-experience" },
+        { id: "ctl", label: "Control",    color: "--layer-control"    },
+        { id: "fab", label: "Fabric",     color: "--layer-fabric"     },
+        { id: "bld", label: "Build",      color: "--layer-model"      },
+        { id: "dat", label: "Data",       color: "--layer-data"       },
+      ];
+
+      const COMPONENTS = {
+        exp: [
+          { name: "M365 Copilot in Teams", vendor: "microsoft", role: "Employees submit and check expenses in chat." },
+          { name: "Outlook adaptive cards", vendor: "microsoft", role: "Approvers get a one-click approve / reject card." },
+        ],
+        ctl: [
+          { name: "Microsoft Entra ID", vendor: "microsoft", role: "Identity + role check (submitter, approver, finance ops)." },
+          { name: "Foundry Control Plane", vendor: "microsoft", role: "Token telemetry, eval, trace, and cost dashboards." },
+          { name: "Microsoft Purview", vendor: "microsoft", role: "Receipt content classification + DLP." },
+          { name: "Microsoft Sentinel", vendor: "microsoft", role: "Anomaly detection on agent and API call patterns." },
+          { name: "Microsoft Defender for Cloud Apps", vendor: "microsoft", role: "Protects the SAP and AmEx connectors from misuse." },
+          { name: "Cost tags (Finance)", vendor: "microsoft", role: "Per-user, per-receipt, per-model token tagging for showback." },
+        ],
+        fab: [
+          { name: "Receipt-parsing MCP server", vendor: "oss", role: "Tools for OCR, line-item extraction, and currency conversion." },
+          { name: "Policy MCP server", vendor: "oss", role: "Checks expense against company travel and entertainment policy." },
+          { name: "Azure API Management", vendor: "microsoft", role: "Gateway to SAP S/4HANA, AmEx feed; throttling + auth." },
+          { name: "OAuth 2.0 / Entra Workload ID", vendor: "microsoft", role: "Agent-to-system tokens for SAP and AmEx." },
+        ],
+        bld: [
+          { name: "Copilot Studio (Finance-owned)", vendor: "microsoft", role: "No-code authoring of expense flow + dialog." },
+          { name: "Microsoft Agents Framework", vendor: "microsoft", role: "Custom skills for model routing and tax logic." },
+          { name: "Model router (small + large)", vendor: "microsoft", role: "Routes OCR to a small model; escalates disputes to a larger one." },
+          { name: "Foundry Agent Service", vendor: "microsoft", role: "Hosts and orchestrates the agent + tools at runtime." },
+        ],
+        dat: [
+          { name: "Foundry IQ", vendor: "microsoft", role: "Vector index over T&amp;E policy, currency tables, and exemptions." },
+          { name: "Microsoft Graph", vendor: "microsoft", role: "Org chart lookup to find each employee's approver." },
+          { name: "SAP S/4HANA", vendor: "sap", role: "Authoritative expense posting and reimbursement system." },
+          { name: "AmEx corporate card feed", vendor: "oss", role: "Match submitted receipts against card transactions." },
+        ],
+      };
+
+      const FLOW_STEPS = [
+        { lane: "exp", title: "Submit in Teams", detail: "Employee drags a receipt into M365 Copilot in Teams and asks to file an expense." },
+        { lane: "ctl", title: "Authenticate", detail: "Entra ID confirms the employee and their cost center." },
+        { lane: "bld", title: "Route to agent", detail: "The Finance-owned Copilot Studio agent picks up the request in Foundry." },
+        { lane: "bld", title: "Pick a model", detail: "Model router uses a small model for OCR and routine items; a larger one only on complex disputes." },
+        { lane: "fab", title: "Parse via MCP", detail: "Receipt-parsing MCP server extracts line items, currency, and tax." },
+        { lane: "dat", title: "Check policy", detail: "Foundry IQ retrieves T&amp;E policy chunks; agent validates the expense against them." },
+        { lane: "fab", title: "Call backends", detail: "API Management routes calls to SAP S/4HANA and AmEx with consistent auth and throttling." },
+        { lane: "dat", title: "Reconcile card", detail: "Match the receipt against the corporate AmEx feed; flag mismatches." },
+        { lane: "ctl", title: "Log + tag tokens", detail: "Sentinel logs the chain; tokens are tagged to employee, cost center, and agent for showback." },
+        { lane: "exp", title: "Approver card", detail: "Outlook sends the manager an adaptive card; one click approves and posts to SAP." },
+      ];
+
+      const compsEl = document.getElementById("components");
+      compsEl.innerHTML = LAYERS.map((L) => {
+        const items = (COMPONENTS[L.id] || [])
+          .map((c) => `
+            <div class="comp">
+              <div class="name"><span class="vdot" style="background:${VENDORS[c.vendor] || "#888"}"></span>${c.name}</div>
+              <div class="role">${c.role}</div>
+            </div>`).join("");
+        return `
+          <div class="layer-col" style="--layer-color: var(${L.color});">
+            <div class="layer-name">${L.label}</div>
+            ${items}
+          </div>`;
+      }).join("");
+
+      const flowEl = document.getElementById("flow");
+      flowEl.style.setProperty("--steps", FLOW_STEPS.length);
+      LAYERS.forEach((lane, i) => {
+        const bg = document.createElement("div"); bg.className = "lane-bg";
+        bg.style.gridRow = String(i + 1); bg.style.gridColumn = "1 / -1";
+        bg.style.setProperty("--lane-color", `var(${lane.color})`); flowEl.appendChild(bg);
+        const lbl = document.createElement("div"); lbl.className = "lane-label";
+        lbl.style.gridRow = String(i + 1); lbl.style.gridColumn = "1";
+        lbl.style.setProperty("--lane-color", `var(${lane.color})`); lbl.textContent = lane.label; flowEl.appendChild(lbl);
+      });
+      FLOW_STEPS.forEach((s, idx) => {
+        const laneIdx = LAYERS.findIndex((l) => l.id === s.lane);
+        if (laneIdx < 0) return;
+        const step = document.createElement("div"); step.className = "flow-step";
+        step.dataset.step = String(idx + 1);
+        step.style.gridRow = String(laneIdx + 1);
+        step.style.gridColumn = String(idx + 2);
+        step.style.setProperty("--lane-color", `var(${LAYERS[laneIdx].color})`);
+        step.innerHTML = `
+          <div class="step-head"><span class="num">${idx + 1}</span><span class="step-title">${s.title}</span></div>
+          <div class="step-detail">${s.detail}</div>`;
+        flowEl.appendChild(step);
+      });
+      const ns = "http://www.w3.org/2000/svg";
+      const svg = document.createElementNS(ns, "svg");
+      svg.classList.add("flow-overlay"); svg.setAttribute("aria-hidden", "true");
+      flowEl.appendChild(svg);
+      function drawConnectors() {
+        const rect = flowEl.getBoundingClientRect();
+        svg.setAttribute("width", String(rect.width));
+        svg.setAttribute("height", String(rect.height));
+        svg.innerHTML = "";
+        const defs = document.createElementNS(ns, "defs");
+        defs.innerHTML = `<marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="var(--cp-text-muted)"/></marker>`;
+        svg.appendChild(defs);
+        const steps = Array.from(flowEl.querySelectorAll(".flow-step")).sort((a, b) => Number(a.dataset.step) - Number(b.dataset.step));
+        for (let i = 0; i < steps.length - 1; i++) {
+          const a = steps[i].getBoundingClientRect();
+          const b = steps[i + 1].getBoundingClientRect();
+          const ax = a.right - rect.left, ay = a.top + a.height / 2 - rect.top;
+          const bx = b.left - rect.left,  by = b.top + b.height / 2 - rect.top;
+          const dx = Math.max(20, (bx - ax) / 2);
+          const path = document.createElementNS(ns, "path");
+          path.setAttribute("d", `M ${ax} ${ay} C ${ax + dx} ${ay}, ${bx - dx} ${by}, ${bx} ${by}`);
+          path.setAttribute("fill", "none"); path.setAttribute("stroke", "var(--cp-text-muted)");
+          path.setAttribute("stroke-width", "1.6"); path.setAttribute("stroke-dasharray", "4 3");
+          path.setAttribute("stroke-linecap", "round"); path.setAttribute("opacity", "0.75");
+          path.setAttribute("marker-end", "url(#arrow)");
+          svg.appendChild(path);
+        }
+      }
+      requestAnimationFrame(drawConnectors);
+      window.addEventListener("load", drawConnectors);
+      let resizeTimer = null;
+      window.addEventListener("resize", () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(drawConnectors, 80); });
+    </script>
+  </body>
+</html>
