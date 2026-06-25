@@ -1,0 +1,1515 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Federated AI Architecture — Reference Vision</title>
+    <script>
+      (() => {
+        const param = new URLSearchParams(window.location.search).get("scoutTheme");
+        const theme =
+          param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <style>
+      :root {
+        color-scheme: light;
+        --cp-bg: #f7f4ef;
+        --cp-bg-elevated: #fcfbf8;
+        --cp-surface: #ffffff;
+        --cp-surface-soft: #f5f5f5;
+        --cp-border: #dedede;
+        --cp-border-strong: #919191;
+        --cp-text: #242424;
+        --cp-text-muted: #5c5c5c;
+        --cp-text-soft: #6f6f6f;
+        --cp-accent: #b11f4b;
+        --cp-accent-hover: #9a1a41;
+        --cp-accent-soft: rgba(177, 31, 75, 0.08);
+        --cp-accent-fg: #ffffff;
+        --cp-success: #16a34a;
+        --cp-danger: #dc2626;
+        --cp-warning: #f59e0b;
+        --cp-link: #0078d4;
+        --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
+        --cp-overlay: rgba(255, 255, 255, 0.8);
+        --cp-panel: rgba(255, 255, 255, 0.86);
+        --cp-panel-strong: rgba(255, 255, 255, 0.96);
+        --cp-sheen: rgba(255, 255, 255, 0.55);
+        --cp-highlight: rgba(177, 31, 75, 0.12);
+
+        /* Layer family colors — paired with labels/shapes per design guidance.
+           Warm for business, cool for app/AI, neutral for tech/infra. */
+        --layer-business: #d97757;
+        --layer-business-soft: rgba(217, 119, 87, 0.12);
+        --layer-experience: #c9874a;
+        --layer-experience-soft: rgba(201, 135, 74, 0.12);
+        --layer-control: #2f6f8f;
+        --layer-control-soft: rgba(47, 111, 143, 0.12);
+        --layer-fabric: #3f8ea3;
+        --layer-fabric-soft: rgba(63, 142, 163, 0.12);
+        --layer-data: #4a7c59;
+        --layer-data-soft: rgba(74, 124, 89, 0.14);
+        --layer-model: #6b7a52;
+        --layer-model-soft: rgba(107, 122, 82, 0.14);
+        --layer-infra: #6f6f6f;
+        --layer-infra-soft: rgba(111, 111, 111, 0.12);
+      }
+      html[data-theme="dark"] {
+        color-scheme: dark;
+        --cp-bg: #3d3b3a;
+        --cp-bg-elevated: #343231;
+        --cp-surface: #292929;
+        --cp-surface-soft: #2e2e2e;
+        --cp-border: #474747;
+        --cp-border-strong: #5f5f5f;
+        --cp-text: #dedede;
+        --cp-text-muted: #919191;
+        --cp-text-soft: #b0b0b0;
+        --cp-accent: #fd8ea1;
+        --cp-accent-hover: #fb7b91;
+        --cp-accent-soft: rgba(253, 142, 161, 0.14);
+        --cp-accent-fg: #1a1a1a;
+        --cp-success: #4ade80;
+        --cp-danger: #f87171;
+        --cp-warning: #fbbf24;
+        --cp-link: #4da6ff;
+        --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+        --cp-overlay: rgba(41, 41, 41, 0.88);
+        --cp-panel: rgba(41, 41, 41, 0.72);
+        --cp-panel-strong: rgba(41, 41, 41, 0.96);
+        --cp-sheen: rgba(255, 255, 255, 0.04);
+        --cp-highlight: rgba(253, 142, 161, 0.12);
+
+        --layer-business: #e8a583;
+        --layer-business-soft: rgba(232, 165, 131, 0.18);
+        --layer-experience: #e6b283;
+        --layer-experience-soft: rgba(230, 178, 131, 0.18);
+        --layer-control: #6fb0c9;
+        --layer-control-soft: rgba(111, 176, 201, 0.18);
+        --layer-fabric: #7cc0d4;
+        --layer-fabric-soft: rgba(124, 192, 212, 0.18);
+        --layer-data: #88c5a0;
+        --layer-data-soft: rgba(136, 197, 160, 0.18);
+        --layer-model: #b0ba8a;
+        --layer-model-soft: rgba(176, 186, 138, 0.18);
+        --layer-infra: #b0b0b0;
+        --layer-infra-soft: rgba(176, 176, 176, 0.18);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: var(--cp-bg);
+        color: var(--cp-text);
+        font-family: "Segoe UI", Aptos, Calibri, -apple-system, BlinkMacSystemFont, sans-serif;
+        font-size: 15px;
+        line-height: 1.5;
+      }
+      code,
+      kbd {
+        font-family: Consolas, "Courier New", Courier, monospace;
+        font-size: 0.875em;
+      }
+
+      /* ---------- Header ---------- */
+      header.app {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background: var(--cp-panel-strong);
+        backdrop-filter: saturate(140%) blur(12px);
+        border-bottom: 1px solid var(--cp-border);
+      }
+      .header-inner {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 14px 28px;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        flex-wrap: wrap;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 280px;
+      }
+      .brand-mark {
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        background: var(--cp-accent);
+        display: grid;
+        place-items: center;
+        color: var(--cp-accent-fg);
+        font-weight: 700;
+        letter-spacing: 0.5px;
+      }
+      .brand-text h1 {
+        font-size: 16px;
+        margin: 0;
+        font-weight: 600;
+      }
+      .brand-text p {
+        font-size: 12px;
+        margin: 0;
+        color: var(--cp-text-muted);
+      }
+      .header-spacer {
+        flex: 1;
+      }
+      .toggle-group {
+        display: inline-flex;
+        border: 1px solid var(--cp-border);
+        border-radius: 10px;
+        padding: 3px;
+        background: var(--cp-surface);
+      }
+      .toggle-group button {
+        appearance: none;
+        border: 0;
+        background: transparent;
+        color: var(--cp-text-muted);
+        padding: 6px 14px;
+        border-radius: 7px;
+        font: inherit;
+        cursor: pointer;
+        font-size: 13px;
+      }
+      .toggle-group button.active {
+        background: var(--cp-accent);
+        color: var(--cp-accent-fg);
+        font-weight: 600;
+      }
+      .icon-btn {
+        appearance: none;
+        background: var(--cp-surface);
+        color: var(--cp-text);
+        border: 1px solid var(--cp-border);
+        border-radius: 8px;
+        width: 36px;
+        height: 36px;
+        cursor: pointer;
+        display: grid;
+        place-items: center;
+      }
+      .icon-btn:hover {
+        border-color: var(--cp-border-strong);
+      }
+
+      /* ---------- Main shell ---------- */
+      main {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 28px;
+      }
+      .hero {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr;
+        gap: 24px;
+        margin-bottom: 28px;
+      }
+      @media (max-width: 980px) {
+        .hero {
+          grid-template-columns: 1fr;
+        }
+      }
+      .hero-card {
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.14);
+      }
+      .hero-card h2 {
+        margin: 0 0 8px;
+        font-size: 20px;
+        letter-spacing: -0.01em;
+      }
+      .hero-card p {
+        color: var(--cp-text-muted);
+        margin: 0 0 14px;
+      }
+      .pill-row {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        background: var(--cp-surface-soft);
+        border: 1px solid var(--cp-border);
+        color: var(--cp-text-muted);
+      }
+      .pill .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        display: inline-block;
+      }
+
+      .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+      .kpi {
+        background: var(--cp-bg-elevated);
+        border: 1px solid var(--cp-border);
+        border-radius: 12px;
+        padding: 14px;
+      }
+      .kpi .label {
+        color: var(--cp-text-muted);
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      .kpi .value {
+        font-size: 22px;
+        font-weight: 600;
+        margin-top: 4px;
+      }
+      .kpi .sub {
+        color: var(--cp-text-soft);
+        font-size: 12px;
+        margin-top: 2px;
+      }
+
+      /* ---------- Architecture canvas ---------- */
+      .canvas-wrap {
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.14);
+      }
+      .canvas-head {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 14px;
+        flex-wrap: wrap;
+      }
+      .canvas-head h3 {
+        margin: 0;
+        font-size: 16px;
+      }
+      .canvas-head .subtitle {
+        color: var(--cp-text-muted);
+        font-size: 13px;
+      }
+      .legend {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-left: auto;
+      }
+      .legend-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        color: var(--cp-text-muted);
+      }
+      .swatch {
+        width: 14px;
+        height: 10px;
+        border-radius: 3px;
+        display: inline-block;
+        border: 1px solid var(--cp-border);
+      }
+
+      /* Layer rows */
+      .planes {
+        display: grid;
+        gap: 12px;
+      }
+      .plane {
+        border: 1px solid var(--cp-border);
+        border-radius: 14px;
+        background: var(--cp-bg-elevated);
+        overflow: hidden;
+        position: relative;
+      }
+      .plane::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 6px;
+        background: var(--plane-color, var(--cp-accent));
+      }
+      .plane-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 16px 12px 22px;
+        border-bottom: 1px dashed var(--cp-border);
+        background: var(--plane-soft, var(--cp-surface-soft));
+      }
+      .plane-title {
+        font-weight: 600;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .plane-shape {
+        width: 20px;
+        height: 20px;
+        display: inline-grid;
+        place-items: center;
+        color: var(--plane-color);
+      }
+      .plane-desc {
+        color: var(--cp-text-muted);
+        font-size: 12.5px;
+        margin-left: 8px;
+      }
+      .plane-meta {
+        margin-left: auto;
+        font-size: 11px;
+        color: var(--cp-text-soft);
+      }
+      .nodes {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 10px;
+        padding: 14px 14px 14px 22px;
+      }
+      .platforms {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 10px 14px 4px 22px;
+        align-items: center;
+      }
+      .platforms .label {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--cp-text-soft);
+        margin-right: 4px;
+      }
+      .platform-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11.5px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: var(--plane-soft, var(--cp-surface-soft));
+        border: 1px solid var(--cp-border);
+        color: var(--cp-text);
+        white-space: nowrap;
+      }
+      .platform-chip .vendor-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 2px;
+        flex-shrink: 0;
+      }
+      .platform-chip .vendor {
+        color: var(--cp-text-muted);
+        font-size: 10.5px;
+      }
+      .node {
+        position: relative;
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-radius: 10px;
+        padding: 12px 12px 12px 14px;
+        cursor: pointer;
+        transition:
+          transform 0.12s ease,
+          border-color 0.12s ease,
+          box-shadow 0.12s ease;
+        text-align: left;
+        appearance: none;
+        font: inherit;
+        color: inherit;
+        width: 100%;
+      }
+      .node::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 10px;
+        bottom: 10px;
+        width: 3px;
+        background: var(--plane-color, var(--cp-accent));
+        border-radius: 3px;
+        opacity: 0.7;
+      }
+      .node:hover {
+        border-color: var(--plane-color, var(--cp-accent));
+        box-shadow: 0 0 0 3px var(--plane-soft, var(--cp-accent-soft));
+        transform: translateY(-1px);
+      }
+      .node .node-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+        font-size: 13.5px;
+      }
+      .node .node-icon {
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+        color: var(--plane-color);
+      }
+      .node .node-sub {
+        color: var(--cp-text-muted);
+        font-size: 12px;
+        margin-top: 4px;
+        line-height: 1.4;
+      }
+      .node .badge-row {
+        display: flex;
+        gap: 6px;
+        margin-top: 8px;
+        flex-wrap: wrap;
+      }
+      .badge {
+        font-size: 10.5px;
+        padding: 2px 7px;
+        border-radius: 999px;
+        background: var(--cp-surface-soft);
+        border: 1px solid var(--cp-border);
+        color: var(--cp-text-muted);
+      }
+      .badge.gap {
+        color: var(--cp-danger);
+        border-color: color-mix(in srgb, var(--cp-danger) 30%, var(--cp-border));
+      }
+      .badge.target {
+        color: var(--cp-success);
+        border-color: color-mix(in srgb, var(--cp-success) 35%, var(--cp-border));
+      }
+
+      /* Cross-cloud strip */
+      .clouds {
+        display: flex;
+        gap: 8px;
+        padding: 10px 14px 14px 22px;
+        flex-wrap: wrap;
+      }
+      .cloud-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        padding: 5px 10px;
+        border-radius: 999px;
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        color: var(--cp-text-muted);
+      }
+      .cloud-chip svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      /* ---------- Side compare panel ---------- */
+      .compare {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-top: 28px;
+      }
+      @media (max-width: 900px) {
+        .compare {
+          grid-template-columns: 1fr;
+        }
+      }
+      .compare-card {
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.14);
+      }
+      .compare-card h3 {
+        margin: 0 0 4px;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .compare-card .lead {
+        color: var(--cp-text-muted);
+        margin: 0 0 14px;
+        font-size: 13px;
+      }
+      .compare-card ul {
+        margin: 0;
+        padding-left: 18px;
+      }
+      .compare-card li {
+        margin: 6px 0;
+        font-size: 13.5px;
+        color: var(--cp-text);
+      }
+      .tag-current {
+        color: var(--cp-danger);
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .tag-target {
+        color: var(--cp-success);
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      /* ---------- Pillars ---------- */
+      .pillars {
+        margin-top: 28px;
+      }
+      .pillars h3 {
+        font-size: 15px;
+        margin: 0 0 14px;
+      }
+      .pillar-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 12px;
+      }
+      .pillar {
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-radius: 14px;
+        padding: 16px;
+      }
+      .pillar .head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 6px;
+      }
+      .pillar .head .icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        display: grid;
+        place-items: center;
+        background: var(--cp-accent-soft);
+        color: var(--cp-accent);
+      }
+      .pillar h4 {
+        margin: 0;
+        font-size: 14px;
+      }
+      .pillar p {
+        margin: 4px 0 0;
+        font-size: 12.5px;
+        color: var(--cp-text-muted);
+      }
+
+      /* ---------- Drawer / Drill-down ---------- */
+      .drawer-scrim {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.36);
+        z-index: 50;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.18s ease;
+      }
+      .drawer-scrim.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .drawer {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: min(540px, 100%);
+        background: var(--cp-bg-elevated);
+        border-left: 1px solid var(--cp-border);
+        box-shadow: var(--cp-shadow);
+        z-index: 51;
+        transform: translateX(100%);
+        transition: transform 0.22s ease;
+        display: flex;
+        flex-direction: column;
+      }
+      .drawer.open {
+        transform: translateX(0);
+      }
+      .drawer-head {
+        padding: 18px 20px;
+        border-bottom: 1px solid var(--cp-border);
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+      }
+      .drawer-head .icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: grid;
+        place-items: center;
+        background: var(--plane-soft, var(--cp-accent-soft));
+        color: var(--plane-color, var(--cp-accent));
+        flex-shrink: 0;
+      }
+      .drawer-head .title {
+        flex: 1;
+      }
+      .drawer-head h3 {
+        margin: 0;
+        font-size: 17px;
+      }
+      .drawer-head .subtitle {
+        color: var(--cp-text-muted);
+        font-size: 12.5px;
+        margin-top: 3px;
+      }
+      .drawer-close {
+        appearance: none;
+        background: transparent;
+        border: 1px solid var(--cp-border);
+        color: var(--cp-text);
+        border-radius: 8px;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+      }
+      .drawer-body {
+        padding: 18px 20px;
+        overflow-y: auto;
+        flex: 1;
+      }
+      .drawer-section {
+        margin-bottom: 20px;
+      }
+      .drawer-section h4 {
+        margin: 0 0 8px;
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--cp-text-soft);
+      }
+      .drawer-section p {
+        margin: 0 0 8px;
+        font-size: 13.5px;
+        color: var(--cp-text);
+      }
+      .drawer-section ul {
+        margin: 0;
+        padding-left: 18px;
+      }
+      .drawer-section li {
+        font-size: 13px;
+        color: var(--cp-text);
+        margin: 4px 0;
+      }
+      .status-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .status-box {
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-radius: 10px;
+        padding: 12px;
+      }
+      .status-box .label {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--cp-text-soft);
+        margin-bottom: 6px;
+      }
+      .status-box.current .label {
+        color: var(--cp-danger);
+      }
+      .status-box.target .label {
+        color: var(--cp-success);
+      }
+      .status-box p {
+        margin: 0;
+        font-size: 13px;
+      }
+      .tech-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .tech-chip {
+        font-size: 11.5px;
+        padding: 3px 9px;
+        border-radius: 999px;
+        background: var(--cp-surface-soft);
+        border: 1px solid var(--cp-border);
+        color: var(--cp-text-muted);
+      }
+
+      footer.app {
+        max-width: 1400px;
+        margin: 32px auto 0;
+        padding: 16px 28px 36px;
+        color: var(--cp-text-soft);
+        font-size: 12px;
+        border-top: 1px solid var(--cp-border);
+      }
+
+      /* ---------- Story flow ---------- */
+      .flow-wrap {
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-radius: 16px;
+        padding: 22px 24px 18px;
+        margin-bottom: 24px;
+        box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.14);
+      }
+      .flow-head {
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+      }
+      .flow-head h3 {
+        margin: 0;
+        font-size: 16px;
+      }
+      .flow-head .subtitle {
+        color: var(--cp-text-muted);
+        font-size: 13px;
+      }
+      .flow {
+        position: relative;
+        padding-bottom: 70px;
+      }
+      .flow-row {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr auto 1fr;
+        align-items: stretch;
+        gap: 6px;
+      }
+      @media (max-width: 1100px) {
+        .flow-row {
+          grid-template-columns: 1fr;
+        }
+        .flow-arrow {
+          transform: rotate(90deg);
+          justify-self: center;
+        }
+      }
+      .flow-step {
+        position: relative;
+        background: var(--cp-bg-elevated);
+        border: 1px solid var(--cp-border);
+        border-radius: 12px;
+        padding: 12px 12px 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        overflow: hidden;
+      }
+      .flow-step::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: var(--step-color, var(--cp-accent));
+      }
+      .flow-build { --step-color: var(--layer-model); }
+      .flow-publish { --step-color: var(--layer-control); }
+      .flow-run { --step-color: var(--layer-fabric); }
+      .flow-access { --step-color: var(--layer-data); }
+      .flow-deliver { --step-color: var(--layer-experience); }
+      .flow-step-head {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding-left: 6px;
+      }
+      .flow-step-num {
+        width: 22px;
+        height: 22px;
+        border-radius: 6px;
+        background: var(--step-color);
+        color: #fff;
+        font-weight: 700;
+        font-size: 12px;
+        display: grid;
+        place-items: center;
+      }
+      .flow-step-title {
+        font-weight: 600;
+        font-size: 14px;
+      }
+      .flow-step-body {
+        display: flex;
+        flex-direction: column;
+        padding-left: 6px;
+      }
+      .flow-step-body strong {
+        font-size: 12.5px;
+        color: var(--step-color);
+      }
+      .flow-step-body span {
+        font-size: 12px;
+        color: var(--cp-text);
+        line-height: 1.4;
+        margin-top: 2px;
+      }
+      .flow-step-foot {
+        font-size: 11.5px;
+        color: var(--cp-text-muted);
+        padding-left: 6px;
+        margin-top: auto;
+        border-top: 1px dashed var(--cp-border);
+        padding-top: 6px;
+      }
+      .flow-arrow {
+        align-self: center;
+        font-size: 22px;
+        color: var(--cp-text-soft);
+        padding: 0 2px;
+      }
+      .flow-govern {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .flow-govern-rail {
+        height: 8px;
+        border-radius: 999px;
+        background: linear-gradient(
+          90deg,
+          var(--layer-control) 0%,
+          var(--layer-control-soft) 50%,
+          var(--layer-control) 100%
+        );
+        opacity: 0.95;
+      }
+      .flow-govern-label {
+        margin-top: 6px;
+        padding: 8px 12px;
+        background: var(--layer-control-soft);
+        border: 1px solid var(--cp-border);
+        border-radius: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 10px;
+      }
+      .flow-govern-label strong {
+        font-size: 13px;
+        color: var(--layer-control);
+      }
+      .flow-govern-label span {
+        font-size: 12px;
+        color: var(--cp-text);
+      }
+      .flow-govern-label .flow-govern-plat {
+        color: var(--cp-text-muted);
+        font-size: 11.5px;
+        margin-left: auto;
+      }
+
+      /* Reduce motion */
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="app">
+      <div class="header-inner">
+        <div class="brand">
+          <div class="brand-mark">AI</div>
+          <div class="brand-text">
+            <h1>Federated AI Environment</h1>
+            <p>Current-state reference architecture</p>
+          </div>
+        </div>
+        <div class="header-spacer"></div>
+        <button class="icon-btn" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <!-- Hero -->
+      <section class="hero">
+        <div class="hero-card">
+          <div class="pill-row" style="margin-bottom: 10px">
+            <span class="pill"><span class="dot" style="background: var(--cp-accent)"></span> Enterprise Architect view</span>
+            <span class="pill"><span class="dot" style="background: var(--layer-control)"></span> One control plane</span>
+            <span class="pill"><span class="dot" style="background: var(--layer-model)"></span> Many execution planes</span>
+          </div>
+          <h2>Develop once. Run anywhere. Govern centrally.</h2>
+          <p>
+            A federated multi-agent ecosystem where agents are <strong>built in one place</strong>
+            (M365 Copilot, Copilot Studio, Azure AI Foundry), <strong>run across many environments</strong>
+            (Azure, AWS, GCP, on-prem, edge), <strong>access data in the SaaS systems of record</strong>
+            (M365 Graph, SAP, Salesforce, ServiceNow), and are <strong>governed by a single control plane</strong>
+            for identity, policy, and security.
+          </p>
+          <div class="pill-row">
+            <span class="pill">Single dev surface</span>
+            <span class="pill">Portable runtime</span>
+            <span class="pill">SaaS-aware data access</span>
+            <span class="pill">Federated identity &amp; policy</span>
+          </div>
+        </div>
+        <div class="hero-card">
+          <div class="kpi-grid">
+            <div class="kpi">
+              <div class="label">Build</div>
+              <div class="value">1</div>
+              <div class="sub">M365 Copilot + Copilot Studio + Foundry</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Run</div>
+              <div class="value">N</div>
+              <div class="sub">Azure · AWS · GCP · On-prem · Edge</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Access</div>
+              <div class="value">SaaS</div>
+              <div class="sub">M365 · SAP · Salesforce · ServiceNow</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Govern</div>
+              <div class="value">1</div>
+              <div class="sub">A365 · Entra · Purview · Defender · Sentinel</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Story flow -->
+      <section class="flow-wrap" aria-label="Agent lifecycle flow">
+        <div class="flow-head">
+          <h3>The federated agent lifecycle</h3>
+          <span class="subtitle">How an agent moves from build, to runtime, to SaaS data — under one governance plane.</span>
+        </div>
+        <div class="flow">
+          <div class="flow-row">
+            <div class="flow-step flow-build">
+              <div class="flow-step-head">
+                <span class="flow-step-num">1</span>
+                <span class="flow-step-title">Build</span>
+              </div>
+              <div class="flow-step-body">
+                <strong>Single dev surface</strong>
+                <span>M365 Copilot, Copilot Studio, Azure AI Foundry, Semantic Kernel</span>
+              </div>
+              <div class="flow-step-foot">Author agents, skills, prompts, evals once.</div>
+            </div>
+            <div class="flow-arrow" aria-hidden="true">→</div>
+            <div class="flow-step flow-publish">
+              <div class="flow-step-head">
+                <span class="flow-step-num">2</span>
+                <span class="flow-step-title">Publish</span>
+              </div>
+              <div class="flow-step-body">
+                <strong>Federated catalog</strong>
+                <span>Signed agents + tools in A365 / Foundry registry, governed by central policy.</span>
+              </div>
+              <div class="flow-step-foot">Versioned, signed, policy-checked.</div>
+            </div>
+            <div class="flow-arrow" aria-hidden="true">→</div>
+            <div class="flow-step flow-run">
+              <div class="flow-step-head">
+                <span class="flow-step-num">3</span>
+                <span class="flow-step-title">Run</span>
+              </div>
+              <div class="flow-step-body">
+                <strong>Multi-runtime execution</strong>
+                <span>Azure · AWS Bedrock · Vertex AI · On-prem · Edge</span>
+              </div>
+              <div class="flow-step-foot">Run where data, latency, and cost dictate.</div>
+            </div>
+            <div class="flow-arrow" aria-hidden="true">→</div>
+            <div class="flow-step flow-access">
+              <div class="flow-step-head">
+                <span class="flow-step-num">4</span>
+                <span class="flow-step-title">Access</span>
+              </div>
+              <div class="flow-step-body">
+                <strong>SaaS systems of record</strong>
+                <span>M365 Graph · SAP · Salesforce · ServiceNow · Snowflake</span>
+              </div>
+              <div class="flow-step-foot">Governed connectors; no copy-out.</div>
+            </div>
+            <div class="flow-arrow" aria-hidden="true">→</div>
+            <div class="flow-step flow-deliver">
+              <div class="flow-step-head">
+                <span class="flow-step-num">5</span>
+                <span class="flow-step-title">Deliver</span>
+              </div>
+              <div class="flow-step-body">
+                <strong>Where the user is</strong>
+                <span>M365 Copilot · Teams · SAP Joule · Salesforce Agentforce · Custom apps</span>
+              </div>
+              <div class="flow-step-foot">Same agent, many surfaces.</div>
+            </div>
+          </div>
+          <div class="flow-govern" aria-label="Control plane spanning all steps">
+            <div class="flow-govern-rail"></div>
+            <div class="flow-govern-label">
+              <strong>Single control plane</strong>
+              <span>Identity · Policy · Data Governance · Observability · Security</span>
+              <span class="flow-govern-plat">Entra ID · Purview · Defender for Cloud · Sentinel · A365 · OPA/Cedar</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Architecture canvas -->
+      <section class="canvas-wrap" aria-label="Federated AI architecture diagram">
+        <div class="canvas-head">
+          <h3>Federated AI reference architecture</h3>
+          <span class="subtitle">Click any component to drill into capabilities, gaps, and target state.</span>
+          <div class="legend" id="legend"></div>
+        </div>
+
+        <div class="planes" id="planes"></div>
+
+        <div class="clouds" aria-label="Execution environments">
+          <span style="font-size: 12px; color: var(--cp-text-muted); margin-right: 6px"
+            >Execution plane:</span
+          >
+          <span class="cloud-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 1 0-1.5-8.74 6 6 0 0 0-11.4 1.74A4 4 0 0 0 6 20h11.5z"/></svg>
+            Microsoft Azure
+          </span>
+          <span class="cloud-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 1 0-1.5-8.74 6 6 0 0 0-11.4 1.74A4 4 0 0 0 6 20h11.5z"/></svg>
+            Amazon Web Services
+          </span>
+          <span class="cloud-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 1 0-1.5-8.74 6 6 0 0 0-11.4 1.74A4 4 0 0 0 6 20h11.5z"/></svg>
+            Google Cloud
+          </span>
+          <span class="cloud-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M2 20h20"/></svg>
+            On-premises
+          </span>
+          <span class="cloud-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
+            Edge / Sovereign
+          </span>
+        </div>
+      </section>
+
+      <!-- Pillars removed for simplicity -->
+    </main>
+
+    <footer class="app">
+      Federated AI Environment · Interactive reference · Color groups: warm = business/experience,
+      cool = control/fabric, green/olive = data/model, neutral = infrastructure.
+    </footer>
+
+    <!-- Drawer -->
+    <div class="drawer-scrim" id="scrim" aria-hidden="true"></div>
+    <aside class="drawer" id="drawer" aria-hidden="true" aria-label="Component detail">
+      <div class="drawer-head">
+        <div class="icon" id="d-icon"></div>
+        <div class="title">
+          <h3 id="d-title">Title</h3>
+          <div class="subtitle" id="d-subtitle">Subtitle</div>
+        </div>
+        <button class="drawer-close" id="d-close" aria-label="Close detail">×</button>
+      </div>
+      <div class="drawer-body" id="d-body"></div>
+    </aside>
+
+    <script>
+      // ---------- ICON SET (inline SVG) ----------
+      const ICONS = {
+        copilot:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a4 4 0 0 1-4 4H7l-4 3V6a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg>',
+        app:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 3v18"/></svg>',
+        agent:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
+        identity:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6z"/></svg>',
+        policy:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l2 2 4-4"/><rect x="3" y="3" width="18" height="18" rx="3"/></svg>',
+        observe:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>',
+        trust:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6z"/><path d="M9 12l2 2 4-4"/></svg>',
+        bus:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18M7 7l-4 5 4 5M17 7l4 5-4 5"/></svg>',
+        api:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h6M4 12h10M4 17h6"/><path d="M14 7a3 3 0 0 1 0 6"/><path d="M18 11a3 3 0 0 1 0 6"/></svg>',
+        protocol:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M7 7l4 9M17 7l-4 9"/></svg>',
+        tool:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 6l4 4-9 9-4 1 1-4 9-9z"/></svg>',
+        registry:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>',
+        train:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/><circle cx="12" cy="12" r="3"/></svg>',
+        eval:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>',
+        guard:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6z"/><path d="M8 12h8"/></svg>',
+        lake:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14s2-2 4-2 3 2 5 2 3-2 5-2 4 2 4 2"/><path d="M3 19s2-2 4-2 3 2 5 2 3-2 5-2 4 2 4 2"/><path d="M3 9s2-2 4-2 3 2 5 2 3-2 5-2 4 2 4 2"/></svg>',
+        catalog:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h12a4 4 0 0 1 4 4v12H8a4 4 0 0 1-4-4z"/><path d="M4 4v12a4 4 0 0 0 4 4"/></svg>',
+        lineage:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="7" r="2"/><circle cx="19" cy="7" r="2"/><circle cx="12" cy="17" r="2"/><path d="M7 7h10M6 8l5 8M18 8l-5 8"/></svg>',
+        vault:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>',
+        cost:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>',
+        cloud:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 1 0-1.5-8.74 6 6 0 0 0-11.4 1.74A4 4 0 0 0 6 20h11.5z"/></svg>',
+      };
+
+      // ---------- ARCHITECTURE MODEL ----------
+      // Vendor color hints for platform chips (a neutral, recognizable cue, not the official brand color)
+      const VENDORS = {
+        microsoft: "#0078d4",
+        aws: "#ff9900",
+        gcp: "#34a853",
+        sap: "#0faaff",
+        salesforce: "#00a1e0",
+        servicenow: "#62d84e",
+        snowflake: "#29b5e8",
+        databricks: "#ff3621",
+        openai: "#10a37f",
+        anthropic: "#cc785c",
+        oss: "#6f6f6f",
+      };
+
+      const PLANES = [
+        {
+          id: "experience",
+          title: "Where users meet AI",
+          desc: "The copilots and apps people actually use.",
+          color: "--layer-experience",
+          colorSoft: "--layer-experience-soft",
+          shape: "□",
+          platforms: [
+            { name: "M365 Copilot", vendor: "microsoft" },
+            { name: "Copilot Studio", vendor: "microsoft" },
+            { name: "SAP Joule", vendor: "sap" },
+            { name: "Salesforce Agentforce", vendor: "salesforce" },
+          ],
+          nodes: [
+            {
+              id: "m365-copilot",
+              title: "M365 Copilot",
+              icon: "copilot",
+              sub: "The everyday productivity copilot across Word, Excel, Outlook, and Teams.",
+              tech: ["M365 Copilot", "Copilot Pages", "Microsoft Graph grounding"],
+            },
+            {
+              id: "vertical-copilots",
+              title: "Vertical Copilots",
+              icon: "copilot",
+              sub: "AI built into business apps like SAP, Salesforce, and ServiceNow.",
+              tech: ["SAP Joule", "Salesforce Agentforce", "ServiceNow Now Assist"],
+            },
+            {
+              id: "human-oversight",
+              title: "Human-in-the-loop",
+              icon: "trust",
+              sub: "People review and approve what agents do for important actions.",
+              tech: ["Approval flows", "Review queues", "Audit trails"],
+            },
+          ],
+        },
+        {
+          id: "control",
+          title: "One control plane",
+          desc: "Identity, governance, and security — managed in one place.",
+          color: "--layer-control",
+          colorSoft: "--layer-control-soft",
+          shape: "◇",
+          platforms: [
+            { name: "Azure AI Foundry (A365)", vendor: "microsoft" },
+            { name: "Microsoft Entra ID", vendor: "microsoft" },
+            { name: "Microsoft Purview", vendor: "microsoft" },
+            { name: "Defender + Sentinel", vendor: "microsoft" },
+          ],
+          nodes: [
+            {
+              id: "identity",
+              title: "Identity",
+              icon: "identity",
+              sub: "One sign-in and one set of roles that works across every cloud.",
+              tech: ["Microsoft Entra ID", "AWS IAM", "GCP IAM"],
+            },
+            {
+              id: "governance",
+              title: "Governance & Policy",
+              icon: "policy",
+              sub: "Set the rules once — about data, models, and agents — and have them applied everywhere.",
+              tech: ["Azure AI Foundry (A365)", "Microsoft Purview", "Azure Policy"],
+            },
+            {
+              id: "security",
+              title: "Security & Monitoring",
+              icon: "observe",
+              sub: "See what every agent is doing, catch problems early, and respond fast.",
+              tech: ["Microsoft Defender", "Sentinel", "OpenTelemetry"],
+            },
+          ],
+        },
+        {
+          id: "fabric",
+          title: "How things connect",
+          desc: "The shared wiring that lets agents, apps, and data talk to each other.",
+          color: "--layer-fabric",
+          colorSoft: "--layer-fabric-soft",
+          shape: "○",
+          platforms: [
+            { name: "MCP", vendor: "oss" },
+            { name: "A2A", vendor: "oss" },
+            { name: "Azure API Management", vendor: "microsoft" },
+            { name: "Event Grid / EventBridge", vendor: "microsoft" },
+          ],
+          nodes: [
+            {
+              id: "protocols",
+              title: "Agent Protocols (MCP, A2A)",
+              icon: "protocol",
+              sub: "Open standards that let agents call tools and other agents — regardless of where they run.",
+              tech: ["Model Context Protocol (MCP)", "Agent2Agent (A2A)"],
+            },
+            {
+              id: "apis",
+              title: "APIs & Gateways",
+              icon: "api",
+              sub: "The doorways into apps and data, with consistent identity and policy enforced at every edge.",
+              tech: ["Azure API Management", "REST / GraphQL", "OAuth"],
+            },
+            {
+              id: "tools-sdks",
+              title: "SDKs & Tool Registry",
+              icon: "tool",
+              sub: "The libraries developers use to build agents, and a shared catalog of approved tools.",
+              tech: ["M365 Agent SDK", "Semantic Kernel", "Signed tool manifests"],
+            },
+          ],
+        },
+        {
+          id: "model",
+          title: "Where agents are built",
+          desc: "The development platform for AI agents and the models behind them.",
+          color: "--layer-model",
+          colorSoft: "--layer-model-soft",
+          shape: "△",
+          platforms: [
+            { name: "Azure AI Foundry", vendor: "microsoft" },
+            { name: "Copilot Studio", vendor: "microsoft" },
+            { name: "AWS Bedrock", vendor: "aws" },
+            { name: "Google Vertex AI", vendor: "gcp" },
+          ],
+          nodes: [
+            {
+              id: "dev-platform",
+              title: "Agent Development Platform",
+              icon: "train",
+              sub: "One place to build agents — M365 Copilot and Copilot Studio for low-code, Foundry for pro-code.",
+              tech: ["M365 Copilot", "Copilot Studio", "Azure AI Foundry"],
+            },
+            {
+              id: "models",
+              title: "Model Choice",
+              icon: "registry",
+              sub: "Pick the right model for each job from a governed catalog — OpenAI, Anthropic, Google, open-weight.",
+              tech: ["Azure OpenAI", "AWS Bedrock", "Vertex AI", "Anthropic"],
+            },
+            {
+              id: "runtime",
+              title: "Where Agents Run",
+              icon: "agent",
+              sub: "Agents run on the cloud or environment that fits the job, while still following central policy.",
+              tech: ["Azure", "AWS", "GCP", "On-prem", "Edge"],
+            },
+          ],
+        },
+        {
+          id: "data",
+          title: "Where the data lives",
+          desc: "The business systems and data stores agents reach into.",
+          color: "--layer-data",
+          colorSoft: "--layer-data-soft",
+          shape: "▽",
+          platforms: [
+            { name: "Microsoft Graph (M365)", vendor: "microsoft" },
+            { name: "SAP", vendor: "sap" },
+            { name: "Salesforce", vendor: "salesforce" },
+            { name: "Snowflake / Databricks", vendor: "snowflake" },
+          ],
+          nodes: [
+            {
+              id: "systems-of-record",
+              title: "Systems of Record",
+              icon: "catalog",
+              sub: "The business apps agents read from and write to — M365, SAP, Salesforce, ServiceNow.",
+              tech: ["Microsoft Graph", "SAP", "Salesforce Data Cloud", "ServiceNow"],
+            },
+            {
+              id: "analytics-data",
+              title: "Analytics Data",
+              icon: "lake",
+              sub: "Warehouses and lakehouses where reporting and AI training data live.",
+              tech: ["Microsoft Fabric / OneLake", "Snowflake", "Databricks", "BigQuery"],
+            },
+            {
+              id: "catalog-lineage",
+              title: "Catalog & Lineage",
+              icon: "lineage",
+              sub: "Know what data exists, who owns it, and how it's been used by agents and models.",
+              tech: ["Microsoft Purview", "OpenLineage"],
+            },
+          ],
+        },
+      ];
+
+      // ---------- RENDER ----------
+      const planesEl = document.getElementById("planes");
+      const legendEl = document.getElementById("legend");
+
+      function renderLegend() {
+        legendEl.innerHTML = PLANES.map(
+          (p) =>
+            `<span class="legend-item"><span class="swatch" style="background: var(${p.color})"></span>${p.title.split(" ")[0]}</span>`,
+        ).join("");
+      }
+
+      function renderPlanes() {
+        planesEl.innerHTML = PLANES.map((p) => {
+          const nodes = p.nodes
+            .map((n) => {
+              const badges = [];
+              if (n.gap) badges.push(`<span class="badge">${n.gap}</span>`);
+              return `
+              <button class="node" data-plane="${p.id}" data-node="${n.id}" style="--plane-color: var(${p.color}); --plane-soft: var(${p.colorSoft});">
+                <div class="node-title"><span class="node-icon">${ICONS[n.icon] || ICONS.app}</span>${n.title}</div>
+                <div class="node-sub">${n.sub}</div>
+                <div class="badge-row">${badges.join("")}</div>
+              </button>`;
+            })
+            .join("");
+          const platforms = (p.platforms || [])
+            .map(
+              (pl) =>
+                `<span class="platform-chip"><span class="vendor-dot" style="background:${VENDORS[pl.vendor] || "#888"}"></span>${pl.name}</span>`,
+            )
+            .join("");
+          const platformStrip = platforms
+            ? `<div class="platforms"><span class="label">Examples</span>${platforms}</div>`
+            : "";
+          return `
+            <div class="plane" data-plane-id="${p.id}" style="--plane-color: var(${p.color}); --plane-soft: var(${p.colorSoft});">
+              <div class="plane-header">
+                <div class="plane-shape" aria-hidden="true">${p.shape}</div>
+                <div class="plane-title">${p.title}</div>
+                <div class="plane-desc">${p.desc}</div>
+                <div class="plane-meta">${p.nodes.length} components</div>
+              </div>
+              ${platformStrip}
+              <div class="nodes">${nodes}</div>
+            </div>`;
+        }).join("");
+      }
+
+      // ---------- Drawer ----------
+      const scrim = document.getElementById("scrim");
+      const drawer = document.getElementById("drawer");
+      const dIcon = document.getElementById("d-icon");
+      const dTitle = document.getElementById("d-title");
+      const dSubtitle = document.getElementById("d-subtitle");
+      const dBody = document.getElementById("d-body");
+      document.getElementById("d-close").addEventListener("click", closeDrawer);
+      scrim.addEventListener("click", closeDrawer);
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeDrawer();
+      });
+
+      function openNode(planeId, nodeId) {
+        const plane = PLANES.find((p) => p.id === planeId);
+        const node = plane.nodes.find((n) => n.id === nodeId);
+        drawer.style.setProperty("--plane-color", `var(${plane.color})`);
+        drawer.style.setProperty("--plane-soft", `var(${plane.colorSoft})`);
+        dIcon.innerHTML = ICONS[node.icon] || ICONS.app;
+        dTitle.textContent = node.title;
+        dSubtitle.textContent = `${plane.title} · ${node.gap || "Capability"}`;
+        dBody.innerHTML = `
+          <div class="drawer-section">
+            <h4>Purpose</h4>
+            <p>${node.sub}</p>
+          </div>
+          <div class="drawer-section">
+            <h4>Representative technologies</h4>
+            <div class="tech-chips">${node.tech.map((t) => `<span class="tech-chip">${t}</span>`).join("")}</div>
+          </div>
+          <div class="drawer-section">
+            <h4>Why it matters</h4>
+            <p>This capability is a building block of the <strong>${plane.title.toLowerCase()}</strong>. Without it, the federation degrades into platform silos and ad-hoc integrations.</p>
+          </div>`;
+        scrim.classList.add("open");
+        drawer.classList.add("open");
+        drawer.setAttribute("aria-hidden", "false");
+      }
+      function closeDrawer() {
+        scrim.classList.remove("open");
+        drawer.classList.remove("open");
+        drawer.setAttribute("aria-hidden", "true");
+      }
+
+      // ---------- Theme toggle ----------
+      document.getElementById("themeToggle").addEventListener("click", () => {
+        const cur = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+        document.documentElement.setAttribute("data-theme", cur);
+      });
+
+      // ---------- Wire up ----------
+      renderLegend();
+      renderPlanes();
+      document.querySelectorAll(".node").forEach((btn) => {
+        btn.addEventListener("click", () => openNode(btn.dataset.plane, btn.dataset.node));
+      });
+    </script>
+  </body>
+</html>
