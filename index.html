@@ -203,6 +203,25 @@
       .icon-btn:hover {
         border-color: var(--cp-border-strong);
       }
+      .nav-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 12px;
+        font-size: 12.5px;
+        font-weight: 500;
+        color: var(--cp-text);
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-radius: 8px;
+        text-decoration: none;
+        height: 36px;
+        line-height: 1;
+      }
+      .nav-link:hover {
+        border-color: var(--cp-accent);
+        color: var(--cp-accent);
+      }
 
       /* ---------- Main shell ---------- */
       main {
@@ -1174,6 +1193,10 @@
           </div>
         </div>
         <div class="header-spacer"></div>
+        <a class="nav-link" href="use-cases.html" title="See real-world flows for M365, SAP, and ServiceNow">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h13M13 5l7 7-7 7"/></svg>
+          Use cases
+        </a>
         <button class="icon-btn" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="4"></circle>
