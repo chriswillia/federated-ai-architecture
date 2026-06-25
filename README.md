@@ -4,7 +4,8 @@ An interactive, single-file HTML reference for a **Federated AI Environment** â€
 
 ## View it
 
-Open [`federated-ai-architecture.html`](federated-ai-architecture.html) in any modern browser. No build step, no dependencies.
+- **Live:** https://chriswillia.github.io/federated-ai-architecture/
+- **Local:** open [`index.html`](index.html) in any modern browser. No build step, no dependencies.
 
 ## What's in it
 
