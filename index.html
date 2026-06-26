@@ -324,7 +324,9 @@
       }
       .canvas-head h3 {
         margin: 0;
-        font-size: 16px;
+        font-size: 22px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
       }
       .canvas-head .subtitle {
         color: var(--cp-text-muted);
@@ -1212,8 +1214,9 @@
       }
       .challenges-head h2 {
         margin: 0 0 4px 0;
-        font-size: 18px;
+        font-size: 22px;
         font-weight: 600;
+        letter-spacing: -0.01em;
       }
       .challenges-head p {
         margin: 0 0 14px 0;
@@ -1252,24 +1255,52 @@
         box-shadow: 0 0 0 2px var(--accent, var(--cp-accent));
       }
       .challenge-quote {
-        font-size: 13.5px;
-        font-weight: 600;
-        line-height: 1.35;
+        font-size: 15px;
+        font-weight: 500;
+        font-style: italic;
+        line-height: 1.45;
         color: var(--cp-text);
+        position: relative;
+        padding-left: 18px;
+      }
+      .challenge-quote::before {
+        content: "\201C";
+        position: absolute;
+        left: -3px;
+        top: -8px;
+        font-size: 34px;
+        line-height: 1;
+        color: var(--accent, var(--cp-accent));
+        font-style: normal;
+        font-family: Georgia, "Times New Roman", serif;
+        opacity: 0.55;
       }
       .challenge-meta {
-        font-size: 11.5px;
+        font-size: 10.5px;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        font-weight: 700;
         color: var(--cp-text-muted);
         display: flex;
         align-items: center;
         gap: 6px;
-        margin-top: auto;
+        order: -1;
+        margin-top: 0;
       }
       .challenge-meta .dot {
         width: 8px; height: 8px; border-radius: 50%;
         background: var(--accent, var(--cp-accent));
         display: inline-block;
       }
+      .challenge-outcome {
+        font-size: 10.5px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 700;
+        color: var(--accent, var(--cp-accent));
+        margin-top: auto;
+      }
+      .challenge-card[hidden] { display: none; }
 
       /* Active challenge panel */
       .challenge-panel {
@@ -1369,6 +1400,140 @@
       }
       .cp-see a:hover { text-decoration: underline; }
 
+      /* Outcomes ribbon */
+      .outcomes-bar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        margin: 0 0 16px 0;
+        padding: 10px 14px;
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-radius: 12px;
+      }
+      .outcomes-label {
+        font-size: 10.5px;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        color: var(--cp-text-muted);
+        font-weight: 700;
+        margin-right: 4px;
+      }
+      .outcome-chip {
+        appearance: none;
+        font-family: inherit;
+        font-size: 12.5px;
+        font-weight: 600;
+        cursor: pointer;
+        padding: 6px 12px;
+        border-radius: 999px;
+        border: 1px solid var(--cp-border);
+        background: transparent;
+        color: var(--cp-text);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
+      }
+      .outcome-chip::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--chip-accent, var(--cp-text-muted));
+        display: inline-block;
+      }
+      .outcome-chip[data-outcome="adoption"] { --chip-accent: var(--layer-experience); }
+      .outcome-chip[data-outcome="cost"]     { --chip-accent: var(--layer-model); }
+      .outcome-chip[data-outcome="risk"]     { --chip-accent: var(--layer-control); }
+      .outcome-chip[data-outcome="freedom"]  { --chip-accent: var(--layer-fabric); }
+      .outcome-chip:hover {
+        border-color: var(--chip-accent, var(--cp-accent));
+      }
+      .outcome-chip.active {
+        background: color-mix(in srgb, var(--chip-accent, var(--cp-accent)) 14%, var(--cp-surface));
+        border-color: var(--chip-accent, var(--cp-accent));
+      }
+      .outcome-chip-clear::before { display: none; }
+      .outcome-chip-clear { color: var(--cp-text-muted); font-weight: 500; }
+
+      /* Hero "Why federated?" expander */
+      .hero-why {
+        margin-top: 4px;
+        font-size: 12.5px;
+        color: var(--cp-text-muted);
+      }
+      .hero-why > summary {
+        list-style: none;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 600;
+        color: var(--cp-text);
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--cp-border);
+        background: var(--cp-surface-soft);
+        font-size: 12px;
+      }
+      .hero-why > summary::-webkit-details-marker { display: none; }
+      .hero-why > summary::before {
+        content: "▸";
+        font-size: 10px;
+        color: var(--cp-text-muted);
+        transition: transform 120ms ease;
+      }
+      .hero-why[open] > summary::before { transform: rotate(90deg); }
+      .hero-why > p {
+        margin: 10px 0 0 0;
+        max-width: 880px;
+        line-height: 1.55;
+      }
+
+      /* Challenge panel outcome pill + headline + soundbite */
+      .cp-headline {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .cp-outcome {
+        align-self: flex-start;
+        font-size: 10.5px;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        font-weight: 700;
+        color: var(--accent, var(--cp-accent));
+        padding: 3px 10px;
+        border-radius: 999px;
+        background: color-mix(in srgb, var(--accent, var(--cp-accent)) 12%, var(--cp-surface));
+        border: 1px solid color-mix(in srgb, var(--accent, var(--cp-accent)) 30%, var(--cp-border));
+      }
+      .cp-soundbite {
+        margin-top: 12px;
+        padding: 12px 14px;
+        border-left: 3px solid var(--accent, var(--cp-accent));
+        background: color-mix(in srgb, var(--accent, var(--cp-accent)) 5%, var(--cp-surface-soft));
+        font-size: 14px;
+        font-style: italic;
+        line-height: 1.5;
+        color: var(--cp-text);
+        border-radius: 0 8px 8px 0;
+      }
+      .cp-soundbite::before {
+        content: "Say this";
+        font-style: normal;
+        font-weight: 700;
+        font-size: 10.5px;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        color: var(--cp-text-muted);
+        display: block;
+        margin-bottom: 4px;
+      }
+
       /* Node highlight state when a challenge is active */
       .node.cha-target {
         box-shadow: 0 0 0 2px var(--accent, var(--cp-accent));
@@ -1430,7 +1595,7 @@
           <div class="brand-mark">AI</div>
           <div class="brand-text">
             <h1>Federated AI Environment</h1>
-            <p>Seller reference for customer conversations</p>
+            <p>A reference for AI that works at enterprise scale</p>
           </div>
         </div>
         <div class="header-spacer"></div>
@@ -1449,34 +1614,54 @@
 
     <main>
       <!-- Hero -->
-      <section class="hero" style="display:block; margin-bottom: 18px;">
+      <section class="hero" style="display:block; margin-bottom: 14px;">
         <div class="hero-card">
           <h2 style="margin: 0 0 6px 0;">Central governance. Decentralized innovation.</h2>
-          <p style="margin: 0; color: var(--cp-text-muted); max-width: 880px;">
-            Today, AI capabilities and data are fragmented across Azure, AWS, GCP, SaaS, and on-prem —
-            each with its own identities, tools, and silos, driving inconsistent governance and inefficiency.
-            A <strong>federated AI architecture</strong> unifies a single <strong>control plane</strong> for
-            <strong>identity, governance, and observability</strong> across clouds, while domain teams stay
-            free to build on the platforms best suited to their work.
-            <strong>Foundational capabilities are centralized; application development is decentralized</strong>
-            — combining <strong>central trust and compliance</strong> with <strong>local agility</strong>.
-            Use the panel below to walk a customer through the conversation they want to have.
+          <p style="margin: 0 0 10px 0; color: var(--cp-text-muted); max-width: 880px;">
+            A federated AI architecture — <strong>foundational controls centralized, agent
+            development decentralized</strong> — so the business moves fast and the enterprise
+            stays in charge.
           </p>
+          <details class="hero-why">
+            <summary>Why federated?</summary>
+            <p>
+              Today, AI capabilities and data are fragmented across Azure, AWS, GCP, SaaS, and on-prem —
+              each with its own identities, tools, and silos, driving inconsistent governance and inefficiency.
+              A federated AI architecture unifies a single <strong>control plane</strong> for
+              <strong>identity, governance, and observability</strong> across clouds, while domain teams stay
+              free to build on the platforms best suited to their work — combining
+              <strong>central trust and compliance</strong> with <strong>local agility</strong>.
+            </p>
+          </details>
         </div>
+      </section>
+
+      <!-- Outcomes ribbon (customer-outcome filter) -->
+      <section class="outcomes-bar" aria-label="Filter challenges by customer outcome">
+        <span class="outcomes-label">What does your customer want?</span>
+        <button type="button" class="outcome-chip" data-outcome="adoption">Faster adoption</button>
+        <button type="button" class="outcome-chip" data-outcome="cost">Predictable cost</button>
+        <button type="button" class="outcome-chip" data-outcome="risk">Lower risk</button>
+        <button type="button" class="outcome-chip" data-outcome="freedom">Cloud freedom</button>
+        <button type="button" class="outcome-chip outcome-chip-clear" data-outcome="">Show all</button>
       </section>
 
       <!-- Customer challenge selector (seller tool) -->
       <section class="challenges" aria-labelledby="challenges-heading">
         <div class="challenges-head">
           <h2 id="challenges-heading">Talk to customers about…</h2>
-          <p>Pick a customer challenge. We’ll surface the positioning, suggested discovery questions to ask, and highlight the architecture pieces that solve it.</p>
+          <p>Pick the conversation your customer wants to have. We’ll surface the customer’s own words, a sound-bite you can say out loud, suggested discovery questions, and the architecture pieces that deliver the outcome.</p>
         </div>
         <div class="challenge-grid" id="challengeGrid"></div>
         <div class="challenge-panel" id="challengePanel" hidden>
           <div class="cp-head">
-            <div class="cp-quote" id="cpQuote"></div>
+            <div class="cp-headline">
+              <div class="cp-outcome" id="cpOutcome"></div>
+              <div class="cp-quote" id="cpQuote"></div>
+            </div>
             <button class="cp-clear" id="cpClear" type="button" title="Clear selection" aria-label="Clear selection">×</button>
           </div>
+          <div class="cp-soundbite" id="cpSoundbite"></div>
           <div class="cp-answer" id="cpAnswer"></div>
           <div class="cp-row">
             <div class="cp-block">
@@ -1511,8 +1696,8 @@
       </section>
       <section class="canvas-wrap" aria-label="Federated AI architecture diagram">
         <div class="canvas-head">
-          <h3>The architecture, in five layers</h3>
-          <span class="subtitle">Hover for relationships. Click any component for detail.</span>
+          <h3>How it works — five layers, one promise</h3>
+          <span class="subtitle">Each layer delivers an outcome the customer can name. Hover any component to see what it connects to. Click for detail.</span>
         </div>
 
         <div class="planes" id="planes"></div>
@@ -1677,8 +1862,8 @@
       const PLANES = [
         {
           id: "experience",
-          title: "Where users meet AI",
-          desc: "The copilots and apps people actually use.",
+          title: "AI in your daily work",
+          desc: "Copilots and apps that meet people where they already work.",
           color: "--layer-experience",
           colorSoft: "--layer-experience-soft",
           shape: "□",
@@ -1714,8 +1899,8 @@
         },
         {
           id: "model",
-          title: "Where agents are built",
-          desc: "The development platform for AI agents and the models behind them.",
+          title: "Build safely, ship faster",
+          desc: "Where IT and the business build agents in one governed place.",
           color: "--layer-model",
           colorSoft: "--layer-model-soft",
           shape: "△",
@@ -1751,8 +1936,8 @@
         },
         {
           id: "fabric",
-          title: "How things connect",
-          desc: "The shared wiring that lets agents, apps, and data talk to each other.",
+          title: "Reach anything, govern everywhere",
+          desc: "The shared wiring that lets agents reach your tools, apps, and data.",
           color: "--layer-fabric",
           colorSoft: "--layer-fabric-soft",
           shape: "○",
@@ -1795,8 +1980,8 @@
         },
         {
           id: "data",
-          title: "Where the data lives",
-          desc: "The business systems and data stores agents reach into.",
+          title: "Grounded in your own data",
+          desc: "Agents stay anchored to your systems of record — with labels and lineage intact.",
           color: "--layer-data",
           colorSoft: "--layer-data-soft",
           shape: "▽",
@@ -1840,8 +2025,8 @@
         },
         {
           id: "control",
-          title: "One control plane",
-          desc: "Identity, governance, and security — managed in one place.",
+          title: "Stay in charge — across every cloud",
+          desc: "One identity, one policy fabric, one set of traces — wherever agents run.",
           color: "--layer-control",
           colorSoft: "--layer-control-soft",
           shape: "◇",
@@ -2266,6 +2451,9 @@
         {
           id: "platform",
           accent: "--layer-model",
+          outcome: "adoption",
+          outcomeLabel: "Faster adoption",
+          soundbite: "Build agents in one governed place, and you compound time-to-value across every team — instead of paying the integration tax in every department.",
           metaLayer: "Build plane",
           customerQuote: "We want a singular Agent Development Platform.",
           shortAnswer:
@@ -2282,6 +2470,9 @@
         {
           id: "multi-cloud",
           accent: "--layer-fabric",
+          outcome: "freedom",
+          outcomeLabel: "Cloud freedom",
+          soundbite: "Your data, apps, and people don’t live in one cloud — your agents shouldn’t either. A federated fabric lets agents work where the work is.",
           metaLayer: "Fabric & runtime",
           customerQuote: "We want to develop agents across clouds and SaaS apps.",
           shortAnswer:
@@ -2298,6 +2489,9 @@
         {
           id: "cost",
           accent: "--layer-experience",
+          outcome: "cost",
+          outcomeLabel: "Predictable cost",
+          soundbite: "AI cost only feels unpredictable when nobody owns it. Token-level visibility plus showback turns agent spend into a managed budget line.",
           metaLayer: "Cost & FinOps",
           customerQuote: "We want control over token usage and cost/billing.",
           shortAnswer:
@@ -2314,6 +2508,9 @@
         {
           id: "control",
           accent: "--layer-control",
+          outcome: "risk",
+          outcomeLabel: "Lower risk",
+          soundbite: "One control plane is how ‘governed AI’ stops being a slide and becomes a daily operating posture — across every cloud, every agent.",
           metaLayer: "Control plane",
           customerQuote: "We want a unified control plane for identity, governance, and security.",
           shortAnswer:
@@ -2331,6 +2528,9 @@
         {
           id: "risk",
           accent: "--layer-control",
+          outcome: "risk",
+          outcomeLabel: "Lower risk",
+          soundbite: "Prompt injection, leakage, and rogue agents are real — and solvable when every agent has identity, policy, and live monitoring from day one.",
           metaLayer: "GenAI risk & security",
           customerQuote: "We need to manage GenAI risk — prompt injection, leakage, rogue agents.",
           shortAnswer:
@@ -2345,6 +2545,9 @@
         {
           id: "sensitive",
           accent: "--layer-data",
+          outcome: "risk",
+          outcomeLabel: "Lower risk",
+          soundbite: "Sensitive data shouldn’t have to move for AI to be useful. Ground agents on data where it lives — with the labels, controls, and audit you already trust.",
           metaLayer: "Sensitive data & on-prem",
           customerQuote: "We can’t move sensitive data to the cloud just to use agents.",
           shortAnswer:
@@ -2359,6 +2562,9 @@
         {
           id: "scale",
           accent: "--layer-model",
+          outcome: "adoption",
+          outcomeLabel: "Faster adoption",
+          soundbite: "Most AI programs don’t fail at the pilot — they fail at production. Central registries, evals, and consumption limits make the leap repeatable.",
           metaLayer: "Pilot → production",
           customerQuote: "Pilots work — production at scale is where it falls apart.",
           shortAnswer:
@@ -2373,6 +2579,9 @@
         {
           id: "modal",
           accent: "--layer-experience",
+          outcome: "adoption",
+          outcomeLabel: "Faster adoption",
+          soundbite: "Voice and vision agents are coming fast. The cost of getting them wrong is letting them grow up outside your control plane.",
           metaLayer: "Multi-modal & advanced",
           customerQuote: "Voice, vision, and tool-using agents are next — not just chat.",
           shortAnswer:
@@ -2387,6 +2596,9 @@
         {
           id: "citizen-dev",
           accent: "--layer-model",
+          outcome: "adoption",
+          outcomeLabel: "Faster adoption",
+          soundbite: "Letting business users build is the speed lever. A signed tool catalog and central approval keep it from becoming the risk lever.",
           metaLayer: "Citizen dev + guardrails",
           customerQuote: "Citizen builders need to move fast — without breaking things.",
           shortAnswer:
@@ -2401,6 +2613,9 @@
         {
           id: "observability",
           accent: "--layer-control",
+          outcome: "risk",
+          outcomeLabel: "Lower risk",
+          soundbite: "If you can’t trace what your agents are doing, you can’t trust them — and you can’t improve them. Trace every step, every time.",
           metaLayer: "Observability & quality",
           customerQuote: "We can’t debug or measure what our agents actually do.",
           shortAnswer:
@@ -2417,12 +2632,16 @@
 
       const challengeGrid = document.getElementById("challengeGrid");
       const challengePanel = document.getElementById("challengePanel");
+      const cpOutcome = document.getElementById("cpOutcome");
       const cpQuote = document.getElementById("cpQuote");
+      const cpSoundbite = document.getElementById("cpSoundbite");
       const cpAnswer = document.getElementById("cpAnswer");
       const cpPoints = document.getElementById("cpPoints");
       const cpPointAt = document.getElementById("cpPointAt");
       const cpSeeItWork = document.getElementById("cpSeeItWork");
       const cpClear = document.getElementById("cpClear");
+      const outcomesBar = document.querySelector(".outcomes-bar");
+      let activeOutcome = null;
 
       function nodeLabelById(id) {
         for (const p of PLANES) {
@@ -2434,9 +2653,10 @@
       function renderChallenges() {
         if (!challengeGrid) return;
         const cards = CHALLENGES.map((c) => `
-          <button type="button" class="challenge-card" data-challenge="${c.id}" style="--accent: var(${c.accent});">
-            <div class="challenge-quote">“${c.customerQuote}”</div>
+          <button type="button" class="challenge-card" data-challenge="${c.id}" data-outcome="${c.outcome || ""}" style="--accent: var(${c.accent});">
             <div class="challenge-meta"><span class="dot"></span>${c.metaLayer}</div>
+            <div class="challenge-quote">${c.customerQuote}</div>
+            <div class="challenge-outcome">${c.outcomeLabel || ""}</div>
           </button>
         `).join("");
         challengeGrid.innerHTML = cards;
@@ -2445,6 +2665,34 @@
             const id = btn.dataset.challenge;
             if (btn.classList.contains("active")) applyChallenge(null);
             else applyChallenge(id);
+          });
+        });
+      }
+
+      function setOutcomeFilter(outcome) {
+        activeOutcome = outcome || null;
+        if (outcomesBar) {
+          outcomesBar.querySelectorAll(".outcome-chip").forEach((b) => {
+            b.classList.toggle("active", !!activeOutcome && b.dataset.outcome === activeOutcome);
+          });
+        }
+        challengeGrid.querySelectorAll(".challenge-card").forEach((b) => {
+          const o = b.dataset.outcome;
+          b.hidden = !!activeOutcome && o !== activeOutcome;
+        });
+        const activeBtn = challengeGrid.querySelector(".challenge-card.active");
+        if (activeBtn && activeBtn.hidden) applyChallenge(null);
+      }
+
+      if (outcomesBar) {
+        outcomesBar.querySelectorAll(".outcome-chip").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const next = btn.dataset.outcome || "";
+            if (next && activeOutcome === next) {
+              setOutcomeFilter(null);
+            } else {
+              setOutcomeFilter(next || null);
+            }
           });
         });
       }
@@ -2475,7 +2723,11 @@
           n.classList.toggle("cha-target", targets.has(nid));
           n.classList.toggle("cha-dim", !targets.has(nid));
         });
+        cpOutcome.textContent = c.outcomeLabel || "";
+        cpOutcome.style.display = c.outcomeLabel ? "" : "none";
         cpQuote.textContent = `\u201c${c.customerQuote}\u201d`;
+        cpSoundbite.textContent = c.soundbite || "";
+        cpSoundbite.style.display = c.soundbite ? "" : "none";
         cpAnswer.innerHTML = `<strong>The short answer.</strong> ${c.shortAnswer}`;
         cpPoints.innerHTML = c.points.map((p) => `<li>${p}</li>`).join("");
         cpPointAt.innerHTML = c.pointAt.map((nid) => `<span class="pa-chip">${nodeLabelById(nid)}</span>`).join("");
