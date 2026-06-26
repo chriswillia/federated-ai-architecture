@@ -1673,6 +1673,232 @@
         color: var(--cp-text-muted);
       }
 
+      /* ---------- Lens picker ---------- */
+      .lens-bar {
+        position: sticky;
+        top: 56px;
+        z-index: 19;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        padding: 10px 22px;
+        background: color-mix(in srgb, var(--cp-surface) 92%, transparent);
+        backdrop-filter: blur(6px);
+        border-bottom: 1px solid var(--cp-border);
+      }
+      .lens-bar .lens-label {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--cp-text-soft);
+        font-weight: 600;
+      }
+      .lens-bar .lens-prompt {
+        font-size: 12.5px;
+        color: var(--cp-text-muted);
+        margin-right: 4px;
+      }
+      .lens-btn {
+        appearance: none;
+        background: var(--cp-bg-elevated);
+        border: 1px solid var(--cp-border);
+        border-radius: 999px;
+        padding: 7px 16px;
+        font: inherit;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        color: var(--cp-text);
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
+      }
+      .lens-btn .lens-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--lens-color, var(--cp-accent));
+      }
+      .lens-btn:hover {
+        border-color: var(--lens-color, var(--cp-accent));
+        color: var(--cp-text);
+      }
+      .lens-btn.active {
+        background: color-mix(in srgb, var(--lens-color) 14%, var(--cp-surface));
+        border-color: var(--lens-color);
+        color: var(--cp-text);
+      }
+      .lens-btn.active .lens-dot { box-shadow: 0 0 0 3px color-mix(in srgb, var(--lens-color) 28%, transparent); }
+      .lens-btn[data-lens="security"]      { --lens-color: var(--layer-control); }
+      .lens-btn[data-lens="architecture"]  { --lens-color: var(--layer-fabric); }
+      .lens-btn[data-lens="experience"]    { --lens-color: var(--layer-experience); }
+      .lens-btn[data-lens="all"]           { --lens-color: var(--cp-text-muted); }
+      .lens-bar .leave-behind-link {
+        margin-left: auto;
+        font-size: 12px;
+        color: var(--cp-link);
+        text-decoration: none;
+        padding: 6px 12px;
+        border-radius: 8px;
+        border: 1px solid var(--cp-border);
+        background: var(--cp-bg-elevated);
+      }
+      .lens-bar .leave-behind-link:hover { border-color: var(--cp-accent); color: var(--cp-accent); }
+
+      /* ---------- Lens-aware hero ---------- */
+      .hero-card[data-lens] { display: none; }
+      .hero-card[data-lens="all"] { display: block; }
+      html[data-lens="security"]     .hero-card[data-lens="security"]     { display: block; }
+      html[data-lens="architecture"] .hero-card[data-lens="architecture"] { display: block; }
+      html[data-lens="experience"]   .hero-card[data-lens="experience"]   { display: block; }
+      html[data-lens="security"]     .hero-card[data-lens="all"],
+      html[data-lens="architecture"] .hero-card[data-lens="all"],
+      html[data-lens="experience"]   .hero-card[data-lens="all"] { display: none; }
+      .hero-card[data-lens="security"]     { border-left: 4px solid var(--layer-control); padding-left: 14px; }
+      .hero-card[data-lens="architecture"] { border-left: 4px solid var(--layer-fabric);  padding-left: 14px; }
+      .hero-card[data-lens="experience"]   { border-left: 4px solid var(--layer-experience); padding-left: 14px; }
+      .hero-card .hero-eyebrow {
+        display: inline-block;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-weight: 700;
+        color: var(--lens-color, var(--cp-text-muted));
+        margin-bottom: 6px;
+      }
+      .hero-card[data-lens="security"]     .hero-eyebrow { --lens-color: var(--layer-control); }
+      .hero-card[data-lens="architecture"] .hero-eyebrow { --lens-color: var(--layer-fabric); }
+      .hero-card[data-lens="experience"]   .hero-eyebrow { --lens-color: var(--layer-experience); }
+
+      /* ---------- Lens-aware node glow / dim ---------- */
+      html[data-lens] .node:not(.lens-glow) {
+        opacity: 0.42;
+        filter: saturate(0.55);
+      }
+      html[data-lens] .node.lens-glow {
+        box-shadow: 0 0 0 2px var(--lens-glow-color, var(--cp-accent)),
+                    0 6px 18px rgba(0, 0, 0, 0.08);
+        background: color-mix(in srgb, var(--lens-glow-color, var(--cp-accent)) 6%, var(--cp-surface));
+      }
+      html[data-lens="security"]     .node.lens-glow { --lens-glow-color: var(--layer-control); }
+      html[data-lens="architecture"] .node.lens-glow { --lens-glow-color: var(--layer-fabric); }
+      html[data-lens="experience"]   .node.lens-glow { --lens-glow-color: var(--layer-experience); }
+
+      /* ---------- MS product badge on each node ---------- */
+      .node-ms-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        margin-top: 8px;
+        font-size: 10.5px;
+        font-weight: 500;
+        color: var(--cp-text-muted);
+        padding: 3px 8px;
+        background: var(--cp-bg-elevated);
+        border: 1px solid var(--cp-border);
+        border-radius: 999px;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .node-ms-badge::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #0078d4;
+        flex-shrink: 0;
+      }
+      .node.lens-glow .node-ms-badge {
+        background: color-mix(in srgb, var(--lens-glow-color, var(--cp-accent)) 12%, var(--cp-surface));
+        border-color: var(--lens-glow-color, var(--cp-accent));
+        color: var(--cp-text);
+      }
+
+      /* ---------- Objection cards ---------- */
+      .objections {
+        margin: 22px 22px 0 22px;
+        padding: 18px 22px;
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-radius: 14px;
+      }
+      .objections[hidden] { display: none; }
+      .objections-head {
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+      }
+      .objections-head h3 { margin: 0; font-size: 16px; font-weight: 600; }
+      .objections-head .lens-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        font-weight: 600;
+        color: var(--lens-glow-color, var(--cp-text-muted));
+        padding: 3px 10px;
+        background: color-mix(in srgb, var(--lens-glow-color, var(--cp-accent)) 12%, var(--cp-surface));
+        border: 1px solid var(--lens-glow-color, var(--cp-border));
+        border-radius: 999px;
+      }
+      html[data-lens="security"]     .objections { --lens-glow-color: var(--layer-control); }
+      html[data-lens="architecture"] .objections { --lens-glow-color: var(--layer-fabric); }
+      html[data-lens="experience"]   .objections { --lens-glow-color: var(--layer-experience); }
+      .objections-head p {
+        margin: 0;
+        font-size: 12.5px;
+        color: var(--cp-text-muted);
+        flex-basis: 100%;
+      }
+      .obj-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 12px;
+      }
+      .obj-card {
+        padding: 12px 14px;
+        background: var(--cp-bg-elevated);
+        border: 1px solid var(--cp-border);
+        border-left: 3px solid var(--lens-glow-color, var(--cp-accent));
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .obj-quote {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--cp-text);
+        line-height: 1.35;
+      }
+      .obj-quote::before { content: "\201C"; }
+      .obj-quote::after  { content: "\201D"; }
+      .obj-response {
+        font-size: 12px;
+        color: var(--cp-text-muted);
+        line-height: 1.45;
+      }
+      .obj-pivot {
+        font-size: 11.5px;
+        margin-top: 2px;
+        color: var(--lens-glow-color, var(--cp-link));
+      }
+      .obj-pivot a {
+        color: inherit;
+        text-decoration: none;
+        font-weight: 500;
+        border-bottom: 1px dashed currentColor;
+      }
+      .obj-pivot a:hover { border-bottom-style: solid; }
+
       /* Reduce motion */
       @media (prefers-reduced-motion: reduce) {
         * {
@@ -1711,24 +1937,90 @@
     </header>
 
     <main>
+      <!-- Lens picker: pick the customer conversation you're walking into -->
+      <section class="lens-bar" aria-label="Customer conversation lens">
+        <span class="lens-label">Lens</span>
+        <span class="lens-prompt">What does this customer want to talk about?</span>
+        <button type="button" class="lens-btn" data-lens="security"><span class="lens-dot"></span>Security &amp; Trust</button>
+        <button type="button" class="lens-btn" data-lens="architecture"><span class="lens-dot"></span>AI Architecture</button>
+        <button type="button" class="lens-btn" data-lens="experience"><span class="lens-dot"></span>AI Experience</button>
+        <button type="button" class="lens-btn" data-lens="all"><span class="lens-dot"></span>All</button>
+        <a class="leave-behind-link" id="leaveBehindLink" href="leave-behind.html" title="Open a printable one-page summary for your customer meeting">Leave-behind &rarr;</a>
+      </section>
+
       <!-- Hero -->
       <section class="hero" style="display:block; margin-bottom: 14px;">
-        <div class="hero-card">
+        <div class="hero-card" data-lens="all">
           <h2 style="margin: 0 0 6px 0;">Central governance. Decentralized innovation.</h2>
           <p style="margin: 0 0 10px 0; color: var(--cp-text-muted); max-width: 880px;">
-            A federated AI architecture — <strong>foundational controls centralized, agent
-            development decentralized</strong> — so the business moves fast and the enterprise
+            A federated AI architecture &mdash; <strong>foundational controls centralized, agent
+            development decentralized</strong> &mdash; so the business moves fast and the enterprise
             stays in charge.
           </p>
           <details class="hero-why">
             <summary>Why federated?</summary>
             <p>
-              Today, AI capabilities and data are fragmented across Azure, AWS, GCP, SaaS, and on-prem —
+              Today, AI capabilities and data are fragmented across Azure, AWS, GCP, SaaS, and on-prem &mdash;
               each with its own identities, tools, and silos, driving inconsistent governance and inefficiency.
               A federated AI architecture unifies a single <strong>control plane</strong> for
               <strong>identity, governance, and observability</strong> across clouds, while domain teams stay
-              free to build on the platforms best suited to their work — combining
+              free to build on the platforms best suited to their work &mdash; combining
               <strong>central trust and compliance</strong> with <strong>local agility</strong>.
+            </p>
+          </details>
+        </div>
+        <div class="hero-card" data-lens="security">
+          <span class="hero-eyebrow">For the CISO conversation</span>
+          <h2 style="margin: 0 0 6px 0;">Trust your AI estate.</h2>
+          <p style="margin: 0 0 10px 0; color: var(--cp-text-muted); max-width: 880px;">
+            See every agent. Govern every prompt. Catch every misuse. A federated AI architecture
+            extends your existing <strong>Microsoft Sentinel, Defender, Purview, and Entra</strong>
+            controls to AI &mdash; including the AI your employees use without telling you.
+          </p>
+          <details class="hero-why">
+            <summary>Why this matters now</summary>
+            <p>
+              Shadow AI is the new shadow IT. Without an AI-aware control plane, prompt-injection,
+              data exfiltration, and excessive agency all bypass your existing tooling. The same
+              <strong>identity, DLP, and SIEM</strong> that protect your data today need to see
+              agents, tools, and tokens &mdash; not just users and files.
+            </p>
+          </details>
+        </div>
+        <div class="hero-card" data-lens="architecture">
+          <span class="hero-eyebrow">For the CIO &amp; CTO conversation</span>
+          <h2 style="margin: 0 0 6px 0;">One platform. Many clouds. Zero rewrites.</h2>
+          <p style="margin: 0 0 10px 0; color: var(--cp-text-muted); max-width: 880px;">
+            A federated AI architecture lets you <strong>build once and deploy anywhere</strong> &mdash;
+            Azure, AWS, GCP, on-prem, or inside SAP and Salesforce &mdash; using <strong>MCP, A2A,
+            and APIM</strong> as the shared wiring, with Foundry as the central control plane.
+          </p>
+          <details class="hero-why">
+            <summary>Why federated?</summary>
+            <p>
+              Most enterprises have AI capabilities and data spread across multiple clouds and SaaS
+              apps. Picking one cloud means starving the others. A federated model gives every team
+              <strong>local agility</strong> on the runtime that fits the job, while
+              <strong>identity, governance, and observability</strong> stay unified.
+            </p>
+          </details>
+        </div>
+        <div class="hero-card" data-lens="experience">
+          <span class="hero-eyebrow">For the AI &amp; business leader conversation</span>
+          <h2 style="margin: 0 0 6px 0;">AI in your daily work, governed by default.</h2>
+          <p style="margin: 0 0 10px 0; color: var(--cp-text-muted); max-width: 880px;">
+            Employees use <strong>M365 Copilot</strong>, vertical copilots, and citizen-built agents
+            in <strong>Copilot Studio</strong> &mdash; one chat surface, every business app, every
+            backend system &mdash; without IT chasing shadow tools or rebuilding integrations per
+            department.
+          </p>
+          <details class="hero-why">
+            <summary>Why this matters now</summary>
+            <p>
+              The fastest-growing AI use cases aren't pro-code apps &mdash; they're employee-built
+              agents that answer HR questions, file expenses, summarize tickets. The win is not
+              another tool; it's <strong>one consistent surface</strong> for users and
+              <strong>one consistent control plane</strong> for IT.
             </p>
           </details>
         </div>
@@ -1787,6 +2079,16 @@
             </div>
           </div>
         </div>
+      </section>
+
+      <!-- Lens-specific objection handling cards -->
+      <section class="objections" id="objections" hidden aria-labelledby="objections-heading">
+        <div class="objections-head">
+          <h3 id="objections-heading">When the customer pushes back&hellip;</h3>
+          <span class="lens-pill" id="objectionsLensPill">Lens</span>
+          <p>Two-sentence responses for the objections you'll hear most in this kind of conversation &mdash; and where on the page to pivot.</p>
+        </div>
+        <div class="obj-grid" id="objGrid"></div>
       </section>
 
       <!-- Architecture canvas -->
@@ -1996,6 +2298,7 @@
               icon: "copilot",
               sub: "The everyday productivity copilot across Word, Excel, Outlook, and Teams.",
               tech: ["M365 Copilot", "Copilot Pages", "Microsoft Graph grounding"],
+              msBadge: "M365 Copilot",
             },
             {
               id: "vertical-copilots",
@@ -2003,6 +2306,7 @@
               icon: "copilot",
               sub: "AI built into business apps like SAP, Salesforce, and ServiceNow.",
               tech: ["SAP Joule", "Salesforce Agentforce", "ServiceNow Now Assist"],
+              msBadge: "Copilot for Sales / Service",
             },
             {
               id: "human-oversight",
@@ -2010,6 +2314,7 @@
               icon: "trust",
               sub: "People review and approve what agents do for important actions.",
               tech: ["Approval flows", "Review queues", "Audit trails"],
+              msBadge: "Power Automate approvals",
             },
           ],
         },
@@ -2033,6 +2338,7 @@
               icon: "train",
               sub: "One place to build agents — Copilot Studio for business users, Foundry for pro developers. Logic, prompts, and skills stored centrally.",
               tech: ["M365 Copilot", "Copilot Studio", "Azure AI Foundry", "Semantic Kernel"],
+              msBadge: "Copilot Studio + Foundry",
             },
             {
               id: "models",
@@ -2040,6 +2346,7 @@
               icon: "registry",
               sub: "Pick the right model for each job from a governed catalog — OpenAI, Anthropic, Google, open-weight.",
               tech: ["Azure OpenAI", "AWS Bedrock", "Vertex AI", "Anthropic"],
+              msBadge: "Azure OpenAI + Foundry model catalog",
             },
             {
               id: "runtime",
@@ -2047,6 +2354,7 @@
               icon: "agent",
               sub: "Agents run on the cloud or environment that fits the job, while still following central policy.",
               tech: ["Azure", "AWS", "GCP", "On-prem", "Edge"],
+              msBadge: "Foundry Agent Service",
             },
           ],
         },
@@ -2070,6 +2378,7 @@
               icon: "protocol",
               sub: "Agents call tools, data, and prompts through the Model Context Protocol — the \"USB-C for AI applications.\"",
               tech: ["Model Context Protocol", "Tool / Resource / Prompt servers", "Copilot Studio MCP support"],
+              msBadge: "Copilot Studio MCP",
             },
             {
               id: "a2a",
@@ -2077,6 +2386,7 @@
               icon: "protocol",
               sub: "Agents discover and delegate to other agents using Agent Cards — across SAP Joule, Salesforce Agentforce, ServiceNow, and your own.",
               tech: ["Agent2Agent (A2A)", "Agent Cards", "HTTP / SSE / JSON-RPC", "Task / Artifact lifecycle"],
+              msBadge: "Foundry Agent2Agent",
             },
             {
               id: "apis",
@@ -2084,6 +2394,7 @@
               icon: "api",
               sub: "The doorways into apps and data, with consistent identity and policy enforced at every edge.",
               tech: ["Azure API Management", "REST / GraphQL", "OAuth"],
+              msBadge: "Azure API Management",
             },
             {
               id: "tools-sdks",
@@ -2091,6 +2402,7 @@
               icon: "tool",
               sub: "The libraries developers use to build agents, and a shared catalog of approved tools.",
               tech: ["M365 Agent SDK", "Microsoft Agents Framework", "Semantic Kernel", "Signed tool manifests"],
+              msBadge: "Microsoft Agents Framework",
             },
           ],
         },
@@ -2115,6 +2427,7 @@
               icon: "catalog",
               sub: "The business apps and on-prem databases agents read from and write to — M365, SAP, Salesforce, ServiceNow, on-prem.",
               tech: ["Microsoft Graph", "SAP", "Salesforce Data Cloud", "ServiceNow", "On-prem DBs"],
+              msBadge: "Microsoft Graph + Dataverse",
             },
             {
               id: "knowledge-grounding",
@@ -2122,6 +2435,7 @@
               icon: "registry",
               sub: "The retrieval layer between raw data and agents — vector indices, RAG, and curated knowledge bases so answers are grounded in source-of-truth content.",
               tech: ["Microsoft Foundry IQ", "Azure AI Search", "Vector indices", "RAG pipelines"],
+              msBadge: "Foundry IQ + Azure AI Search",
             },
             {
               id: "analytics-data",
@@ -2129,6 +2443,7 @@
               icon: "lake",
               sub: "Warehouses and lakehouses where reporting and AI training data live.",
               tech: ["Microsoft Fabric / OneLake", "Snowflake", "Databricks", "BigQuery"],
+              msBadge: "Microsoft Fabric / OneLake",
             },
             {
               id: "catalog-lineage",
@@ -2136,6 +2451,7 @@
               icon: "lineage",
               sub: "Know what data exists, who owns it, and how it's been used by agents and models.",
               tech: ["Microsoft Purview", "OpenLineage"],
+              msBadge: "Microsoft Purview",
             },
           ],
         },
@@ -2163,6 +2479,7 @@
               icon: "identity",
               sub: "One sign-in and one set of roles that works across every cloud.",
               tech: ["Microsoft Entra ID", "AWS IAM", "GCP IAM"],
+              msBadge: "Microsoft Entra ID",
             },
             {
               id: "governance",
@@ -2170,6 +2487,7 @@
               icon: "policy",
               sub: "The Microsoft anchor for managing agents organization-wide — register, govern, trace, evaluate, and monitor every agent in one place.",
               tech: ["Microsoft Agent 365", "Microsoft Foundry Control Plane", "Microsoft Purview", "Azure Policy"],
+              msBadge: "Microsoft Agent 365",
             },
             {
               id: "security",
@@ -2178,6 +2496,7 @@
               sub: "See what every agent is doing, catch problems early, and respond fast.",
               tech: ["Microsoft Defender", "Sentinel", "OpenTelemetry", "AI Red Teaming Agent"],
               note: "Addresses OWASP LLM06 — Excessive Agency",
+              msBadge: "Sentinel + Defender XDR",
             },
             {
               id: "cost",
@@ -2186,6 +2505,7 @@
               sub: "Track token spend per agent, route to the right model for the job, and bill back to the business owner.",
               tech: ["Tag taxonomy", "Model routing", "Showback dashboards"],
               note: "Addresses OWASP LLM10 — Unbounded Consumption",
+              msBadge: "Microsoft Cost Management",
             },
           ],
         },
@@ -2210,11 +2530,13 @@
               const badges = [];
               if (n.gap) badges.push(`<span class="badge">${n.gap}</span>`);
               const noteHtml = n.note ? `<div class="node-note">${n.note}</div>` : "";
+              const msBadgeHtml = n.msBadge ? `<div class="node-ms-badge" title="Microsoft product that delivers this">${n.msBadge}</div>` : "";
               return `
               <button class="node" data-plane="${p.id}" data-node="${n.id}" style="--plane-color: var(${p.color}); --plane-soft: var(${p.colorSoft});">
                 <div class="node-title"><span class="node-icon">${ICONS[n.icon] || ICONS.app}</span>${n.title}</div>
                 <div class="node-sub">${n.sub}</div>
                 ${noteHtml}
+                ${msBadgeHtml}
                 <div class="badge-row">${badges.join("")}</div>
               </button>`;
             })
@@ -2588,6 +2910,164 @@
         btn.addEventListener("click", () => openNode(btn.dataset.plane, btn.dataset.node));
       });
       wireHover();
+
+      // ---------- Customer-conversation lenses ----------
+      const LENSES = {
+        security: {
+          label: "Security & Trust",
+          glowNodes: ["identity", "governance", "security", "catalog-lineage", "knowledge-grounding", "human-oversight"],
+          suggestedScenario: "itops",
+          objections: [
+            {
+              quote: "We already use ChatGPT &mdash; we don't need this.",
+              response: "Then you already have an AI estate &mdash; you just can't see it. Extending Defender for Cloud Apps and Purview to that traffic turns shadow AI into a governed inventory in a week.",
+              pivotTo: { label: "See the Control plane", target: "control" },
+            },
+            {
+              quote: "We're an AWS shop. Microsoft Security doesn't fit us.",
+              response: "Sentinel, Defender, and Purview were rebuilt as multi-cloud control planes years ago &mdash; they ingest AWS logs, AWS IAM, and Bedrock telemetry. The AI control plane sits above the runtime cloud.",
+              pivotTo: { label: "See cross-cloud control", target: "control" },
+            },
+            {
+              quote: "Our SOC is already overwhelmed.",
+              response: "AI-aware Sentinel reduces noise, not adds to it &mdash; auto-triage on Tier-1 incidents plus prompt-injection detections that didn't exist in the SOC before. The IT incident triage scenario shows the pattern.",
+              pivotTo: { label: "Walk the IT triage scenario", target: "itops", isScenario: true },
+            },
+            {
+              quote: "Agents will leak our data.",
+              response: "Only if identity and DLP don't follow them. Entra workload identity for the agent, Purview labels on the data, Defender on the runtime &mdash; same controls you trust for users, applied to agents.",
+              pivotTo: { label: "See the Data + Control planes", target: "data" },
+            },
+          ],
+        },
+        architecture: {
+          label: "AI Architecture",
+          glowNodes: ["dev-platform", "models", "runtime", "mcp", "a2a", "apis", "tools-sdks", "governance"],
+          suggestedScenario: "customer360",
+          objections: [
+            {
+              quote: "We've standardized on LangChain (or another framework).",
+              response: "Keep it &mdash; LangChain agents speak MCP and A2A like everyone else. Foundry's value isn't replacing the framework, it's the central registry, evals, and identity that wrap whatever you build.",
+              pivotTo: { label: "See the Build + Fabric planes", target: "model" },
+            },
+            {
+              quote: "We can build the control plane ourselves.",
+              response: "You can, but every six months a new protocol (MCP, A2A, signed manifests, agent cards) ships and you'll re-build. Foundry tracks the standards; your team builds the agents that matter to the business.",
+              pivotTo: { label: "See the Control plane", target: "control" },
+            },
+            {
+              quote: "We don't want vendor lock-in to one cloud.",
+              response: "The federated model is the opposite of lock-in. MCP, A2A, and APIM are open or open-style protocols. Agents run on the cloud closest to the data &mdash; Foundry is the control plane above, not the runtime.",
+              pivotTo: { label: "See cross-cloud runtime", target: "model" },
+            },
+            {
+              quote: "Our integrations are all custom APIs &mdash; MCP is overkill.",
+              response: "Custom APIs are fine for one or two agents. By the tenth agent, every team is rebuilding auth, schemas, and rate-limits. MCP servers fronted by APIM let you do it once and govern at the gateway.",
+              pivotTo: { label: "Walk the Customer 360 scenario", target: "customer360", isScenario: true },
+            },
+          ],
+        },
+        experience: {
+          label: "AI Experience",
+          glowNodes: ["m365-copilot", "vertical-copilots", "human-oversight", "dev-platform", "knowledge-grounding", "systems-of-record"],
+          suggestedScenario: "citizen",
+          objections: [
+            {
+              quote: "We bought GitHub Copilot &mdash; isn't that enough?",
+              response: "GitHub Copilot is one experience for developers. M365 Copilot, vertical copilots, and citizen-built agents are how the other 90% of employees see AI. Same control plane underneath, very different surfaces.",
+              pivotTo: { label: "See the Experience plane", target: "experience" },
+            },
+            {
+              quote: "Adoption is stuck &mdash; people don't know what to ask.",
+              response: "Citizen-built agents fix this. A business owner builds an agent for their team's most-asked question; usage spikes because the agent answers the question, not the human. The HR scenario is the pattern.",
+              pivotTo: { label: "Walk the Citizen HR scenario", target: "citizen", isScenario: true },
+            },
+            {
+              quote: "We need agents inside our business apps, not just chat.",
+              response: "Vertical copilots (SAP Joule, Salesforce Agentforce, ServiceNow Now Assist) live exactly there. With A2A, they collaborate; with one control plane, they're inventoried the same way. Same governance, different doorways.",
+              pivotTo: { label: "See the Experience plane", target: "experience" },
+            },
+            {
+              quote: "Citizen developers will create a mess.",
+              response: "Only if there's no platform. Copilot Studio + Foundry registers every citizen-built agent centrally &mdash; with identity, DLP, evals, and cost tags inherited automatically. Freedom for the builder, control for IT.",
+              pivotTo: { label: "Walk the Citizen HR scenario", target: "citizen", isScenario: true },
+            },
+          ],
+        },
+      };
+
+      const lensButtons = document.querySelectorAll(".lens-btn");
+      const objectionsEl = document.getElementById("objections");
+      const objGridEl = document.getElementById("objGrid");
+      const objLensPillEl = document.getElementById("objectionsLensPill");
+      const leaveBehindLinkEl = document.getElementById("leaveBehindLink");
+
+      function applyLens(lensId) {
+        const lens = LENSES[lensId];
+        const root = document.documentElement;
+        if (!lens) {
+          root.removeAttribute("data-lens");
+          lensButtons.forEach((b) => b.classList.toggle("active", b.dataset.lens === "all"));
+          document.querySelectorAll(".node").forEach((n) => n.classList.remove("lens-glow"));
+          objectionsEl.hidden = true;
+          if (leaveBehindLinkEl) leaveBehindLinkEl.href = "leave-behind.html";
+          return;
+        }
+        root.setAttribute("data-lens", lensId);
+        lensButtons.forEach((b) => b.classList.toggle("active", b.dataset.lens === lensId));
+        document.querySelectorAll(".node").forEach((n) => {
+          n.classList.toggle("lens-glow", lens.glowNodes.includes(n.dataset.node));
+        });
+        // Objections
+        objLensPillEl.textContent = lens.label;
+        objGridEl.innerHTML = lens.objections.map((o) => `
+          <div class="obj-card">
+            <div class="obj-quote">${o.quote}</div>
+            <div class="obj-response">${o.response}</div>
+            ${o.pivotTo ? `<div class="obj-pivot">Pivot &rarr; <a href="#" data-pivot-target="${o.pivotTo.target}" data-pivot-scenario="${o.pivotTo.isScenario ? "1" : "0"}">${o.pivotTo.label}</a></div>` : ""}
+          </div>`).join("");
+        objectionsEl.hidden = false;
+        objGridEl.querySelectorAll("[data-pivot-target]").forEach((a) => {
+          a.addEventListener("click", (e) => {
+            e.preventDefault();
+            const target = a.dataset.pivotTarget;
+            const isScenario = a.dataset.pivotScenario === "1";
+            if (isScenario) {
+              const sbtn = document.querySelector(`.scenario-btn[data-scenario="${target}"]`);
+              if (sbtn) sbtn.click();
+              document.querySelector(".scenarios")?.scrollIntoView({ behavior: "smooth", block: "center" });
+            } else {
+              const plane = document.querySelector(`.plane[data-plane-id="${target}"]`);
+              if (plane) plane.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
+          });
+        });
+        if (leaveBehindLinkEl) leaveBehindLinkEl.href = `leave-behind.html?lens=${lensId}`;
+      }
+
+      lensButtons.forEach((b) => {
+        b.addEventListener("click", () => {
+          const id = b.dataset.lens;
+          if (id === "all" || document.documentElement.getAttribute("data-lens") === id) {
+            applyLens(null);
+          } else {
+            applyLens(id);
+          }
+        });
+      });
+
+      // Init from URL ?lens=security|architecture|experience
+      try {
+        const params = new URL(window.location.href).searchParams;
+        const lensParam = params.get("lens");
+        if (lensParam && LENSES[lensParam]) {
+          applyLens(lensParam);
+        } else {
+          applyLens(null);
+        }
+      } catch (e) {
+        applyLens(null);
+      }
 
       // ---------- Customer challenge selector (seller tool) ----------
       let challengeActive = false;

@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Federated AI &mdash; one-page leave-behind</title>
+    <meta name="description" content="Single-page printable leave-behind for a customer meeting on federated AI. Pick a lens (Security & Trust, AI Architecture, AI Experience) and a customer name." />
+    <script>
+      (function () {
+        try {
+          var url = new URL(window.location.href);
+          var t = url.searchParams.get("scoutTheme");
+          if (t === "dark" || t === "light") {
+            document.documentElement.setAttribute("data-theme", t);
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <style>
+      :root {
+        --cp-bg: #faf9f8;
+        --cp-surface: #ffffff;
+        --cp-surface-soft: #f3f2f1;
+        --cp-text: #201f1e;
+        --cp-text-muted: #605e5c;
+        --cp-text-soft: #797775;
+        --cp-border: #e1dfdd;
+        --cp-accent: #0078d4;
+        --cp-link: #0078d4;
+        --layer-experience: #d97706;
+        --layer-control: #2563eb;
+        --layer-fabric: #0891b2;
+        --layer-data: #16a34a;
+        --layer-model: #65a30d;
+        --lens-color: var(--cp-accent);
+      }
+      [data-theme="dark"] {
+        --cp-bg: #1b1a19; --cp-surface: #252423; --cp-surface-soft: #2d2c2b;
+        --cp-text: #f3f2f1; --cp-text-muted: #c8c6c4; --cp-text-soft: #a19f9d;
+        --cp-border: #3b3a39;
+        --cp-accent: #4cc2ff; --cp-link: #4cc2ff;
+        --layer-experience: #fbbf24;
+        --layer-control: #60a5fa;
+        --layer-fabric: #22d3ee;
+        --layer-data: #4ade80;
+        --layer-model: #a3e635;
+      }
+      html[data-lens="security"]     { --lens-color: var(--layer-control); }
+      html[data-lens="architecture"] { --lens-color: var(--layer-fabric); }
+      html[data-lens="experience"]   { --lens-color: var(--layer-experience); }
+      html[data-lens="all"]          { --lens-color: var(--cp-accent); }
+
+      * { box-sizing: border-box; }
+      html, body { margin: 0; padding: 0; background: var(--cp-bg); color: var(--cp-text); font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "SF Pro Text", Roboto, Arial, sans-serif; font-size: 13px; line-height: 1.45; }
+      a { color: var(--cp-link); }
+
+      /* Top toolbar (hidden on print) */
+      .toolbar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: var(--cp-surface);
+        border-bottom: 1px solid var(--cp-border);
+        padding: 10px 18px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+      }
+      .toolbar .lbl {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--cp-text-soft);
+        font-weight: 600;
+      }
+      .toolbar .lens-btn {
+        appearance: none;
+        background: var(--cp-surface-soft);
+        border: 1px solid var(--cp-border);
+        border-radius: 999px;
+        padding: 6px 14px;
+        font: inherit;
+        font-size: 12.5px;
+        cursor: pointer;
+        color: var(--cp-text);
+      }
+      .toolbar .lens-btn.active {
+        background: color-mix(in srgb, var(--lens-color) 14%, var(--cp-surface));
+        border-color: var(--lens-color);
+        color: var(--cp-text);
+      }
+      .toolbar input[type="text"] {
+        appearance: none;
+        background: var(--cp-surface-soft);
+        border: 1px solid var(--cp-border);
+        border-radius: 8px;
+        padding: 6px 12px;
+        font: inherit;
+        font-size: 12.5px;
+        color: var(--cp-text);
+        min-width: 200px;
+      }
+      .toolbar input[type="text"]:focus { outline: none; border-color: var(--lens-color); }
+      .toolbar .print-btn {
+        margin-left: auto;
+        appearance: none;
+        background: var(--lens-color);
+        color: white;
+        border: 1px solid var(--lens-color);
+        border-radius: 8px;
+        padding: 7px 16px;
+        font: inherit;
+        font-size: 12.5px;
+        font-weight: 500;
+        cursor: pointer;
+      }
+      .toolbar .back-link {
+        font-size: 12px;
+        color: var(--cp-link);
+        text-decoration: none;
+        padding: 6px 12px;
+        border-radius: 8px;
+        border: 1px solid var(--cp-border);
+        background: var(--cp-surface-soft);
+      }
+      .toolbar .back-link:hover { border-color: var(--cp-accent); color: var(--cp-accent); }
+
+      /* The printable page */
+      main.page {
+        max-width: 1024px;
+        margin: 0 auto;
+        padding: 24px;
+        background: var(--cp-bg);
+      }
+
+      .lb-header {
+        border-top: 6px solid var(--lens-color);
+        border-radius: 4px 4px 0 0;
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        padding: 18px 22px;
+        margin-bottom: 14px;
+      }
+      .lb-header .eyebrow {
+        font-size: 10.5px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-weight: 700;
+        color: var(--lens-color);
+      }
+      .lb-header h1 {
+        margin: 4px 0 6px 0;
+        font-size: 22px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+      }
+      .lb-header .subtitle {
+        margin: 0;
+        font-size: 13px;
+        color: var(--cp-text-muted);
+        max-width: 800px;
+      }
+      .lb-header .for-customer {
+        margin-top: 8px;
+        font-size: 12px;
+        color: var(--cp-text-soft);
+      }
+      .lb-header .for-customer strong { color: var(--cp-text); }
+
+      .lb-grid {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr;
+        gap: 14px;
+      }
+      @media (max-width: 820px) { .lb-grid { grid-template-columns: 1fr; } }
+
+      .lb-card {
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-radius: 10px;
+        padding: 14px 16px;
+      }
+      .lb-card h2 {
+        margin: 0 0 8px 0;
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--lens-color);
+      }
+
+      .lb-outcomes ul, .lb-scenarios ul {
+        margin: 0;
+        padding-left: 18px;
+        font-size: 12.5px;
+      }
+      .lb-outcomes li, .lb-scenarios li { margin-bottom: 6px; }
+      .lb-outcomes li strong, .lb-scenarios li strong { color: var(--cp-text); }
+
+      .lb-sku-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+      }
+      .lb-sku-table th, .lb-sku-table td {
+        text-align: left;
+        padding: 6px 8px;
+        border-bottom: 1px solid var(--cp-border);
+        vertical-align: top;
+      }
+      .lb-sku-table th {
+        font-weight: 600;
+        font-size: 10.5px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--cp-text-soft);
+      }
+      .lb-sku-table td:first-child { color: var(--cp-text-muted); }
+      .lb-sku-table td:last-child { font-weight: 500; color: var(--cp-text); }
+      .lb-sku-row-glow td:last-child {
+        color: var(--lens-color);
+        font-weight: 600;
+      }
+
+      .lb-footer {
+        margin-top: 14px;
+        font-size: 11px;
+        color: var(--cp-text-soft);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 10px;
+        border-top: 1px solid var(--cp-border);
+      }
+
+      /* Print styles */
+      @media print {
+        .toolbar { display: none !important; }
+        html, body { background: white; color: black; }
+        main.page { padding: 0; max-width: none; margin: 0; }
+        .lb-card, .lb-header { box-shadow: none; }
+        .lb-header { padding: 12px 16px; }
+        .lb-card { padding: 10px 12px; }
+        @page { margin: 0.5in; }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Toolbar: lens + customer name + print -->
+    <header class="toolbar" role="navigation">
+      <span class="lbl">Lens</span>
+      <button type="button" class="lens-btn" data-lens="security">Security &amp; Trust</button>
+      <button type="button" class="lens-btn" data-lens="architecture">AI Architecture</button>
+      <button type="button" class="lens-btn" data-lens="experience">AI Experience</button>
+      <button type="button" class="lens-btn" data-lens="all">All</button>
+      <span class="lbl" style="margin-left: 8px;">Customer</span>
+      <input type="text" id="customerInput" placeholder="Customer name (optional)" />
+      <a class="back-link" href="index.html">&larr; Reference architecture</a>
+      <button type="button" class="print-btn" id="printBtn">Print &middot; Save as PDF</button>
+    </header>
+
+    <main class="page" id="page"></main>
+
+    <script>
+      const LENSES = {
+        security: {
+          eyebrow: "For the CISO conversation",
+          title: "Trust your AI estate.",
+          subtitle: "See every agent. Govern every prompt. Catch every misuse. A federated AI architecture extends your existing Microsoft Sentinel, Defender, Purview, and Entra controls to AI \u2014 including the AI your employees use without telling you.",
+          outcomes: [
+            { name: "Inventory every agent", body: "Microsoft Agent 365 + Foundry register every agent &mdash; including citizen-built and shadow." },
+            { name: "Extend Defender to AI", body: "Defender for Cloud Apps detects shadow AI usage; Defender XDR responds to prompt-injection and data-exfil attempts." },
+            { name: "Unify the audit trail", body: "Sentinel ingests Foundry traces, MCP/A2A logs, and agent actions in one timeline." },
+            { name: "Govern the data agents touch", body: "Purview labels and DLP follow data into prompts, retrievals, and outputs." },
+            { name: "One identity model", body: "Entra workload identity for the agent &mdash; same conditional access as for users." },
+          ],
+          scenarios: [
+            { name: "Autonomous IT incident triage", body: "Autonomous triage with security-A2A handoff and HITL escalation.", href: "scenarios/it-incident-triage.html" },
+            { name: "Citizen-built HR agent", body: "Citizen-built but identity, DLP, and audit are inherited automatically.", href: "scenarios/citizen-hr.html" },
+          ],
+          skus: [
+            { node: "Identity", product: "Microsoft Entra ID", glow: true },
+            { node: "Governance + agent inventory", product: "Microsoft Agent 365 + Foundry Control Plane", glow: true },
+            { node: "Security & monitoring", product: "Microsoft Sentinel + Defender XDR", glow: true },
+            { node: "Shadow AI discovery", product: "Microsoft Defender for Cloud Apps", glow: true },
+            { node: "Data labeling + DLP", product: "Microsoft Purview", glow: true },
+            { node: "Agent supply chain", product: "Defender for DevOps", glow: true },
+            { node: "Cost & token control", product: "Microsoft Cost Management" },
+            { node: "Agent runtime", product: "Foundry Agent Service" },
+            { node: "Knowledge grounding", product: "Foundry IQ + Azure AI Search" },
+          ],
+        },
+        architecture: {
+          eyebrow: "For the CIO & CTO conversation",
+          title: "One platform. Many clouds. Zero rewrites.",
+          subtitle: "A federated AI architecture lets you build once and deploy anywhere \u2014 Azure, AWS, GCP, on-prem, or inside SAP and Salesforce \u2014 using MCP, A2A, and APIM as the shared wiring, with Foundry as the central control plane.",
+          outcomes: [
+            { name: "Build once, deploy anywhere", body: "Same agent runs on Azure, AWS, GCP, on-prem, or inside SaaS \u2014 governed by Foundry." },
+            { name: "Standard wiring", body: "MCP for tools, A2A for agent collaboration, APIM for APIs &mdash; no per-integration glue." },
+            { name: "Right model for the job", body: "Foundry's catalog routes simple tasks to small models, complex ones to large &mdash; cost stays sane." },
+            { name: "Central registry, local agility", body: "Logic, prompts, skills, evals stored centrally; teams ship at their own pace." },
+            { name: "One control plane across clouds", body: "Identity, governance, and observability unified above the runtime cloud." },
+          ],
+          scenarios: [
+            { name: "Multi-source Customer 360", body: "Cross-vendor agent collaboration via A2A across Salesforce, SAP, and Foundry.", href: "scenarios/customer360.html" },
+            { name: "Engineering copilot (code &rarr; PR)", body: "MCP-grounded dev loop with pre-merge Foundry evals.", href: "scenarios/engineering-copilot.html" },
+          ],
+          skus: [
+            { node: "Agent development platform", product: "Copilot Studio + Azure AI Foundry", glow: true },
+            { node: "Model choice", product: "Azure OpenAI + Foundry model catalog", glow: true },
+            { node: "Agent runtime", product: "Foundry Agent Service", glow: true },
+            { node: "Tool binding (MCP)", product: "Copilot Studio MCP", glow: true },
+            { node: "Agent collaboration (A2A)", product: "Foundry Agent2Agent", glow: true },
+            { node: "API gateway", product: "Azure API Management", glow: true },
+            { node: "SDKs & tool registry", product: "Microsoft Agents Framework", glow: true },
+            { node: "Governance + agent inventory", product: "Microsoft Agent 365 + Foundry Control Plane", glow: true },
+            { node: "Knowledge grounding", product: "Foundry IQ + Azure AI Search" },
+            { node: "Identity", product: "Microsoft Entra ID" },
+          ],
+        },
+        experience: {
+          eyebrow: "For the AI & business leader conversation",
+          title: "AI in your daily work, governed by default.",
+          subtitle: "Employees use M365 Copilot, vertical copilots, and citizen-built agents in Copilot Studio \u2014 one chat surface, every business app, every backend system \u2014 without IT chasing shadow tools or rebuilding integrations per department.",
+          outcomes: [
+            { name: "One surface employees know", body: "M365 Copilot in Teams + Outlook + Office &mdash; not another tool to learn." },
+            { name: "Agents inside business apps", body: "SAP Joule, Salesforce Agentforce, ServiceNow Now Assist &mdash; AI where the work happens." },
+            { name: "Citizen builders, central guardrails", body: "Copilot Studio lets HR or Finance build agents; identity + DLP + cost tags inherited automatically." },
+            { name: "Grounded in your own data", body: "Microsoft Graph + Foundry IQ + Purview labels mean agents read your real systems, not the public web." },
+            { name: "Humans stay in the loop", body: "Approval flows, review queues, and audit trails for every consequential action." },
+          ],
+          scenarios: [
+            { name: "Citizen-built HR Benefits Agent", body: "HR builds it in Copilot Studio; employees use it in Teams.", href: "scenarios/citizen-hr.html" },
+            { name: "Cost-aware expense agent", body: "Submit expenses in Teams; per-employee token tagging for Finance.", href: "scenarios/expense.html" },
+          ],
+          skus: [
+            { node: "M365 Copilot", product: "M365 Copilot", glow: true },
+            { node: "Vertical copilots", product: "Copilot for Sales / Service + partner copilots", glow: true },
+            { node: "Citizen development", product: "Copilot Studio + Foundry", glow: true },
+            { node: "Human-in-the-loop", product: "Power Automate approvals", glow: true },
+            { node: "Knowledge grounding", product: "Foundry IQ + Azure AI Search", glow: true },
+            { node: "Systems of record", product: "Microsoft Graph + Dataverse", glow: true },
+            { node: "Governance + agent inventory", product: "Microsoft Agent 365 + Foundry Control Plane" },
+            { node: "Identity", product: "Microsoft Entra ID" },
+            { node: "Security & monitoring", product: "Sentinel + Defender XDR" },
+            { node: "Cost & token control", product: "Microsoft Cost Management" },
+          ],
+        },
+        all: {
+          eyebrow: "Federated AI Environment",
+          title: "Central governance. Decentralized innovation.",
+          subtitle: "A federated AI architecture \u2014 foundational controls centralized, agent development decentralized \u2014 so the business moves fast and the enterprise stays in charge.",
+          outcomes: [
+            { name: "Faster adoption", body: "One chat surface, citizen-built agents, grounded in your data." },
+            { name: "Predictable cost", body: "Per-agent token tagging, model routing, showback to the business owner." },
+            { name: "Lower risk", body: "Sentinel + Defender + Purview + Entra extended to AI." },
+            { name: "Cloud freedom", body: "Build once; deploy on Azure, AWS, GCP, or SaaS." },
+          ],
+          scenarios: [
+            { name: "Citizen-built HR agent", body: "Citizen-developer pattern, on-prem grounding.", href: "scenarios/citizen-hr.html" },
+            { name: "Multi-source Customer 360", body: "Cross-vendor A2A.", href: "scenarios/customer360.html" },
+            { name: "Cost-aware expense agent", body: "FinOps + model routing.", href: "scenarios/expense.html" },
+            { name: "Autonomous IT incident triage", body: "Ops + HITL + security handoff.", href: "scenarios/it-incident-triage.html" },
+            { name: "Engineering copilot (code &rarr; PR)", body: "MCP-centric dev loop.", href: "scenarios/engineering-copilot.html" },
+          ],
+          skus: [
+            { node: "Experience", product: "M365 Copilot + vertical copilots" },
+            { node: "Build", product: "Copilot Studio + Azure AI Foundry" },
+            { node: "Fabric", product: "MCP + A2A + Azure API Management" },
+            { node: "Data", product: "Microsoft Graph + Foundry IQ + Purview" },
+            { node: "Control", product: "Microsoft Agent 365 + Entra + Sentinel + Defender" },
+          ],
+        },
+      };
+
+      const pageEl = document.getElementById("page");
+      const customerInput = document.getElementById("customerInput");
+      const lensButtons = document.querySelectorAll(".toolbar .lens-btn");
+      const printBtn = document.getElementById("printBtn");
+      let currentLens = "all";
+      let currentCustomer = "";
+
+      function render() {
+        const lens = LENSES[currentLens] || LENSES.all;
+        document.documentElement.setAttribute("data-lens", currentLens);
+        lensButtons.forEach((b) => b.classList.toggle("active", b.dataset.lens === currentLens));
+        const forLine = currentCustomer
+          ? `<div class="for-customer">Prepared for <strong>${escapeHtml(currentCustomer)}</strong></div>`
+          : "";
+        pageEl.innerHTML = `
+          <section class="lb-header">
+            <div class="eyebrow">${lens.eyebrow}</div>
+            <h1>${lens.title}</h1>
+            <p class="subtitle">${lens.subtitle}</p>
+            ${forLine}
+          </section>
+          <div class="lb-grid">
+            <section class="lb-card lb-outcomes">
+              <h2>Customer outcomes</h2>
+              <ul>
+                ${lens.outcomes.map((o) => `<li><strong>${o.name}.</strong> ${o.body}</li>`).join("")}
+              </ul>
+            </section>
+            <section class="lb-card lb-scenarios">
+              <h2>Suggested scenarios</h2>
+              <ul>
+                ${lens.scenarios.map((s) => `<li><strong>${s.name}.</strong> ${s.body} <a href="${s.href}">Reference architecture &rarr;</a></li>`).join("")}
+              </ul>
+            </section>
+          </div>
+          <section class="lb-card" style="margin-top: 14px;">
+            <h2>Microsoft products that deliver this</h2>
+            <table class="lb-sku-table">
+              <thead>
+                <tr><th style="width: 38%;">Capability</th><th>Microsoft product</th></tr>
+              </thead>
+              <tbody>
+                ${lens.skus.map((s) => `<tr class="${s.glow ? "lb-sku-row-glow" : ""}"><td>${s.node}</td><td>${s.product}</td></tr>`).join("")}
+              </tbody>
+            </table>
+          </section>
+          <div class="lb-footer">
+            <span>Federated AI Environment &middot; illustrative reference &mdash; product capabilities evolve.</span>
+            <span><a href="index.html">aka.ms/federated-ai &rarr;</a></span>
+          </div>
+        `;
+      }
+
+      function escapeHtml(s) {
+        return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+      }
+
+      function updateUrl() {
+        try {
+          const url = new URL(window.location.href);
+          if (currentLens && currentLens !== "all") url.searchParams.set("lens", currentLens);
+          else url.searchParams.delete("lens");
+          if (currentCustomer) url.searchParams.set("customer", currentCustomer);
+          else url.searchParams.delete("customer");
+          window.history.replaceState({}, "", url.toString());
+        } catch (e) {}
+      }
+
+      lensButtons.forEach((b) => {
+        b.addEventListener("click", () => {
+          currentLens = b.dataset.lens;
+          render();
+          updateUrl();
+        });
+      });
+      customerInput.addEventListener("input", () => {
+        currentCustomer = customerInput.value.trim();
+        render();
+        updateUrl();
+      });
+      printBtn.addEventListener("click", () => window.print());
+
+      // Init from URL
+      try {
+        const params = new URL(window.location.href).searchParams;
+        const lens = params.get("lens");
+        const cust = params.get("customer");
+        if (lens && LENSES[lens]) currentLens = lens;
+        if (cust) { currentCustomer = cust; customerInput.value = cust; }
+      } catch (e) {}
+      render();
+    </script>
+  </body>
+</html>
