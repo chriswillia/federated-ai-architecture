@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Federated AI Architecture — Reference Vision</title>
+    <title>Trusted Federated AI Operating Model — Reference</title>
     <script>
       (() => {
         const param = new URLSearchParams(window.location.search).get("scoutTheme");
@@ -1899,6 +1899,161 @@
       }
       .obj-pivot a:hover { border-bottom-style: solid; }
 
+      /* ---------- Hero punchline + 6-step conversation flow ---------- */
+      .hero-quote {
+        margin: 18px 22px 6px;
+        padding: 18px 22px;
+        border-left: 4px solid var(--cp-accent);
+        background: color-mix(in srgb, var(--cp-accent) 6%, var(--cp-surface));
+        border-radius: 6px;
+        font-size: 18px;
+        line-height: 1.4;
+        letter-spacing: -0.01em;
+        font-weight: 500;
+        color: var(--cp-text);
+      }
+      .hero-quote strong { color: var(--cp-accent); font-weight: 700; }
+      .hero-quote .hero-quote-sub {
+        display: block;
+        margin-top: 4px;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--cp-text-muted);
+        letter-spacing: 0;
+      }
+      @media (max-width: 720px) { .hero-quote { font-size: 15px; } }
+
+      .flow-strip {
+        margin: 0 22px 18px;
+        padding: 12px 14px;
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-radius: 12px;
+      }
+      .flow-strip-head {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-weight: 700;
+        color: var(--cp-text-soft);
+        margin: 0 0 8px 2px;
+      }
+      .flow-steps {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 8px;
+      }
+      @media (max-width: 1000px) { .flow-steps { grid-template-columns: repeat(3, 1fr); } }
+      @media (max-width: 560px)  { .flow-steps { grid-template-columns: repeat(2, 1fr); } }
+      .flow-step {
+        appearance: none;
+        text-align: left;
+        background: var(--cp-bg-elevated);
+        border: 1px solid var(--cp-border);
+        border-radius: 10px;
+        padding: 10px 12px;
+        cursor: pointer;
+        font: inherit;
+        color: var(--cp-text);
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        transition: border-color 120ms ease, background 120ms ease, transform 120ms ease;
+      }
+      .flow-step:hover {
+        border-color: var(--cp-accent);
+        background: color-mix(in srgb, var(--cp-accent) 5%, var(--cp-bg-elevated));
+      }
+      .flow-step-head {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-weight: 700;
+        color: var(--cp-text-soft);
+      }
+      .flow-step-num {
+        display: inline-grid;
+        place-items: center;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: var(--cp-accent);
+        color: var(--cp-accent-fg);
+        font-size: 10px;
+        font-weight: 700;
+      }
+      .flow-step-label { font-size: 12.5px; font-weight: 600; color: var(--cp-text); letter-spacing: 0; }
+      .flow-step-quote { font-size: 11.5px; color: var(--cp-text-muted); line-height: 1.4; }
+
+      /* Anchors offset for sticky header + lens-bar */
+      #reality, #canvas, #tensions-details, .plane[data-plane-id],
+      .node[data-node="cost"] {
+        scroll-margin-top: 130px;
+      }
+
+      /* ---------- Plane concepts + seller-questions reveal ---------- */
+      .plane-concepts {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        align-items: center;
+        margin: 6px 0 0;
+        font-size: 11.5px;
+        color: var(--cp-text-muted);
+      }
+      .plane-concepts .lbl {
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        font-weight: 700;
+        font-size: 10px;
+        color: var(--cp-text-soft);
+      }
+      .plane-concepts a {
+        color: var(--cp-text-muted);
+        text-decoration: none;
+        padding: 2px 8px;
+        border: 1px solid var(--cp-border);
+        border-radius: 999px;
+        background: var(--cp-bg-elevated);
+        transition: border-color 120ms ease, color 120ms ease;
+      }
+      .plane-concepts a:hover {
+        border-color: var(--plane-color, var(--cp-accent));
+        color: var(--plane-color, var(--cp-accent));
+      }
+      .plane-questions {
+        margin-top: 10px;
+        font-size: 12.5px;
+      }
+      .plane-questions > summary {
+        cursor: pointer;
+        font-size: 11.5px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        font-weight: 700;
+        color: var(--plane-color, var(--cp-text-soft));
+        list-style: none;
+        padding: 4px 0;
+        user-select: none;
+      }
+      .plane-questions > summary::marker, .plane-questions > summary::-webkit-details-marker { display: none; }
+      .plane-questions > summary::before {
+        content: "+ ";
+        font-weight: 700;
+        margin-right: 4px;
+      }
+      .plane-questions[open] > summary::before { content: "\u2212 "; }
+      .plane-questions ul {
+        margin: 6px 0 2px;
+        padding-left: 18px;
+        color: var(--cp-text-muted);
+        line-height: 1.5;
+      }
+      .plane-questions li { margin-bottom: 4px; }
+
       /* Reduce motion */
       @media (prefers-reduced-motion: reduce) {
         * {
@@ -1913,8 +2068,8 @@
         <div class="brand">
           <div class="brand-mark">AI</div>
           <div class="brand-text">
-            <h1>Federated AI Environment</h1>
-            <p>A reference for AI that works at enterprise scale</p>
+            <h1>Trusted Federated AI</h1>
+            <p>Operating Model · Reference architecture</p>
           </div>
         </div>
         <div class="header-spacer"></div>
@@ -1937,6 +2092,12 @@
     </header>
 
     <main>
+      <!-- Punchline: the big idea customers should walk away remembering -->
+      <p class="hero-quote">
+        <strong>AI development will be federated. AI control cannot be.</strong>
+        <span class="hero-quote-sub">The next phase of AI adoption won't be won by forcing every team onto one platform. It will be won by creating a trusted operating model for federated AI &mdash; built across platforms, connected across systems, governed through a common control plane, secured through identity and data policy, observed through telemetry, and measured by business outcomes.</span>
+      </p>
+
       <!-- Lens picker: pick the customer conversation you're walking into -->
       <section class="lens-bar" aria-label="Customer conversation lens">
         <span class="lens-label">Lens</span>
@@ -1945,11 +2106,49 @@
         <button type="button" class="lens-btn" data-lens="architecture"><span class="lens-dot"></span>AI Architecture</button>
         <button type="button" class="lens-btn" data-lens="experience"><span class="lens-dot"></span>AI Experience</button>
         <button type="button" class="lens-btn" data-lens="all"><span class="lens-dot"></span>All</button>
+        <a class="leave-behind-link" href="concepts.html" title="Eight foundational concepts for a trusted federated AI operating model">Concepts &nearr;</a>
         <a class="leave-behind-link" id="leaveBehindLink" href="leave-behind.html" title="Open a printable one-page summary for your customer meeting">Leave-behind &rarr;</a>
       </section>
 
+      <!-- 6-step customer conversation flow: the narrative spine -->
+      <section class="flow-strip" aria-label="Customer conversation flow">
+        <div class="flow-strip-head">Customer conversation flow</div>
+        <div class="flow-steps">
+          <button type="button" class="flow-step" data-flow-target="reality">
+            <div class="flow-step-head"><span class="flow-step-num">1</span>Reality</div>
+            <div class="flow-step-label">Your AI ecosystem will be federated.</div>
+            <div class="flow-step-quote">Capabilities and data already span Azure, AWS, GCP, SaaS, and on-prem.</div>
+          </button>
+          <button type="button" class="flow-step" data-flow-target="risk">
+            <div class="flow-step-head"><span class="flow-step-num">2</span>Risk</div>
+            <div class="flow-step-label">Federation without control becomes sprawl.</div>
+            <div class="flow-step-quote">Shadow AI, prompt injection, excessive agency &mdash; outside today&rsquo;s tooling.</div>
+          </button>
+          <button type="button" class="flow-step" data-flow-target="architecture">
+            <div class="flow-step-head"><span class="flow-step-num">3</span>Architecture</div>
+            <div class="flow-step-label">You need a control plane above the build layer.</div>
+            <div class="flow-step-quote">Identity, governance, and observability unified across runtimes.</div>
+          </button>
+          <button type="button" class="flow-step" data-flow-target="trust">
+            <div class="flow-step-head"><span class="flow-step-num">4</span>Trust</div>
+            <div class="flow-step-label">Combine observability, governance, security, identity, data, lifecycle.</div>
+            <div class="flow-step-quote">Microsoft Agent 365 + Entra + Sentinel + Defender + Purview extended to AI.</div>
+          </button>
+          <button type="button" class="flow-step" data-flow-target="economics">
+            <div class="flow-step-head"><span class="flow-step-num">5</span>Economics</div>
+            <div class="flow-step-label">Tie usage and cost back to business outcomes.</div>
+            <div class="flow-step-quote">Cost per resolved case, per generated doc, per avoided manual hour.</div>
+          </button>
+          <button type="button" class="flow-step" data-flow-target="outcome">
+            <div class="flow-step-head"><span class="flow-step-num">6</span>Outcome</div>
+            <div class="flow-step-label">Trusted, measurable AI at enterprise scale.</div>
+            <div class="flow-step-quote">Open the printable leave-behind to close the meeting.</div>
+          </button>
+        </div>
+      </section>
+
       <!-- Hero -->
-      <section class="hero" style="display:block; margin-bottom: 14px;">
+      <section class="hero" id="reality" style="display:block; margin-bottom: 14px;">
         <div class="hero-card" data-lens="all">
           <h2 style="margin: 0 0 6px 0;">Central governance. Decentralized innovation.</h2>
           <p style="margin: 0 0 10px 0; color: var(--cp-text-muted); max-width: 880px;">
@@ -2112,7 +2311,7 @@
         </div>
         <span class="scenario-caption" id="scenarioCaption">Tip: hover any component to see what it connects to. Click for details.</span>
       </section>
-      <section class="canvas-wrap" aria-label="Federated AI architecture diagram">
+      <section class="canvas-wrap" id="canvas" aria-label="Federated AI architecture diagram">
         <div class="canvas-head">
           <h3>How it works — five layers, one promise</h3>
           <span class="subtitle">Each layer delivers an outcome the customer can name. Hover any component to see what it connects to. Click for detail.</span>
@@ -2196,7 +2395,7 @@
     </main>
 
     <footer class="app">
-      Federated AI Environment · Interactive seller reference ·
+      Trusted Federated AI Operating Model · Interactive seller reference ·
       <a href="https://github.com/chriswillia/federated-ai-architecture" target="_blank" rel="noopener noreferrer">View on GitHub</a>
     </footer>
 
@@ -2515,6 +2714,77 @@
       const planesEl = document.getElementById("planes");
       const legendEl = document.getElementById("legend");
 
+      // Per-plane concept refs + seller questions (Phase B)
+      const PLANE_EXTRAS = {
+        experience: {
+          concepts: [
+            { id: "risk-tiers", label: "Risk Tiers" },
+            { id: "trust-contracts", label: "Trust Contracts" },
+          ],
+          questions: [
+            "Which copilots and vertical AI tools do your employees already use today?",
+            "Where do you want AI to show up &mdash; chat, inline in business apps, or both?",
+            "How are citizen-built agents created today, and who reviews them before they go live?",
+            "What approval flows do you require for agent actions that affect customers, records, or money?",
+          ],
+        },
+        model: {
+          concepts: [
+            { id: "progressive-governance", label: "Progressive Governance" },
+            { id: "portfolio-management", label: "Agent Portfolio" },
+            { id: "agent-bom", label: "Agent Bill of Materials" },
+          ],
+          questions: [
+            "Where are teams building AI today?",
+            "Are different groups using different agent platforms?",
+            "Do business users have a safe path to create agents?",
+            "Are teams duplicating agent logic across tools?",
+            "Do you expect AI development to consolidate or remain federated?",
+          ],
+        },
+        fabric: {
+          concepts: [
+            { id: "federated-zones", label: "Federated AI Zones" },
+          ],
+          questions: [
+            "How are agents connecting to tools, APIs, and workflows?",
+            "Are you using or evaluating MCP-style patterns?",
+            "Do you have a standard way to expose tools safely to agents?",
+            "How do you avoid every team building its own one-off integration model?",
+          ],
+        },
+        data: {
+          concepts: [
+            { id: "ai-system-of-record", label: "AI System of Record" },
+            { id: "agent-bom", label: "Agent Bill of Materials" },
+          ],
+          questions: [
+            "What data sources do agents need to access?",
+            "How do agents reach SaaS, on-prem, and cloud data?",
+            "How do you enforce data boundaries when agents move information between systems?",
+            "Are labels, DLP, and compliance policies applied consistently to AI interactions?",
+          ],
+        },
+        control: {
+          concepts: [
+            { id: "ai-system-of-record", label: "AI System of Record" },
+            { id: "trust-contracts", label: "Trust Contracts" },
+            { id: "risk-tiers", label: "Risk Tiers" },
+            { id: "progressive-governance", label: "Progressive Governance" },
+            { id: "finops-by-outcome", label: "FinOps by Outcome" },
+            { id: "portfolio-management", label: "Agent Portfolio" },
+          ],
+          questions: [
+            "Do you have an inventory of all agents, and who owns each one?",
+            "What is your approval process for agent deployment, and how do you retire agents no longer needed?",
+            "Do your agents have identities &mdash; and can you trace an action from prompt to tool call to output?",
+            "Can you investigate what an agent did and why, and detect risky or anomalous behavior?",
+            "Can you tie token usage to business outcomes &mdash; cost per resolved case, per generated doc, per avoided hour?",
+            "Which agents are delivering value, which are creating cost without impact, and how do you decide what to scale, fix, or retire?",
+          ],
+        },
+      };
+
       function renderLegend() {
         if (!legendEl) return;
         legendEl.innerHTML = PLANES.map(
@@ -2553,15 +2823,28 @@
           const captionStrip = p.caption
             ? `<div class="plane-caption"><strong>${p.caption.label}:</strong>${p.caption.tags.map((t) => `<span class="rmf-tag">${t}</span>`).join("")}</div>`
             : "";
+          const extras = PLANE_EXTRAS[p.id] || {};
+          const conceptStrip = (extras.concepts && extras.concepts.length)
+            ? `<div class="plane-concepts"><span class="lbl">Concepts</span>${extras.concepts
+                .map((c) => `<a href="concepts.html#${c.id}" title="Read the concept">${c.label}</a>`)
+                .join("")}</div>`
+            : "";
+          const questionsHtml = (extras.questions && extras.questions.length)
+            ? `<details class="plane-questions"><summary>Questions to ask the customer</summary><ul>${extras.questions
+                .map((q) => `<li>${q}</li>`)
+                .join("")}</ul></details>`
+            : "";
           return `
             <div class="plane" data-plane-id="${p.id}" style="--plane-color: var(${p.color}); --plane-soft: var(${p.colorSoft});">
               <div class="plane-header">
                 <div class="plane-title">${p.title}</div>
                 <div class="plane-desc">${p.desc}</div>
+                ${conceptStrip}
               </div>
               ${platformStrip}
               ${captionStrip}
               <div class="nodes">${nodes}</div>
+              ${questionsHtml}
             </div>`;
         }).join("");
       }
@@ -3068,6 +3351,31 @@
       } catch (e) {
         applyLens(null);
       }
+
+      // ---------- 6-step customer-conversation flow ----------
+      document.querySelectorAll("[data-flow-target]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const target = btn.dataset.flowTarget;
+          let el = null;
+          if (target === "reality") {
+            el = document.getElementById("reality");
+          } else if (target === "risk") {
+            el = document.getElementById("tensions-details");
+            if (el) el.open = true;
+          } else if (target === "architecture") {
+            el = document.getElementById("canvas");
+          } else if (target === "trust") {
+            el = document.querySelector('.plane[data-plane-id="control"]');
+          } else if (target === "economics") {
+            el = document.querySelector('.node[data-node="cost"]') ||
+                 document.querySelector('.plane[data-plane-id="control"]');
+          } else if (target === "outcome") {
+            const link = document.getElementById("leaveBehindLink");
+            if (link && link.href) { window.location.href = link.href; return; }
+          }
+          if (el && el.scrollIntoView) el.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      });
 
       // ---------- Customer challenge selector (seller tool) ----------
       let challengeActive = false;
