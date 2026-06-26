@@ -1,0 +1,3830 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Trusted Federated AI Operating Model — Reference</title>
+    <script>
+      (() => {
+        const param = new URLSearchParams(window.location.search).get("scoutTheme");
+        const theme =
+          param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <style>
+      :root {
+        color-scheme: light;
+        --cp-bg: #f7f4ef;
+        --cp-bg-elevated: #fcfbf8;
+        --cp-surface: #ffffff;
+        --cp-surface-soft: #f5f5f5;
+        --cp-border: #dedede;
+        --cp-border-strong: #919191;
+        --cp-text: #242424;
+        --cp-text-muted: #5c5c5c;
+        --cp-text-soft: #6f6f6f;
+        --cp-accent: #b11f4b;
+        --cp-accent-hover: #9a1a41;
+        --cp-accent-soft: rgba(177, 31, 75, 0.08);
+        --cp-accent-fg: #ffffff;
+        --cp-success: #16a34a;
+        --cp-danger: #dc2626;
+        --cp-warning: #f59e0b;
+        --cp-link: #0078d4;
+        --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
+        --cp-overlay: rgba(255, 255, 255, 0.8);
+        --cp-panel: rgba(255, 255, 255, 0.86);
+        --cp-panel-strong: rgba(255, 255, 255, 0.96);
+        --cp-sheen: rgba(255, 255, 255, 0.55);
+        --cp-highlight: rgba(177, 31, 75, 0.12);
+
+        /* Layer family colors — paired with labels/shapes per design guidance.
+           Warm for business, cool for app/AI, neutral for tech/infra. */
+        --layer-business: #d97757;
+        --layer-business-soft: rgba(217, 119, 87, 0.12);
+        --layer-experience: #c9874a;
+        --layer-experience-soft: rgba(201, 135, 74, 0.12);
+        --layer-control: #2f6f8f;
+        --layer-control-soft: rgba(47, 111, 143, 0.12);
+        --layer-fabric: #3f8ea3;
+        --layer-fabric-soft: rgba(63, 142, 163, 0.12);
+        --layer-data: #4a7c59;
+        --layer-data-soft: rgba(74, 124, 89, 0.14);
+        --layer-model: #6b7a52;
+        --layer-model-soft: rgba(107, 122, 82, 0.14);
+        --layer-infra: #6f6f6f;
+        --layer-infra-soft: rgba(111, 111, 111, 0.12);
+      }
+      html[data-theme="dark"] {
+        color-scheme: dark;
+        --cp-bg: #3d3b3a;
+        --cp-bg-elevated: #343231;
+        --cp-surface: #292929;
+        --cp-surface-soft: #2e2e2e;
+        --cp-border: #474747;
+        --cp-border-strong: #5f5f5f;
+        --cp-text: #dedede;
+        --cp-text-muted: #919191;
+        --cp-text-soft: #b0b0b0;
+        --cp-accent: #fd8ea1;
+        --cp-accent-hover: #fb7b91;
+        --cp-accent-soft: rgba(253, 142, 161, 0.14);
+        --cp-accent-fg: #1a1a1a;
+        --cp-success: #4ade80;
+        --cp-danger: #f87171;
+        --cp-warning: #fbbf24;
+        --cp-link: #4da6ff;
+        --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+        --cp-overlay: rgba(41, 41, 41, 0.88);
+        --cp-panel: rgba(41, 41, 41, 0.72);
+        --cp-panel-strong: rgba(41, 41, 41, 0.96);
+        --cp-sheen: rgba(255, 255, 255, 0.04);
+        --cp-highlight: rgba(253, 142, 161, 0.12);
+
+        --layer-business: #e8a583;
+        --layer-business-soft: rgba(232, 165, 131, 0.18);
+        --layer-experience: #e6b283;
+        --layer-experience-soft: rgba(230, 178, 131, 0.18);
+        --layer-control: #6fb0c9;
+        --layer-control-soft: rgba(111, 176, 201, 0.18);
+        --layer-fabric: #7cc0d4;
+        --layer-fabric-soft: rgba(124, 192, 212, 0.18);
+        --layer-data: #88c5a0;
+        --layer-data-soft: rgba(136, 197, 160, 0.18);
+        --layer-model: #b0ba8a;
+        --layer-model-soft: rgba(176, 186, 138, 0.18);
+        --layer-infra: #b0b0b0;
+        --layer-infra-soft: rgba(176, 176, 176, 0.18);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: var(--cp-bg);
+        color: var(--cp-text);
+        font-family: "Segoe UI", Aptos, Calibri, -apple-system, BlinkMacSystemFont, sans-serif;
+        font-size: 15px;
+        line-height: 1.5;
+      }
+      code,
+      kbd {
+        font-family: Consolas, "Courier New", Courier, monospace;
+        font-size: 0.875em;
+      }
+
+      /* ---------- Header ---------- */
+      header.app {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background: var(--cp-panel-strong);
+        backdrop-filter: saturate(140%) blur(12px);
+        border-bottom: 1px solid var(--cp-border);
+      }
+      .header-inner {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 14px 28px;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        flex-wrap: wrap;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 280px;
+      }
+      .brand-mark {
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        background: var(--cp-accent);
+        display: grid;
+        place-items: center;
+        color: var(--cp-accent-fg);
+        font-weight: 700;
+        letter-spacing: 0.5px;
+      }
+      .brand-text h1 {
+        font-size: 16px;
+        margin: 0;
+        font-weight: 600;
+      }
+      .brand-text p {
+        font-size: 12px;
+        margin: 0;
+        color: var(--cp-text-muted);
+      }
+      .header-spacer {
+        flex: 1;
+      }
+      .toggle-group {
+        display: inline-flex;
+        border: 1px solid var(--cp-border);
+        border-radius: 10px;
+        padding: 3px;
+        background: var(--cp-surface);
+      }
+      .toggle-group button {
+        appearance: none;
+        border: 0;
+        background: transparent;
+        color: var(--cp-text-muted);
+        padding: 6px 14px;
+        border-radius: 7px;
+        font: inherit;
+        cursor: pointer;
+        font-size: 13px;
+      }
+      .toggle-group button.active {
+        background: var(--cp-accent);
+        color: var(--cp-accent-fg);
+        font-weight: 600;
+      }
+      .icon-btn {
+        appearance: none;
+        background: var(--cp-surface);
+        color: var(--cp-text);
+        border: 1px solid var(--cp-border);
+        border-radius: 8px;
+        width: 36px;
+        height: 36px;
+        cursor: pointer;
+        display: grid;
+        place-items: center;
+      }
+      .icon-btn:hover {
+        border-color: var(--cp-border-strong);
+      }
+      .nav-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 12px;
+        font-size: 12.5px;
+        font-weight: 500;
+        color: var(--cp-text);
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-radius: 8px;
+        text-decoration: none;
+        height: 36px;
+        line-height: 1;
+      }
+      .nav-link:hover {
+        border-color: var(--cp-accent);
+        color: var(--cp-accent);
+      }
+
+      /* ---------- Main shell ---------- */
+      main {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 28px;
+      }
+      .hero {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr;
+        gap: 24px;
+        margin-bottom: 28px;
+      }
+      @media (max-width: 980px) {
+        .hero {
+          grid-template-columns: 1fr;
+        }
+      }
+      .hero-card {
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.14);
+      }
+      .hero-card h2 {
+        margin: 0 0 8px;
+        font-size: 20px;
+        letter-spacing: -0.01em;
+      }
+      .hero-card p {
+        color: var(--cp-text-muted);
+        margin: 0 0 14px;
+      }
+      .pill-row {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        background: var(--cp-surface-soft);
+        border: 1px solid var(--cp-border);
+        color: var(--cp-text-muted);
+      }
+      .pill .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        display: inline-block;
+      }
+
+      .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+      .kpi {
+        background: var(--cp-bg-elevated);
+        border: 1px solid var(--cp-border);
+        border-radius: 12px;
+        padding: 14px;
+      }
+      .kpi .label {
+        color: var(--cp-text-muted);
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      .kpi .value {
+        font-size: 22px;
+        font-weight: 600;
+        margin-top: 4px;
+      }
+      .kpi .sub {
+        color: var(--cp-text-soft);
+        font-size: 12px;
+        margin-top: 2px;
+      }
+
+      /* ---------- Architecture canvas ---------- */
+      .canvas-wrap {
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.14);
+      }
+      .canvas-head {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 14px;
+        flex-wrap: wrap;
+      }
+      .canvas-head h3 {
+        margin: 0;
+        font-size: 22px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+      }
+      .canvas-head .subtitle {
+        color: var(--cp-text-muted);
+        font-size: 13px;
+      }
+      .legend {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-left: auto;
+      }
+      .legend-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        color: var(--cp-text-muted);
+      }
+      .swatch {
+        width: 14px;
+        height: 10px;
+        border-radius: 3px;
+        display: inline-block;
+        border: 1px solid var(--cp-border);
+      }
+
+      /* Layer rows */
+      .planes {
+        display: grid;
+        gap: 12px;
+      }
+      .plane {
+        border: 1px solid var(--cp-border);
+        border-radius: 14px;
+        background: var(--cp-bg-elevated);
+        overflow: hidden;
+        position: relative;
+      }
+      .plane::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 6px;
+        background: var(--plane-color, var(--cp-accent));
+      }
+      .plane-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 16px 12px 22px;
+        border-bottom: 1px dashed var(--cp-border);
+        background: var(--plane-soft, var(--cp-surface-soft));
+      }
+      .plane-title {
+        font-weight: 600;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .plane-shape {
+        width: 20px;
+        height: 20px;
+        display: inline-grid;
+        place-items: center;
+        color: var(--plane-color);
+      }
+      .plane-desc {
+        color: var(--cp-text-muted);
+        font-size: 12.5px;
+        margin-left: 8px;
+      }
+      .plane-meta {
+        margin-left: auto;
+        font-size: 11px;
+        color: var(--cp-text-soft);
+      }
+      .nodes {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 10px;
+        padding: 14px 14px 14px 22px;
+      }
+      .platforms {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 10px 14px 4px 22px;
+        align-items: center;
+      }
+      .platforms .label {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--cp-text-soft);
+        margin-right: 4px;
+      }
+      .platform-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        padding: 3px 9px;
+        border-radius: 999px;
+        background: var(--plane-soft, var(--cp-surface-soft));
+        border: 1px solid var(--cp-border);
+        color: var(--cp-text-muted);
+        white-space: nowrap;
+        opacity: 0.72;
+        transition: opacity 120ms ease, color 120ms ease, border-color 120ms ease;
+      }
+      .platform-chip:hover {
+        opacity: 1;
+        color: var(--cp-text);
+        border-color: var(--plane-color, var(--cp-accent));
+      }
+      .platform-chip .vendor-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 2px;
+        flex-shrink: 0;
+        opacity: 0.6;
+      }
+      .platform-chip:hover .vendor-dot { opacity: 1; }
+      .platform-chip .vendor {
+        color: var(--cp-text-muted);
+        font-size: 10.5px;
+      }
+      .node {
+        position: relative;
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-radius: 10px;
+        padding: 12px 12px 12px 14px;
+        cursor: pointer;
+        transition:
+          transform 0.12s ease,
+          border-color 0.12s ease,
+          box-shadow 0.12s ease;
+        text-align: left;
+        appearance: none;
+        font: inherit;
+        color: inherit;
+        width: 100%;
+      }
+      .node::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 10px;
+        bottom: 10px;
+        width: 3px;
+        background: var(--plane-color, var(--cp-accent));
+        border-radius: 3px;
+        opacity: 0.7;
+      }
+      .node:hover {
+        border-color: var(--plane-color, var(--cp-accent));
+        box-shadow: 0 0 0 3px var(--plane-soft, var(--cp-accent-soft));
+        transform: translateY(-1px);
+      }
+      .node .node-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+        font-size: 13.5px;
+      }
+      .node .node-icon {
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+        color: var(--plane-color);
+      }
+      .node .node-sub {
+        color: var(--cp-text-muted);
+        font-size: 12px;
+        margin-top: 4px;
+        line-height: 1.4;
+      }
+      .node .badge-row {
+        display: flex;
+        gap: 6px;
+        margin-top: 8px;
+        flex-wrap: wrap;
+      }
+      .badge {
+        font-size: 10.5px;
+        padding: 2px 7px;
+        border-radius: 999px;
+        background: var(--cp-surface-soft);
+        border: 1px solid var(--cp-border);
+        color: var(--cp-text-muted);
+      }
+      .badge.gap {
+        color: var(--cp-danger);
+        border-color: color-mix(in srgb, var(--cp-danger) 30%, var(--cp-border));
+      }
+      .badge.target {
+        color: var(--cp-success);
+        border-color: color-mix(in srgb, var(--cp-success) 35%, var(--cp-border));
+      }
+
+      /* Cross-cloud strip */
+      .clouds {
+        display: flex;
+        gap: 8px;
+        padding: 10px 14px 14px 22px;
+        flex-wrap: wrap;
+      }
+      .cloud-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        padding: 5px 10px;
+        border-radius: 999px;
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        color: var(--cp-text-muted);
+      }
+      .cloud-chip svg {
+        width: 14px;
+        height: 14px;
+      }
+      a.cloud-chip-link {
+        text-decoration: none;
+        color: var(--cp-text-muted);
+        margin-left: 6px;
+        border-style: dashed;
+        cursor: pointer;
+        transition: color 120ms ease, border-color 120ms ease, background 120ms ease;
+      }
+      a.cloud-chip-link:hover {
+        color: var(--cp-accent);
+        border-color: var(--cp-accent);
+        border-style: solid;
+        background: color-mix(in srgb, var(--cp-accent) 6%, var(--cp-surface));
+      }
+
+      /* ---------- Side compare panel ---------- */
+      .compare {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-top: 28px;
+      }
+      @media (max-width: 900px) {
+        .compare {
+          grid-template-columns: 1fr;
+        }
+      }
+      .compare-card {
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.14);
+      }
+      .compare-card h3 {
+        margin: 0 0 4px;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .compare-card .lead {
+        color: var(--cp-text-muted);
+        margin: 0 0 14px;
+        font-size: 13px;
+      }
+      .compare-card ul {
+        margin: 0;
+        padding-left: 18px;
+      }
+      .compare-card li {
+        margin: 6px 0;
+        font-size: 13.5px;
+        color: var(--cp-text);
+      }
+      .tag-current {
+        color: var(--cp-danger);
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .tag-target {
+        color: var(--cp-success);
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      /* ---------- Pillars ---------- */
+      .pillars {
+        margin-top: 28px;
+      }
+      .pillars h3 {
+        font-size: 15px;
+        margin: 0 0 14px;
+      }
+      .pillar-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 12px;
+      }
+      .pillar {
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-radius: 14px;
+        padding: 16px;
+      }
+      .pillar .head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 6px;
+      }
+      .pillar .head .icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        display: grid;
+        place-items: center;
+        background: var(--cp-accent-soft);
+        color: var(--cp-accent);
+      }
+      .pillar h4 {
+        margin: 0;
+        font-size: 14px;
+      }
+      .pillar p {
+        margin: 4px 0 0;
+        font-size: 12.5px;
+        color: var(--cp-text-muted);
+      }
+
+      /* ---------- Drawer / Drill-down ---------- */
+      .drawer-scrim {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.36);
+        z-index: 50;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.18s ease;
+      }
+      .drawer-scrim.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .drawer {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: min(540px, 100%);
+        background: var(--cp-bg-elevated);
+        border-left: 1px solid var(--cp-border);
+        box-shadow: var(--cp-shadow);
+        z-index: 51;
+        transform: translateX(100%);
+        transition: transform 0.22s ease;
+        display: flex;
+        flex-direction: column;
+      }
+      .drawer.open {
+        transform: translateX(0);
+      }
+      .drawer-head {
+        padding: 18px 20px;
+        border-bottom: 1px solid var(--cp-border);
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+      }
+      .drawer-head .icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: grid;
+        place-items: center;
+        background: var(--plane-soft, var(--cp-accent-soft));
+        color: var(--plane-color, var(--cp-accent));
+        flex-shrink: 0;
+      }
+      .drawer-head .title {
+        flex: 1;
+      }
+      .drawer-head h3 {
+        margin: 0;
+        font-size: 17px;
+      }
+      .drawer-head .subtitle {
+        color: var(--cp-text-muted);
+        font-size: 12.5px;
+        margin-top: 3px;
+      }
+      .drawer-close {
+        appearance: none;
+        background: transparent;
+        border: 1px solid var(--cp-border);
+        color: var(--cp-text);
+        border-radius: 8px;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+      }
+      .drawer-body {
+        padding: 18px 20px;
+        overflow-y: auto;
+        flex: 1;
+      }
+      .drawer-section {
+        margin-bottom: 20px;
+      }
+      .drawer-section h4 {
+        margin: 0 0 8px;
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--cp-text-soft);
+      }
+      .drawer-section p {
+        margin: 0 0 8px;
+        font-size: 13.5px;
+        color: var(--cp-text);
+      }
+      .drawer-section ul {
+        margin: 0;
+        padding-left: 18px;
+      }
+      .drawer-section li {
+        font-size: 13px;
+        color: var(--cp-text);
+        margin: 4px 0;
+      }
+      .status-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .status-box {
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-radius: 10px;
+        padding: 12px;
+      }
+      .status-box .label {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--cp-text-soft);
+        margin-bottom: 6px;
+      }
+      .status-box.current .label {
+        color: var(--cp-danger);
+      }
+      .status-box.target .label {
+        color: var(--cp-success);
+      }
+      .status-box p {
+        margin: 0;
+        font-size: 13px;
+      }
+      .tech-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .tech-chip {
+        font-size: 11.5px;
+        padding: 3px 9px;
+        border-radius: 999px;
+        background: var(--cp-surface-soft);
+        border: 1px solid var(--cp-border);
+        color: var(--cp-text-muted);
+      }
+
+      footer.app {
+        max-width: 1400px;
+        margin: 32px auto 0;
+        padding: 16px 28px 36px;
+        color: var(--cp-text-soft);
+        font-size: 12px;
+        border-top: 1px solid var(--cp-border);
+      }
+
+      /* ---------- Interactivity overlay ---------- */
+      .canvas-wrap { position: relative; }
+      .planes { position: relative; }
+      .planes-overlay {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 5;
+        overflow: visible;
+      }
+      .planes-overlay path {
+        fill: none;
+        stroke: var(--cp-accent);
+        stroke-width: 1.75;
+        stroke-dasharray: 6 5;
+        opacity: 0.85;
+        animation: trace-dash 1.4s linear infinite;
+      }
+      @keyframes trace-dash {
+        to { stroke-dashoffset: -22; }
+      }
+      .node.dimmed {
+        opacity: 0.28;
+        filter: grayscale(50%);
+      }
+      .node.traced {
+        border-color: var(--plane-color);
+        box-shadow: 0 0 0 2px var(--plane-soft), 0 6px 18px rgba(0, 0, 0, 0.08);
+        z-index: 4;
+      }
+      .node.traced-active {
+        border-color: var(--cp-accent);
+        box-shadow: 0 0 0 3px var(--cp-accent-soft), 0 8px 24px rgba(0, 0, 0, 0.12);
+        transform: translateY(-2px);
+        z-index: 6;
+      }
+
+      /* ---------- Scenarios bar ---------- */
+      .scenarios {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+        padding: 12px 16px;
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-radius: 14px;
+        box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.14);
+      }
+      .scenarios .label {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--cp-text-soft);
+        margin-right: 4px;
+      }
+      .scenario-btn {
+        appearance: none;
+        background: var(--cp-bg-elevated);
+        border: 1px solid var(--cp-border);
+        border-radius: 999px;
+        padding: 6px 14px;
+        cursor: pointer;
+        font: inherit;
+        font-size: 12.5px;
+        color: var(--cp-text);
+      }
+      .scenario-btn:hover {
+        border-color: var(--cp-accent);
+        color: var(--cp-accent);
+      }
+      .scenario-btn.active {
+        background: var(--cp-accent);
+        color: var(--cp-accent-fg);
+        border-color: var(--cp-accent);
+      }
+      .scenario-btn.clear {
+        margin-left: 4px;
+        background: transparent;
+        color: var(--cp-text-muted);
+      }
+      .scenario-caption {
+        margin-left: auto;
+        font-size: 12.5px;
+        color: var(--cp-text-muted);
+        min-height: 18px;
+        text-align: right;
+        flex-basis: 100%;
+        order: 99;
+        padding-top: 4px;
+      }
+      .scenario-caption strong {
+        color: var(--cp-accent);
+        margin-right: 6px;
+      }
+      .scenario-links {
+        flex-basis: 100%;
+        order: 98;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        margin-top: 8px;
+        padding-top: 10px;
+        border-top: 1px dashed var(--cp-border);
+      }
+      .scenario-links .lbl {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--cp-text-soft);
+        margin-right: 4px;
+      }
+      .scenario-links a {
+        appearance: none;
+        background: var(--cp-bg-elevated);
+        border: 1px solid var(--cp-border);
+        border-radius: 999px;
+        padding: 6px 14px;
+        font: inherit;
+        font-size: 12.5px;
+        color: var(--cp-text);
+        text-decoration: none;
+      }
+      .scenario-links a:hover {
+        border-color: var(--cp-accent);
+        color: var(--cp-accent);
+      }
+      .interact-hint {
+        font-size: 11.5px;
+        color: var(--cp-text-soft);
+        margin-bottom: 12px;
+        text-align: center;
+      }
+
+      /* ---------- Story flow ---------- */
+      .flow-wrap {
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-radius: 16px;
+        padding: 22px 24px 18px;
+        margin-bottom: 24px;
+        box-shadow: 0 0 2px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.14);
+      }
+      .flow-head {
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+      }
+      .flow-head h3 {
+        margin: 0;
+        font-size: 16px;
+      }
+      .flow-head .subtitle {
+        color: var(--cp-text-muted);
+        font-size: 13px;
+      }
+      .flow {
+        position: relative;
+        padding-bottom: 70px;
+      }
+      .flow-row {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr auto 1fr;
+        align-items: stretch;
+        gap: 6px;
+      }
+      @media (max-width: 1100px) {
+        .flow-row {
+          grid-template-columns: 1fr;
+        }
+        .flow-arrow {
+          transform: rotate(90deg);
+          justify-self: center;
+        }
+      }
+      .flow-step {
+        position: relative;
+        background: var(--cp-bg-elevated);
+        border: 1px solid var(--cp-border);
+        border-radius: 12px;
+        padding: 12px 12px 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        overflow: hidden;
+      }
+      .flow-step::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: var(--step-color, var(--cp-accent));
+      }
+      .flow-build { --step-color: var(--layer-model); }
+      .flow-publish { --step-color: var(--layer-control); }
+      .flow-run { --step-color: var(--layer-fabric); }
+      .flow-access { --step-color: var(--layer-data); }
+      .flow-deliver { --step-color: var(--layer-experience); }
+      .flow-step-head {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding-left: 6px;
+      }
+      .flow-step-num {
+        width: 22px;
+        height: 22px;
+        border-radius: 6px;
+        background: var(--step-color);
+        color: #fff;
+        font-weight: 700;
+        font-size: 12px;
+        display: grid;
+        place-items: center;
+      }
+      .flow-step-title {
+        font-weight: 600;
+        font-size: 14px;
+      }
+      .flow-step-body {
+        display: flex;
+        flex-direction: column;
+        padding-left: 6px;
+      }
+      .flow-step-body strong {
+        font-size: 12.5px;
+        color: var(--step-color);
+      }
+      .flow-step-body span {
+        font-size: 12px;
+        color: var(--cp-text);
+        line-height: 1.4;
+        margin-top: 2px;
+      }
+      .flow-step-foot {
+        font-size: 11.5px;
+        color: var(--cp-text-muted);
+        padding-left: 6px;
+        margin-top: auto;
+        border-top: 1px dashed var(--cp-border);
+        padding-top: 6px;
+      }
+      .flow-arrow {
+        align-self: center;
+        font-size: 22px;
+        color: var(--cp-text-soft);
+        padding: 0 2px;
+      }
+      .flow-govern {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .flow-govern-rail {
+        height: 8px;
+        border-radius: 999px;
+        background: linear-gradient(
+          90deg,
+          var(--layer-control) 0%,
+          var(--layer-control-soft) 50%,
+          var(--layer-control) 100%
+        );
+        opacity: 0.95;
+      }
+      .flow-govern-label {
+        margin-top: 6px;
+        padding: 8px 12px;
+        background: var(--layer-control-soft);
+        border: 1px solid var(--cp-border);
+        border-radius: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 10px;
+      }
+      .flow-govern-label strong {
+        font-size: 13px;
+        color: var(--layer-control);
+      }
+      .flow-govern-label span {
+        font-size: 12px;
+        color: var(--cp-text);
+      }
+      .flow-govern-label .flow-govern-plat {
+        color: var(--cp-text-muted);
+        font-size: 11.5px;
+        margin-left: auto;
+      }
+
+      /* Plane caption (e.g., NIST RMF mapping) */
+      .plane-caption {
+        margin: 6px 22px 0 22px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        background: var(--cp-surface-soft);
+        border: 1px dashed var(--cp-border);
+        color: var(--cp-text-muted);
+        font-size: 11.5px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .plane-caption strong {
+        color: var(--cp-text);
+        font-weight: 600;
+      }
+      .plane-caption .rmf-tag {
+        display: inline-block;
+        padding: 1px 8px;
+        border-radius: 999px;
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        color: var(--cp-text);
+        font-weight: 600;
+      }
+
+      /* Node note (e.g., OWASP risk tag) */
+      .node-note {
+        margin-top: 6px;
+        font-size: 11px;
+        color: var(--cp-warning);
+        font-style: italic;
+      }
+
+      /* Tensions section */
+      .tensions {
+        margin: 28px 22px 0 22px;
+        padding: 18px 20px 20px 20px;
+        border-radius: 14px;
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-left: 4px solid var(--cp-warning);
+      }
+      .tensions h2 {
+        margin: 0 0 4px 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--cp-text);
+      }
+      .tensions .tensions-sub {
+        margin: 0 0 14px 0;
+        font-size: 12.5px;
+        color: var(--cp-text-muted);
+      }
+      .tensions-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 12px;
+      }
+      .tension-card {
+        padding: 12px 14px;
+        border-radius: 10px;
+        background: var(--cp-surface-soft);
+        border: 1px solid var(--cp-border);
+      }
+      .tension-card .tension-title {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--cp-text);
+        margin-bottom: 4px;
+      }
+      .tension-card .tension-body {
+        font-size: 12px;
+        color: var(--cp-text-muted);
+        line-height: 1.45;
+      }
+
+      /* References section */
+      .references {
+        margin: 24px 22px 0 22px;
+        padding: 16px 20px 18px 20px;
+        border-radius: 14px;
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+      }
+      .references h2 {
+        margin: 0 0 10px 0;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--cp-text);
+      }
+      .references ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 8px 18px;
+      }
+      .references li {
+        font-size: 12px;
+        color: var(--cp-text-muted);
+        line-height: 1.4;
+      }
+      .references a {
+        color: var(--cp-link, var(--layer-control));
+        text-decoration: none;
+      }
+      .references a:hover {
+        text-decoration: underline;
+      }
+
+      /* ---- Challenge selector (seller tool) ---- */
+      .challenges {
+        margin: 0 0 16px 0;
+      }
+      .challenges-head h2 {
+        margin: 0 0 4px 0;
+        font-size: 22px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+      }
+      .challenges-head p {
+        margin: 0 0 14px 0;
+        color: var(--cp-text-muted);
+        font-size: 13px;
+        max-width: 760px;
+      }
+      .challenge-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 12px;
+      }
+      .challenge-card {
+        appearance: none;
+        text-align: left;
+        font-family: inherit;
+        color: var(--cp-text);
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-left: 4px solid var(--accent, var(--cp-accent));
+        border-radius: 10px;
+        padding: 14px 14px 12px 14px;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        min-height: 110px;
+        transition: transform 80ms ease, box-shadow 120ms ease, border-color 120ms ease, background 120ms ease;
+      }
+      .challenge-card:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      }
+      .challenge-card.active {
+        background: color-mix(in srgb, var(--accent, var(--cp-accent)) 8%, var(--cp-surface));
+        box-shadow: 0 0 0 2px var(--accent, var(--cp-accent));
+      }
+      .challenge-quote {
+        font-size: 15px;
+        font-weight: 500;
+        font-style: italic;
+        line-height: 1.45;
+        color: var(--cp-text);
+        position: relative;
+        padding-left: 18px;
+      }
+      .challenge-quote::before {
+        content: "\201C";
+        position: absolute;
+        left: -3px;
+        top: -8px;
+        font-size: 34px;
+        line-height: 1;
+        color: var(--accent, var(--cp-accent));
+        font-style: normal;
+        font-family: Georgia, "Times New Roman", serif;
+        opacity: 0.55;
+      }
+      .challenge-meta {
+        font-size: 10.5px;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        font-weight: 700;
+        color: var(--cp-text-muted);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        order: -1;
+        margin-top: 0;
+      }
+      .challenge-meta .dot {
+        width: 8px; height: 8px; border-radius: 50%;
+        background: var(--accent, var(--cp-accent));
+        display: inline-block;
+      }
+      .challenge-outcome {
+        font-size: 10.5px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 700;
+        color: var(--accent, var(--cp-accent));
+        margin-top: auto;
+      }
+      .challenge-card[hidden] { display: none; }
+
+      /* Active challenge panel */
+      .challenge-panel {
+        margin-top: 14px;
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-left: 4px solid var(--accent, var(--cp-accent));
+        border-radius: 12px;
+        padding: 16px 18px 18px 18px;
+      }
+      .challenge-panel[hidden] { display: none; }
+      .cp-head {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .cp-quote {
+        flex: 1;
+        font-size: 15.5px;
+        font-weight: 600;
+        line-height: 1.35;
+      }
+      .cp-clear {
+        appearance: none;
+        background: transparent;
+        border: 1px solid var(--cp-border);
+        border-radius: 999px;
+        width: 26px;
+        height: 26px;
+        cursor: pointer;
+        color: var(--cp-text-muted);
+        font-size: 16px;
+        line-height: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .cp-clear:hover { color: var(--cp-text); border-color: var(--cp-accent); }
+      .cp-answer {
+        margin-top: 10px;
+        padding: 10px 12px;
+        background: color-mix(in srgb, var(--accent, var(--cp-accent)) 6%, var(--cp-surface-soft));
+        border-radius: 8px;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+      .cp-row {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr;
+        gap: 18px;
+        margin-top: 14px;
+      }
+      @media (max-width: 800px) {
+        .cp-row { grid-template-columns: 1fr; }
+      }
+      .cp-block h4 {
+        margin: 0 0 6px 0;
+        font-size: 10.5px;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        color: var(--cp-text-muted);
+        font-weight: 700;
+      }
+      .cp-block ul {
+        margin: 0;
+        padding-left: 18px;
+        display: grid;
+        gap: 4px;
+      }
+      .cp-block li {
+        font-size: 12.5px;
+        line-height: 1.45;
+      }
+      .cp-block li strong { color: var(--cp-text); font-weight: 600; }
+      .cp-block li em { font-style: italic; color: var(--cp-text); }
+      .cp-pointat {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .pa-chip {
+        font-size: 11.5px;
+        padding: 3px 9px;
+        border-radius: 999px;
+        background: var(--cp-surface-soft);
+        border: 1px solid var(--cp-border);
+        color: var(--cp-text);
+      }
+      .cp-see {
+        margin-top: 12px;
+        font-size: 12.5px;
+      }
+      .cp-see a {
+        color: var(--accent, var(--cp-link, var(--layer-control)));
+        text-decoration: none;
+        font-weight: 600;
+      }
+      .cp-see a:hover { text-decoration: underline; }
+
+      /* Outcomes ribbon */
+      .outcomes-bar {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin: 0 0 16px 0;
+        padding: 10px 14px;
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-radius: 12px;
+      }
+      .filter-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+      }
+      .outcomes-label {
+        font-size: 10.5px;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        color: var(--cp-text-muted);
+        font-weight: 700;
+        margin-right: 4px;
+        min-width: 60px;
+      }
+      .outcome-chip,
+      .persona-chip,
+      .filter-clear {
+        appearance: none;
+        font-family: inherit;
+        font-size: 12.5px;
+        font-weight: 600;
+        cursor: pointer;
+        padding: 6px 12px;
+        border-radius: 999px;
+        border: 1px solid var(--cp-border);
+        background: transparent;
+        color: var(--cp-text);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
+      }
+      .outcome-chip::before,
+      .persona-chip::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--chip-accent, var(--cp-text-muted));
+        display: inline-block;
+      }
+      .outcome-chip[data-outcome="adoption"] { --chip-accent: var(--layer-experience); }
+      .outcome-chip[data-outcome="cost"]     { --chip-accent: var(--layer-model); }
+      .outcome-chip[data-outcome="risk"]     { --chip-accent: var(--layer-control); }
+      .outcome-chip[data-outcome="freedom"]  { --chip-accent: var(--layer-fabric); }
+      .persona-chip { --chip-accent: var(--cp-text-muted); }
+      .persona-chip[data-persona="cio"]  { --chip-accent: var(--layer-model); }
+      .persona-chip[data-persona="ciso"] { --chip-accent: var(--layer-control); }
+      .persona-chip[data-persona="cdo"]  { --chip-accent: var(--layer-data); }
+      .persona-chip[data-persona="ai"]   { --chip-accent: var(--layer-fabric); }
+      .persona-chip[data-persona="lob"]  { --chip-accent: var(--layer-experience); }
+      .outcome-chip:hover,
+      .persona-chip:hover {
+        border-color: var(--chip-accent, var(--cp-accent));
+      }
+      .outcome-chip.active,
+      .persona-chip.active {
+        background: color-mix(in srgb, var(--chip-accent, var(--cp-accent)) 14%, var(--cp-surface));
+        border-color: var(--chip-accent, var(--cp-accent));
+      }
+      .filter-clear {
+        color: var(--cp-text-muted);
+        font-weight: 500;
+        margin-left: auto;
+      }
+      .filter-clear:hover { color: var(--cp-text); border-color: var(--cp-accent); }
+
+      /* Hero "Why federated?" expander */
+      .hero-why {
+        margin-top: 4px;
+        font-size: 12.5px;
+        color: var(--cp-text-muted);
+      }
+      .hero-why > summary {
+        list-style: none;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 600;
+        color: var(--cp-text);
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--cp-border);
+        background: var(--cp-surface-soft);
+        font-size: 12px;
+      }
+      .hero-why > summary::-webkit-details-marker { display: none; }
+      .hero-why > summary::before {
+        content: "▸";
+        font-size: 10px;
+        color: var(--cp-text-muted);
+        transition: transform 120ms ease;
+      }
+      .hero-why[open] > summary::before { transform: rotate(90deg); }
+      .hero-why > p {
+        margin: 10px 0 0 0;
+        max-width: 880px;
+        line-height: 1.55;
+      }
+
+      /* Challenge panel outcome pill + headline + soundbite */
+      .cp-headline {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .cp-outcome {
+        align-self: flex-start;
+        font-size: 10.5px;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        font-weight: 700;
+        color: var(--accent, var(--cp-accent));
+        padding: 3px 10px;
+        border-radius: 999px;
+        background: color-mix(in srgb, var(--accent, var(--cp-accent)) 12%, var(--cp-surface));
+        border: 1px solid color-mix(in srgb, var(--accent, var(--cp-accent)) 30%, var(--cp-border));
+      }
+      .cp-soundbite {
+        margin-top: 12px;
+        padding: 12px 14px;
+        border-left: 3px solid var(--accent, var(--cp-accent));
+        background: color-mix(in srgb, var(--accent, var(--cp-accent)) 5%, var(--cp-surface-soft));
+        font-size: 14px;
+        font-style: italic;
+        line-height: 1.5;
+        color: var(--cp-text);
+        border-radius: 0 8px 8px 0;
+      }
+      .cp-soundbite::before {
+        content: "Say this";
+        font-style: normal;
+        font-weight: 700;
+        font-size: 10.5px;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        color: var(--cp-text-muted);
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      /* Copy talk track button */
+      .cp-copy {
+        appearance: none;
+        font-family: inherit;
+        font-size: 11.5px;
+        font-weight: 600;
+        cursor: pointer;
+        padding: 5px 10px;
+        border-radius: 6px;
+        border: 1px solid var(--cp-border);
+        background: var(--cp-surface);
+        color: var(--cp-text-muted);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 8px;
+        transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
+      }
+      .cp-copy:hover { color: var(--cp-text); border-color: var(--cp-accent); }
+      .cp-copy.copied {
+        background: color-mix(in srgb, var(--accent, var(--cp-accent)) 18%, var(--cp-surface));
+        color: var(--cp-text);
+        border-color: var(--accent, var(--cp-accent));
+      }
+
+      /* Walk-the-architecture button + highlight states */
+      .scenario-sep {
+        color: var(--cp-text-muted);
+        opacity: 0.5;
+        margin: 0 4px;
+      }
+      .scenario-btn.walk-arch {
+        border-color: var(--cp-accent);
+        color: var(--cp-text);
+      }
+      .scenario-btn.walk-arch.active {
+        background: color-mix(in srgb, var(--cp-accent) 14%, var(--cp-surface));
+        border-color: var(--cp-accent);
+      }
+      .plane.plane-walked-active {
+        box-shadow: 0 0 0 3px var(--plane-color, var(--cp-accent));
+        z-index: 2;
+        transition: box-shadow 200ms ease, opacity 200ms ease, filter 200ms ease;
+      }
+      .plane.plane-walked-dim {
+        opacity: 0.32;
+        filter: saturate(0.55);
+        transition: opacity 200ms ease, filter 200ms ease;
+      }
+
+      /* Presenter mode — strip noise for screen-share */
+      html.presenter .hero,
+      html.presenter footer.app,
+      html.presenter details.collapsible {
+        display: none !important;
+      }
+      html.presenter main { padding-top: 8px; }
+      #presenterToggle.active {
+        background: color-mix(in srgb, var(--cp-accent) 18%, var(--cp-surface));
+        border-color: var(--cp-accent);
+      }
+
+      /* Node highlight state when a challenge is active */
+      .node.cha-target {
+        box-shadow: 0 0 0 2px var(--accent, var(--cp-accent));
+        background: color-mix(in srgb, var(--accent, var(--cp-accent)) 6%, var(--cp-surface));
+      }
+      .node.cha-dim {
+        opacity: 0.32;
+        filter: saturate(0.55);
+      }
+
+      /* Collapsible details */
+      details.collapsible {
+        margin: 24px 22px 0 22px;
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-radius: 14px;
+        padding: 0 20px;
+      }
+      details.collapsible[open] { padding-bottom: 18px; }
+      details.collapsible > summary {
+        list-style: none;
+        cursor: pointer;
+        padding: 14px 0;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--cp-text);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      details.collapsible > summary::-webkit-details-marker { display: none; }
+      details.collapsible > summary::before {
+        content: "▸";
+        color: var(--cp-text-muted);
+        transition: transform 120ms ease;
+        display: inline-block;
+        font-size: 12px;
+      }
+      details.collapsible[open] > summary::before { transform: rotate(90deg); }
+      details.collapsible > summary .sum-meta {
+        margin-left: auto;
+        font-weight: 400;
+        font-size: 12px;
+        color: var(--cp-text-muted);
+      }
+
+      /* ---------- Lens picker ---------- */
+      .lens-bar {
+        position: sticky;
+        top: 56px;
+        z-index: 19;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        padding: 10px 22px;
+        background: color-mix(in srgb, var(--cp-surface) 92%, transparent);
+        backdrop-filter: blur(6px);
+        border-bottom: 1px solid var(--cp-border);
+      }
+      .lens-bar .lens-label {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--cp-text-soft);
+        font-weight: 600;
+      }
+      .lens-bar .lens-prompt {
+        font-size: 12.5px;
+        color: var(--cp-text-muted);
+        margin-right: 4px;
+      }
+      .lens-btn {
+        appearance: none;
+        background: var(--cp-bg-elevated);
+        border: 1px solid var(--cp-border);
+        border-radius: 999px;
+        padding: 7px 16px;
+        font: inherit;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        color: var(--cp-text);
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
+      }
+      .lens-btn .lens-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--lens-color, var(--cp-accent));
+      }
+      .lens-btn:hover {
+        border-color: var(--lens-color, var(--cp-accent));
+        color: var(--cp-text);
+      }
+      .lens-btn.active {
+        background: color-mix(in srgb, var(--lens-color) 14%, var(--cp-surface));
+        border-color: var(--lens-color);
+        color: var(--cp-text);
+      }
+      .lens-btn.active .lens-dot { box-shadow: 0 0 0 3px color-mix(in srgb, var(--lens-color) 28%, transparent); }
+      .lens-btn[data-lens="security"]      { --lens-color: var(--layer-control); }
+      .lens-btn[data-lens="architecture"]  { --lens-color: var(--layer-fabric); }
+      .lens-btn[data-lens="experience"]    { --lens-color: var(--layer-experience); }
+      .lens-btn[data-lens="all"]           { --lens-color: var(--cp-text-muted); }
+      .lens-bar .leave-behind-link {
+        margin-left: auto;
+        font-size: 12px;
+        color: var(--cp-link);
+        text-decoration: none;
+        padding: 6px 12px;
+        border-radius: 8px;
+        border: 1px solid var(--cp-border);
+        background: var(--cp-bg-elevated);
+      }
+      .lens-bar .leave-behind-link:hover { border-color: var(--cp-accent); color: var(--cp-accent); }
+
+      /* ---------- Lens-aware hero ---------- */
+      .hero-card[data-lens] { display: none; }
+      .hero-card[data-lens="all"] { display: block; }
+      html[data-lens="security"]     .hero-card[data-lens="security"]     { display: block; }
+      html[data-lens="architecture"] .hero-card[data-lens="architecture"] { display: block; }
+      html[data-lens="experience"]   .hero-card[data-lens="experience"]   { display: block; }
+      html[data-lens="security"]     .hero-card[data-lens="all"],
+      html[data-lens="architecture"] .hero-card[data-lens="all"],
+      html[data-lens="experience"]   .hero-card[data-lens="all"] { display: none; }
+      .hero-card[data-lens="security"]     { border-left: 4px solid var(--layer-control); padding-left: 14px; }
+      .hero-card[data-lens="architecture"] { border-left: 4px solid var(--layer-fabric);  padding-left: 14px; }
+      .hero-card[data-lens="experience"]   { border-left: 4px solid var(--layer-experience); padding-left: 14px; }
+      .hero-card .hero-eyebrow {
+        display: inline-block;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-weight: 700;
+        color: var(--lens-color, var(--cp-text-muted));
+        margin-bottom: 6px;
+      }
+      .hero-card[data-lens="security"]     .hero-eyebrow { --lens-color: var(--layer-control); }
+      .hero-card[data-lens="architecture"] .hero-eyebrow { --lens-color: var(--layer-fabric); }
+      .hero-card[data-lens="experience"]   .hero-eyebrow { --lens-color: var(--layer-experience); }
+
+      /* ---------- Lens-aware node glow / dim ---------- */
+      html[data-lens] .node:not(.lens-glow) {
+        opacity: 0.42;
+        filter: saturate(0.55);
+      }
+      html[data-lens] .node.lens-glow {
+        box-shadow: 0 0 0 2px var(--lens-glow-color, var(--cp-accent)),
+                    0 6px 18px rgba(0, 0, 0, 0.08);
+        background: color-mix(in srgb, var(--lens-glow-color, var(--cp-accent)) 6%, var(--cp-surface));
+      }
+      html[data-lens="security"]     .node.lens-glow { --lens-glow-color: var(--layer-control); }
+      html[data-lens="architecture"] .node.lens-glow { --lens-glow-color: var(--layer-fabric); }
+      html[data-lens="experience"]   .node.lens-glow { --lens-glow-color: var(--layer-experience); }
+
+      /* ---------- MS product badge on each node ---------- */
+      .node-ms-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        margin-top: 8px;
+        font-size: 10.5px;
+        font-weight: 500;
+        color: var(--cp-text-muted);
+        padding: 3px 8px;
+        background: var(--cp-bg-elevated);
+        border: 1px solid var(--cp-border);
+        border-radius: 999px;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .node-ms-badge::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #0078d4;
+        flex-shrink: 0;
+      }
+      .node.lens-glow .node-ms-badge {
+        background: color-mix(in srgb, var(--lens-glow-color, var(--cp-accent)) 12%, var(--cp-surface));
+        border-color: var(--lens-glow-color, var(--cp-accent));
+        color: var(--cp-text);
+      }
+
+      /* ---------- Objection cards ---------- */
+      .objections {
+        margin: 22px 22px 0 22px;
+        padding: 18px 22px;
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-radius: 14px;
+      }
+      .objections[hidden] { display: none; }
+      .objections-head {
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+      }
+      .objections-head h3 { margin: 0; font-size: 16px; font-weight: 600; }
+      .objections-head .lens-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        font-weight: 600;
+        color: var(--lens-glow-color, var(--cp-text-muted));
+        padding: 3px 10px;
+        background: color-mix(in srgb, var(--lens-glow-color, var(--cp-accent)) 12%, var(--cp-surface));
+        border: 1px solid var(--lens-glow-color, var(--cp-border));
+        border-radius: 999px;
+      }
+      html[data-lens="security"]     .objections { --lens-glow-color: var(--layer-control); }
+      html[data-lens="architecture"] .objections { --lens-glow-color: var(--layer-fabric); }
+      html[data-lens="experience"]   .objections { --lens-glow-color: var(--layer-experience); }
+      .objections-head p {
+        margin: 0;
+        font-size: 12.5px;
+        color: var(--cp-text-muted);
+        flex-basis: 100%;
+      }
+      .obj-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 12px;
+      }
+      .obj-card {
+        padding: 12px 14px;
+        background: var(--cp-bg-elevated);
+        border: 1px solid var(--cp-border);
+        border-left: 3px solid var(--lens-glow-color, var(--cp-accent));
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .obj-quote {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--cp-text);
+        line-height: 1.35;
+      }
+      .obj-quote::before { content: "\201C"; }
+      .obj-quote::after  { content: "\201D"; }
+      .obj-response {
+        font-size: 12px;
+        color: var(--cp-text-muted);
+        line-height: 1.45;
+      }
+      .obj-pivot {
+        font-size: 11.5px;
+        margin-top: 2px;
+        color: var(--lens-glow-color, var(--cp-link));
+      }
+      .obj-pivot a {
+        color: inherit;
+        text-decoration: none;
+        font-weight: 500;
+        border-bottom: 1px dashed currentColor;
+      }
+      .obj-pivot a:hover { border-bottom-style: solid; }
+
+      /* ---------- Hero punchline + 6-step conversation flow ---------- */
+      .hero-quote {
+        margin: 18px 22px 6px;
+        padding: 18px 22px;
+        border-left: 4px solid var(--cp-accent);
+        background: color-mix(in srgb, var(--cp-accent) 6%, var(--cp-surface));
+        border-radius: 6px;
+        font-size: 18px;
+        line-height: 1.4;
+        letter-spacing: -0.01em;
+        font-weight: 500;
+        color: var(--cp-text);
+      }
+      .hero-quote strong { color: var(--cp-accent); font-weight: 700; }
+      .hero-quote .hero-quote-sub {
+        display: block;
+        margin-top: 4px;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--cp-text-muted);
+        letter-spacing: 0;
+      }
+      @media (max-width: 720px) { .hero-quote { font-size: 15px; } }
+
+      .flow-strip {
+        margin: 0 22px 18px;
+        padding: 12px 14px;
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-radius: 12px;
+      }
+      .flow-strip-head {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-weight: 700;
+        color: var(--cp-text-soft);
+        margin: 0 0 8px 2px;
+      }
+      .flow-steps {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 8px;
+      }
+      @media (max-width: 1000px) { .flow-steps { grid-template-columns: repeat(3, 1fr); } }
+      @media (max-width: 560px)  { .flow-steps { grid-template-columns: repeat(2, 1fr); } }
+      .flow-step {
+        appearance: none;
+        text-align: left;
+        background: var(--cp-bg-elevated);
+        border: 1px solid var(--cp-border);
+        border-radius: 10px;
+        padding: 10px 12px;
+        cursor: pointer;
+        font: inherit;
+        color: var(--cp-text);
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        transition: border-color 120ms ease, background 120ms ease, transform 120ms ease;
+      }
+      .flow-step:hover {
+        border-color: var(--cp-accent);
+        background: color-mix(in srgb, var(--cp-accent) 5%, var(--cp-bg-elevated));
+      }
+      .flow-step-head {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-weight: 700;
+        color: var(--cp-text-soft);
+      }
+      .flow-step-num {
+        display: inline-grid;
+        place-items: center;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: var(--cp-accent);
+        color: var(--cp-accent-fg);
+        font-size: 10px;
+        font-weight: 700;
+      }
+      .flow-step-label { font-size: 12.5px; font-weight: 600; color: var(--cp-text); letter-spacing: 0; }
+      .flow-step-quote { font-size: 11.5px; color: var(--cp-text-muted); line-height: 1.4; }
+
+      /* Anchors offset for sticky header + lens-bar */
+      #reality, #canvas, #tensions-details, .plane[data-plane-id],
+      .node[data-node="cost"] {
+        scroll-margin-top: 130px;
+      }
+
+      /* ---------- Plane concepts + seller-questions reveal ---------- */
+      .plane-concepts {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        align-items: center;
+        margin: 6px 0 0;
+        font-size: 11.5px;
+        color: var(--cp-text-muted);
+      }
+      .plane-concepts .lbl {
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        font-weight: 700;
+        font-size: 10px;
+        color: var(--cp-text-soft);
+      }
+      .plane-concepts a {
+        color: var(--cp-text-muted);
+        text-decoration: none;
+        padding: 2px 8px;
+        border: 1px solid var(--cp-border);
+        border-radius: 999px;
+        background: var(--cp-bg-elevated);
+        transition: border-color 120ms ease, color 120ms ease;
+      }
+      .plane-concepts a:hover {
+        border-color: var(--plane-color, var(--cp-accent));
+        color: var(--plane-color, var(--cp-accent));
+      }
+      .plane-questions {
+        margin-top: 10px;
+        font-size: 12.5px;
+      }
+      .plane-questions > summary {
+        cursor: pointer;
+        font-size: 11.5px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        font-weight: 700;
+        color: var(--plane-color, var(--cp-text-soft));
+        list-style: none;
+        padding: 4px 0;
+        user-select: none;
+      }
+      .plane-questions > summary::marker, .plane-questions > summary::-webkit-details-marker { display: none; }
+      .plane-questions > summary::before {
+        content: "+ ";
+        font-weight: 700;
+        margin-right: 4px;
+      }
+      .plane-questions[open] > summary::before { content: "\u2212 "; }
+      .plane-questions ul {
+        margin: 6px 0 2px;
+        padding-left: 18px;
+        color: var(--cp-text-muted);
+        line-height: 1.5;
+      }
+      .plane-questions li { margin-bottom: 4px; }
+
+      /* Reduce motion */
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="app">
+      <div class="header-inner">
+        <div class="brand">
+          <div class="brand-mark">AI</div>
+          <div class="brand-text">
+            <h1>Trusted Federated AI</h1>
+            <p>Operating Model · Reference architecture</p>
+          </div>
+        </div>
+        <div class="header-spacer"></div>
+        <a class="nav-link" href="use-cases.html" title="See real-world flows for M365, SAP, and ServiceNow">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h13M13 5l7 7-7 7"/></svg>
+          Use cases
+        </a>
+        <button class="icon-btn" id="presenterToggle" title="Presenter mode (hides hero, tensions, references for screen-share)" aria-label="Presenter mode" aria-pressed="false">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8M12 18v3"/>
+          </svg>
+        </button>
+        <button class="icon-btn" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <!-- Punchline: the big idea customers should walk away remembering -->
+      <p class="hero-quote">
+        <strong>AI development will be federated. AI control cannot be.</strong>
+        <span class="hero-quote-sub">The next phase of AI adoption won't be won by forcing every team onto one platform. It will be won by creating a trusted operating model for federated AI &mdash; built across platforms, connected across systems, governed through a common control plane, secured through identity and data policy, observed through telemetry, and measured by business outcomes.</span>
+      </p>
+
+      <!-- Lens picker: pick the customer conversation you're walking into -->
+      <section class="lens-bar" aria-label="Customer conversation lens">
+        <span class="lens-label">Lens</span>
+        <span class="lens-prompt">What does this customer want to talk about?</span>
+        <button type="button" class="lens-btn" data-lens="security"><span class="lens-dot"></span>Security &amp; Trust</button>
+        <button type="button" class="lens-btn" data-lens="architecture"><span class="lens-dot"></span>AI Architecture</button>
+        <button type="button" class="lens-btn" data-lens="experience"><span class="lens-dot"></span>AI Experience</button>
+        <button type="button" class="lens-btn" data-lens="all"><span class="lens-dot"></span>All</button>
+        <a class="leave-behind-link" href="index.html" title="Open the one-screen executive view for AE + customer execs">Executive view &nearr;</a>
+        <a class="leave-behind-link" href="concepts.html" title="Eight foundational concepts for a trusted federated AI operating model">Concepts &nearr;</a>
+        <a class="leave-behind-link" id="leaveBehindLink" href="leave-behind.html" title="Open a printable one-page summary for your customer meeting">Leave-behind &rarr;</a>
+      </section>
+
+      <!-- 6-step customer conversation flow: the narrative spine -->
+      <section class="flow-strip" aria-label="Customer conversation flow">
+        <div class="flow-strip-head">Customer conversation flow</div>
+        <div class="flow-steps">
+          <button type="button" class="flow-step" data-flow-target="reality">
+            <div class="flow-step-head"><span class="flow-step-num">1</span>Reality</div>
+            <div class="flow-step-label">Your AI ecosystem will be federated.</div>
+            <div class="flow-step-quote">Capabilities and data already span Azure, AWS, GCP, SaaS, and on-prem.</div>
+          </button>
+          <button type="button" class="flow-step" data-flow-target="risk">
+            <div class="flow-step-head"><span class="flow-step-num">2</span>Risk</div>
+            <div class="flow-step-label">Federation without control becomes sprawl.</div>
+            <div class="flow-step-quote">Shadow AI, prompt injection, excessive agency &mdash; outside today&rsquo;s tooling.</div>
+          </button>
+          <button type="button" class="flow-step" data-flow-target="architecture">
+            <div class="flow-step-head"><span class="flow-step-num">3</span>Architecture</div>
+            <div class="flow-step-label">You need a control plane above the build layer.</div>
+            <div class="flow-step-quote">Identity, governance, and observability unified across runtimes.</div>
+          </button>
+          <button type="button" class="flow-step" data-flow-target="trust">
+            <div class="flow-step-head"><span class="flow-step-num">4</span>Trust</div>
+            <div class="flow-step-label">Combine observability, governance, security, identity, data, lifecycle.</div>
+            <div class="flow-step-quote">Microsoft Agent 365 + Entra + Sentinel + Defender + Purview extended to AI.</div>
+          </button>
+          <button type="button" class="flow-step" data-flow-target="economics">
+            <div class="flow-step-head"><span class="flow-step-num">5</span>Economics</div>
+            <div class="flow-step-label">Tie usage and cost back to business outcomes.</div>
+            <div class="flow-step-quote">Cost per resolved case, per generated doc, per avoided manual hour.</div>
+          </button>
+          <button type="button" class="flow-step" data-flow-target="outcome">
+            <div class="flow-step-head"><span class="flow-step-num">6</span>Outcome</div>
+            <div class="flow-step-label">Trusted, measurable AI at enterprise scale.</div>
+            <div class="flow-step-quote">Open the printable leave-behind to close the meeting.</div>
+          </button>
+        </div>
+      </section>
+
+      <!-- Hero -->
+      <section class="hero" id="reality" style="display:block; margin-bottom: 14px;">
+        <div class="hero-card" data-lens="all">
+          <h2 style="margin: 0 0 6px 0;">Central governance. Decentralized innovation.</h2>
+          <p style="margin: 0 0 10px 0; color: var(--cp-text-muted); max-width: 880px;">
+            A federated AI architecture &mdash; <strong>foundational controls centralized, agent
+            development decentralized</strong> &mdash; so the business moves fast and the enterprise
+            stays in charge.
+          </p>
+          <details class="hero-why">
+            <summary>Why federated?</summary>
+            <p>
+              Today, AI capabilities and data are fragmented across Azure, AWS, GCP, SaaS, and on-prem &mdash;
+              each with its own identities, tools, and silos, driving inconsistent governance and inefficiency.
+              A federated AI architecture unifies a single <strong>control plane</strong> for
+              <strong>identity, governance, and observability</strong> across clouds, while domain teams stay
+              free to build on the platforms best suited to their work &mdash; combining
+              <strong>central trust and compliance</strong> with <strong>local agility</strong>.
+            </p>
+          </details>
+        </div>
+        <div class="hero-card" data-lens="security">
+          <span class="hero-eyebrow">For the CISO conversation</span>
+          <h2 style="margin: 0 0 6px 0;">Trust your AI estate.</h2>
+          <p style="margin: 0 0 10px 0; color: var(--cp-text-muted); max-width: 880px;">
+            See every agent. Govern every prompt. Catch every misuse. A federated AI architecture
+            extends your existing <strong>Microsoft Sentinel, Defender, Purview, and Entra</strong>
+            controls to AI &mdash; including the AI your employees use without telling you.
+          </p>
+          <details class="hero-why">
+            <summary>Why this matters now</summary>
+            <p>
+              Shadow AI is the new shadow IT. Without an AI-aware control plane, prompt-injection,
+              data exfiltration, and excessive agency all bypass your existing tooling. The same
+              <strong>identity, DLP, and SIEM</strong> that protect your data today need to see
+              agents, tools, and tokens &mdash; not just users and files.
+            </p>
+          </details>
+        </div>
+        <div class="hero-card" data-lens="architecture">
+          <span class="hero-eyebrow">For the CIO &amp; CTO conversation</span>
+          <h2 style="margin: 0 0 6px 0;">One platform. Many clouds. Zero rewrites.</h2>
+          <p style="margin: 0 0 10px 0; color: var(--cp-text-muted); max-width: 880px;">
+            A federated AI architecture lets you <strong>build once and deploy anywhere</strong> &mdash;
+            Azure, AWS, GCP, on-prem, or inside SAP and Salesforce &mdash; using <strong>MCP, A2A,
+            and APIM</strong> as the shared wiring, with Foundry as the central control plane.
+          </p>
+          <details class="hero-why">
+            <summary>Why federated?</summary>
+            <p>
+              Most enterprises have AI capabilities and data spread across multiple clouds and SaaS
+              apps. Picking one cloud means starving the others. A federated model gives every team
+              <strong>local agility</strong> on the runtime that fits the job, while
+              <strong>identity, governance, and observability</strong> stay unified.
+            </p>
+          </details>
+        </div>
+        <div class="hero-card" data-lens="experience">
+          <span class="hero-eyebrow">For the AI &amp; business leader conversation</span>
+          <h2 style="margin: 0 0 6px 0;">AI in your daily work, governed by default.</h2>
+          <p style="margin: 0 0 10px 0; color: var(--cp-text-muted); max-width: 880px;">
+            Employees use <strong>M365 Copilot</strong>, business-app copilots, and citizen-built agents
+            in <strong>Copilot Studio</strong> &mdash; one chat surface, every business app, every
+            backend system &mdash; without IT chasing shadow tools or rebuilding integrations per
+            department.
+          </p>
+          <details class="hero-why">
+            <summary>Why this matters now</summary>
+            <p>
+              The fastest-growing AI use cases aren't pro-code apps &mdash; they're employee-built
+              agents that answer HR questions, file expenses, summarize tickets. The win is not
+              another tool; it's <strong>one consistent surface</strong> for users and
+              <strong>one consistent control plane</strong> for IT.
+            </p>
+          </details>
+        </div>
+      </section>
+
+      <!-- Outcomes ribbon (customer-outcome filter) -->
+      <section class="outcomes-bar" aria-label="Filter challenges">
+        <div class="filter-row">
+          <span class="outcomes-label">Outcome</span>
+          <button type="button" class="outcome-chip" data-outcome="adoption">Faster adoption</button>
+          <button type="button" class="outcome-chip" data-outcome="cost">Predictable cost</button>
+          <button type="button" class="outcome-chip" data-outcome="risk">Lower risk</button>
+          <button type="button" class="outcome-chip" data-outcome="freedom">Cloud freedom</button>
+        </div>
+        <div class="filter-row">
+          <span class="outcomes-label">Persona</span>
+          <button type="button" class="persona-chip" data-persona="cio">CIO</button>
+          <button type="button" class="persona-chip" data-persona="ciso">CISO</button>
+          <button type="button" class="persona-chip" data-persona="cdo">CDO</button>
+          <button type="button" class="persona-chip" data-persona="ai">Head of AI</button>
+          <button type="button" class="persona-chip" data-persona="lob">Line of business</button>
+          <button type="button" class="filter-clear" id="clearFilters">Clear filters</button>
+        </div>
+      </section>
+
+      <!-- Customer challenge selector (seller tool) -->
+      <section class="challenges" aria-labelledby="challenges-heading">
+        <div class="challenges-head">
+          <h2 id="challenges-heading">Talk to customers about…</h2>
+          <p>Pick the conversation your customer wants to have. We’ll surface the customer’s own words, a sound-bite you can say out loud, suggested discovery questions, and the architecture pieces that deliver the outcome.</p>
+        </div>
+        <div class="challenge-grid" id="challengeGrid"></div>
+        <div class="challenge-panel" id="challengePanel" hidden>
+          <div class="cp-head">
+            <div class="cp-headline">
+              <div class="cp-outcome" id="cpOutcome"></div>
+              <div class="cp-quote" id="cpQuote"></div>
+            </div>
+            <button class="cp-clear" id="cpClear" type="button" title="Clear selection" aria-label="Clear selection">×</button>
+          </div>
+          <button class="cp-copy" id="cpCopy" type="button" title="Copy this talk track to clipboard">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy talk track
+          </button>
+          <div class="cp-soundbite" id="cpSoundbite"></div>
+          <div class="cp-answer" id="cpAnswer"></div>
+          <div class="cp-row">
+            <div class="cp-block">
+              <h4>Questions to ask the customer</h4>
+              <ul id="cpPoints"></ul>
+            </div>
+            <div class="cp-block">
+              <h4>Point to in the architecture</h4>
+              <div class="cp-pointat" id="cpPointAt"></div>
+              <div class="cp-see" id="cpSeeItWork"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Lens-specific objection handling cards -->
+      <section class="objections" id="objections" hidden aria-labelledby="objections-heading">
+        <div class="objections-head">
+          <h3 id="objections-heading">When the customer pushes back&hellip;</h3>
+          <span class="lens-pill" id="objectionsLensPill">Lens</span>
+          <p>Two-sentence responses for the objections you'll hear most in this kind of conversation &mdash; and where on the page to pivot.</p>
+        </div>
+        <div class="obj-grid" id="objGrid"></div>
+      </section>
+
+      <!-- Architecture canvas -->
+      <section class="scenarios" aria-label="Customer scenarios">
+        <span class="label">Walk a scenario</span>
+        <button class="scenario-btn" data-scenario="citizen">Citizen-built HR agent</button>
+        <button class="scenario-btn" data-scenario="customer360">Multi-source customer 360</button>
+        <button class="scenario-btn" data-scenario="expense">Cost-aware expense agent</button>
+        <button class="scenario-btn" data-scenario="itops">Autonomous IT incident triage</button>
+        <button class="scenario-btn" data-scenario="swe">Engineering copilot (code → PR)</button>
+        <button class="scenario-btn clear" data-scenario="clear">Clear</button>
+        <span class="scenario-sep" aria-hidden="true">•</span>
+        <button class="scenario-btn walk-arch" id="walkArchBtn" type="button" title="Walk through the five layers in order">▶ Walk the architecture</button>
+        <div class="scenario-links" aria-label="Full reference architectures">
+          <span class="lbl">Full reference architecture</span>
+          <a href="scenarios/citizen-hr.html">Citizen-built HR agent</a>
+          <a href="scenarios/customer360.html">Multi-source customer 360</a>
+          <a href="scenarios/expense.html">Cost-aware expense agent</a>
+          <a href="scenarios/it-incident-triage.html">Autonomous IT incident triage</a>
+          <a href="scenarios/engineering-copilot.html">Engineering copilot (code &rarr; PR)</a>
+        </div>
+        <span class="scenario-caption" id="scenarioCaption">Tip: hover any component to see what it connects to. Click for details.</span>
+      </section>
+      <section class="canvas-wrap" id="canvas" aria-label="Federated AI architecture diagram">
+        <div class="canvas-head">
+          <h3>How it works — five layers, one promise</h3>
+          <span class="subtitle">Each layer delivers an outcome the customer can name. Hover any component to see what it connects to. Click for detail.</span>
+        </div>
+
+        <div class="planes" id="planes"></div>
+
+        <div class="clouds" aria-label="Execution environments">
+          <span style="font-size: 12px; color: var(--cp-text-muted); margin-right: 6px"
+            >Execution plane:</span
+          >
+          <span class="cloud-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 1 0-1.5-8.74 6 6 0 0 0-11.4 1.74A4 4 0 0 0 6 20h11.5z"/></svg>
+            Microsoft Azure
+          </span>
+          <span class="cloud-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 1 0-1.5-8.74 6 6 0 0 0-11.4 1.74A4 4 0 0 0 6 20h11.5z"/></svg>
+            Amazon Web Services
+          </span>
+          <span class="cloud-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 1 0-1.5-8.74 6 6 0 0 0-11.4 1.74A4 4 0 0 0 6 20h11.5z"/></svg>
+            Google Cloud
+          </span>
+          <span class="cloud-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M2 20h20"/></svg>
+            On-premises
+          </span>
+          <span class="cloud-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
+            Edge / Sovereign
+          </span>
+          <a class="cloud-chip cloud-chip-link" href="concepts.html#federated-zones" title="Open the Federated AI Zones maturity map">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            See the AI zones map &rarr;
+          </a>
+        </div>
+      </section>
+
+      <!-- Pillars removed for simplicity -->
+
+      <details class="collapsible" id="tensions-details">
+        <summary>Honest tensions <span class="sum-meta">5 trade-offs worth naming up front</span></summary>
+        <section class="tensions" aria-labelledby="tensions-heading" style="margin: 0; padding: 0; background: transparent; border: none; border-left: none; border-radius: 0;">
+          <h2 id="tensions-heading" style="display: none;">Honest tensions</h2>
+          <p class="tensions-sub">A federated AI environment is the right direction, but it isn't free of trade-offs. Five contradictions worth naming up front.</p>
+          <div class="tensions-grid">
+            <div class="tension-card">
+              <div class="tension-title">Single control plane vs vendor reality</div>
+              <div class="tension-body">Every hyperscaler ships its own control surface. "One control plane" is an outcome — it requires integration glue, not just a logo.</div>
+            </div>
+            <div class="tension-card">
+              <div class="tension-title">Workload identity is harder than it sounds</div>
+              <div class="tension-body">Human SSO is solved. Federating identities for agents — across Entra, AWS IAM, GCP IAM, and SaaS — is still emerging and operationally fragile.</div>
+            </div>
+            <div class="tension-card">
+              <div class="tension-title">Citizen development vs governance load</div>
+              <div class="tension-body">Letting business users build agents accelerates value and multiplies what governance, security, and FinOps must inspect. Plan for the load.</div>
+            </div>
+            <div class="tension-card">
+              <div class="tension-title">Cost attribution at agent granularity</div>
+              <div class="tension-body">Token-level showback per agent, per user, per business unit isn't standard yet. Tags, model routing, and bill-back discipline are still bespoke.</div>
+            </div>
+            <div class="tension-card">
+              <div class="tension-title">MCP and A2A overlap at the edges</div>
+              <div class="tension-body">The protocols are complementary in theory (tool calls vs agent collaboration), but their boundaries blur in practice. Expect overlap and version churn.</div>
+            </div>
+          </div>
+        </section>
+      </details>
+
+      <details class="collapsible" id="references-details">
+        <summary>References <span class="sum-meta">Specs and primary sources</span></summary>
+        <section class="references" aria-labelledby="references-heading" style="margin: 0; padding: 0; background: transparent; border: none; border-radius: 0;">
+          <h2 id="references-heading" style="display: none;">References</h2>
+          <ul>
+            <li><a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener noreferrer">Model Context Protocol (MCP) — Anthropic</a></li>
+            <li><a href="https://a2aproject.github.io/A2A/" target="_blank" rel="noopener noreferrer">Agent2Agent (A2A) Protocol — Google</a></li>
+            <li><a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noopener noreferrer">NIST AI Risk Management Framework (AI RMF 1.0)</a></li>
+            <li><a href="https://genai.owasp.org/llm-top-10/" target="_blank" rel="noopener noreferrer">OWASP Top 10 for LLM Applications (2025)</a></li>
+            <li><a href="https://learn.microsoft.com/en-us/azure/ai-foundry/" target="_blank" rel="noopener noreferrer">Microsoft Foundry documentation</a></li>
+            <li><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/" target="_blank" rel="noopener noreferrer">Microsoft Copilot Studio documentation</a></li>
+          </ul>
+        </section>
+      </details>
+    </main>
+
+    <footer class="app">
+      Trusted Federated AI Operating Model · Interactive seller reference ·
+      <a href="https://github.com/chriswillia/federated-ai-architecture" target="_blank" rel="noopener noreferrer">View on GitHub</a>
+    </footer>
+
+    <!-- Drawer -->
+    <div class="drawer-scrim" id="scrim" aria-hidden="true"></div>
+    <aside class="drawer" id="drawer" aria-hidden="true" aria-label="Component detail">
+      <div class="drawer-head">
+        <div class="icon" id="d-icon"></div>
+        <div class="title">
+          <h3 id="d-title">Title</h3>
+          <div class="subtitle" id="d-subtitle">Subtitle</div>
+        </div>
+        <button class="drawer-close" id="d-close" aria-label="Close detail">×</button>
+      </div>
+      <div class="drawer-body" id="d-body"></div>
+    </aside>
+
+    <script>
+      // ---------- ICON SET (inline SVG) ----------
+      const ICONS = {
+        copilot:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a4 4 0 0 1-4 4H7l-4 3V6a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/></svg>',
+        app:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 3v18"/></svg>',
+        agent:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
+        identity:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6z"/></svg>',
+        policy:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l2 2 4-4"/><rect x="3" y="3" width="18" height="18" rx="3"/></svg>',
+        observe:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>',
+        trust:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6z"/><path d="M9 12l2 2 4-4"/></svg>',
+        bus:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18M7 7l-4 5 4 5M17 7l4 5-4 5"/></svg>',
+        api:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h6M4 12h10M4 17h6"/><path d="M14 7a3 3 0 0 1 0 6"/><path d="M18 11a3 3 0 0 1 0 6"/></svg>',
+        protocol:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M7 7l4 9M17 7l-4 9"/></svg>',
+        tool:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 6l4 4-9 9-4 1 1-4 9-9z"/></svg>',
+        registry:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>',
+        train:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/><circle cx="12" cy="12" r="3"/></svg>',
+        eval:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>',
+        guard:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6z"/><path d="M8 12h8"/></svg>',
+        lake:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14s2-2 4-2 3 2 5 2 3-2 5-2 4 2 4 2"/><path d="M3 19s2-2 4-2 3 2 5 2 3-2 5-2 4 2 4 2"/><path d="M3 9s2-2 4-2 3 2 5 2 3-2 5-2 4 2 4 2"/></svg>',
+        catalog:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h12a4 4 0 0 1 4 4v12H8a4 4 0 0 1-4-4z"/><path d="M4 4v12a4 4 0 0 0 4 4"/></svg>',
+        lineage:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="7" r="2"/><circle cx="19" cy="7" r="2"/><circle cx="12" cy="17" r="2"/><path d="M7 7h10M6 8l5 8M18 8l-5 8"/></svg>',
+        vault:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>',
+        cost:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>',
+        cloud:
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 1 0-1.5-8.74 6 6 0 0 0-11.4 1.74A4 4 0 0 0 6 20h11.5z"/></svg>',
+      };
+
+      // ---------- ARCHITECTURE MODEL ----------
+      // Vendor color hints for platform chips (a neutral, recognizable cue, not the official brand color)
+      const VENDORS = {
+        microsoft: "#0078d4",
+        aws: "#ff9900",
+        gcp: "#34a853",
+        sap: "#0faaff",
+        salesforce: "#00a1e0",
+        servicenow: "#62d84e",
+        snowflake: "#29b5e8",
+        databricks: "#ff3621",
+        openai: "#10a37f",
+        anthropic: "#cc785c",
+        oss: "#6f6f6f",
+      };
+
+      const PLANES = [
+        {
+          id: "experience",
+          title: "AI in your daily work",
+          desc: "Copilots and apps that meet people where they already work.",
+          color: "--layer-experience",
+          colorSoft: "--layer-experience-soft",
+          shape: "□",
+          platforms: [
+            { name: "M365 Copilot", vendor: "microsoft" },
+            { name: "Copilot Studio", vendor: "microsoft" },
+            { name: "SAP Joule", vendor: "sap" },
+            { name: "Salesforce Agentforce", vendor: "salesforce" },
+          ],
+          nodes: [
+            {
+              id: "m365-copilot",
+              title: "M365 Copilot",
+              icon: "copilot",
+              sub: "The everyday productivity copilot across Word, Excel, Outlook, and Teams.",
+              tech: ["M365 Copilot", "Copilot Pages", "Microsoft Graph grounding"],
+              msBadge: "M365 Copilot",
+            },
+            {
+              id: "vertical-copilots",
+              title: "Business App Copilots",
+              icon: "copilot",
+              sub: "AI built into business apps like SAP, Salesforce, and ServiceNow.",
+              tech: ["SAP Joule", "Salesforce Agentforce", "ServiceNow Now Assist"],
+              msBadge: "Copilot for Sales / Service",
+            },
+            {
+              id: "human-oversight",
+              title: "Human-in-the-loop",
+              icon: "trust",
+              sub: "People review and approve what agents do for important actions.",
+              tech: ["Approval flows", "Review queues", "Audit trails"],
+              msBadge: "Power Automate approvals",
+            },
+          ],
+        },
+        {
+          id: "model",
+          title: "Build safely, ship faster",
+          desc: "Where IT and the business build agents in one governed place.",
+          color: "--layer-model",
+          colorSoft: "--layer-model-soft",
+          shape: "△",
+          platforms: [
+            { name: "Azure AI Foundry", vendor: "microsoft" },
+            { name: "Copilot Studio", vendor: "microsoft" },
+            { name: "AWS Bedrock", vendor: "aws" },
+            { name: "Google Vertex AI", vendor: "gcp" },
+          ],
+          nodes: [
+            {
+              id: "dev-platform",
+              title: "Agent Development Platform",
+              icon: "train",
+              sub: "One place to build agents — Copilot Studio for business users, Foundry for pro developers. Logic, prompts, and skills stored centrally.",
+              tech: ["M365 Copilot", "Copilot Studio", "Azure AI Foundry", "Semantic Kernel"],
+              msBadge: "Copilot Studio + Foundry",
+            },
+            {
+              id: "models",
+              title: "Model Choice",
+              icon: "registry",
+              sub: "Pick the right model for each job from a governed catalog — OpenAI, Anthropic, Google, open-weight.",
+              tech: ["Azure OpenAI", "AWS Bedrock", "Vertex AI", "Anthropic"],
+              msBadge: "Azure OpenAI + Foundry model catalog",
+            },
+            {
+              id: "runtime",
+              title: "Where Agents Run",
+              icon: "agent",
+              sub: "Agents run on the cloud or environment that fits the job, while still following central policy.",
+              tech: ["Azure", "AWS", "GCP", "On-prem", "Edge"],
+              msBadge: "Foundry Agent Service",
+            },
+          ],
+        },
+        {
+          id: "fabric",
+          title: "Reach anything, govern everywhere",
+          desc: "The shared wiring that lets agents reach your tools, apps, and data.",
+          color: "--layer-fabric",
+          colorSoft: "--layer-fabric-soft",
+          shape: "○",
+          platforms: [
+            { name: "MCP", vendor: "oss" },
+            { name: "A2A", vendor: "oss" },
+            { name: "Azure API Management", vendor: "microsoft" },
+            { name: "Event Grid / EventBridge", vendor: "microsoft" },
+          ],
+          nodes: [
+            {
+              id: "mcp",
+              title: "Tool Binding (MCP)",
+              icon: "protocol",
+              sub: "Agents call tools, data, and prompts through the Model Context Protocol — the \"USB-C for AI applications.\"",
+              tech: ["Model Context Protocol", "Tool / Resource / Prompt servers", "Copilot Studio MCP support"],
+              msBadge: "Copilot Studio MCP",
+            },
+            {
+              id: "a2a",
+              title: "Agent Collaboration (A2A)",
+              icon: "protocol",
+              sub: "Agents discover and delegate to other agents using Agent Cards — across SAP Joule, Salesforce Agentforce, ServiceNow, and your own.",
+              tech: ["Agent2Agent (A2A)", "Agent Cards", "HTTP / SSE / JSON-RPC", "Task / Artifact lifecycle"],
+              msBadge: "Foundry Agent2Agent",
+            },
+            {
+              id: "apis",
+              title: "APIs & Gateways",
+              icon: "api",
+              sub: "The doorways into apps and data, with consistent identity and policy enforced at every edge.",
+              tech: ["Azure API Management", "REST / GraphQL", "OAuth"],
+              msBadge: "Azure API Management",
+            },
+            {
+              id: "tools-sdks",
+              title: "SDKs & Tool Registry",
+              icon: "tool",
+              sub: "The libraries developers use to build agents, and a shared catalog of approved tools.",
+              tech: ["M365 Agent SDK", "Microsoft Agents Framework", "Semantic Kernel", "Signed tool manifests"],
+              msBadge: "Microsoft Agents Framework",
+            },
+          ],
+        },
+        {
+          id: "data",
+          title: "Grounded in your own data",
+          desc: "Agents stay anchored to your systems of record — with labels and lineage intact.",
+          color: "--layer-data",
+          colorSoft: "--layer-data-soft",
+          shape: "▽",
+          platforms: [
+            { name: "Microsoft Graph (M365)", vendor: "microsoft" },
+            { name: "Foundry IQ", vendor: "microsoft" },
+            { name: "SAP", vendor: "sap" },
+            { name: "Salesforce", vendor: "salesforce" },
+            { name: "Snowflake / Databricks", vendor: "snowflake" },
+          ],
+          nodes: [
+            {
+              id: "systems-of-record",
+              title: "Systems of Record",
+              icon: "catalog",
+              sub: "The business apps and on-prem databases agents read from and write to — M365, SAP, Salesforce, ServiceNow, on-prem.",
+              tech: ["Microsoft Graph", "SAP", "Salesforce Data Cloud", "ServiceNow", "On-prem DBs"],
+              msBadge: "Microsoft Graph + Dataverse",
+            },
+            {
+              id: "knowledge-grounding",
+              title: "Knowledge & Grounding (Foundry IQ)",
+              icon: "registry",
+              sub: "The retrieval layer between raw data and agents — vector indices, RAG, and curated knowledge bases so answers are grounded in source-of-truth content.",
+              tech: ["Microsoft Foundry IQ", "Azure AI Search", "Vector indices", "RAG pipelines"],
+              msBadge: "Foundry IQ + Azure AI Search",
+            },
+            {
+              id: "analytics-data",
+              title: "Analytics Data",
+              icon: "lake",
+              sub: "Warehouses and lakehouses where reporting and AI training data live.",
+              tech: ["Microsoft Fabric / OneLake", "Snowflake", "Databricks", "BigQuery"],
+              msBadge: "Microsoft Fabric / OneLake",
+            },
+            {
+              id: "catalog-lineage",
+              title: "Catalog & Lineage",
+              icon: "lineage",
+              sub: "Know what data exists, who owns it, and how it's been used by agents and models.",
+              tech: ["Microsoft Purview", "OpenLineage"],
+              msBadge: "Microsoft Purview",
+            },
+          ],
+        },
+        {
+          id: "control",
+          title: "Stay in charge — across every cloud",
+          desc: "One identity, one policy fabric, one set of traces — wherever agents run.",
+          color: "--layer-control",
+          colorSoft: "--layer-control-soft",
+          shape: "◇",
+          caption: {
+            label: "NIST AI RMF",
+            tags: ["Govern", "Map", "Measure", "Manage"],
+          },
+          platforms: [
+            { name: "Microsoft Agent 365", vendor: "microsoft" },
+            { name: "Microsoft Foundry", vendor: "microsoft" },
+            { name: "Microsoft Entra ID", vendor: "microsoft" },
+            { name: "Microsoft Purview", vendor: "microsoft" },
+          ],
+          nodes: [
+            {
+              id: "identity",
+              title: "Identity",
+              icon: "identity",
+              sub: "One sign-in and one set of roles that works across every cloud.",
+              tech: ["Microsoft Entra ID", "AWS IAM", "GCP IAM"],
+              msBadge: "Microsoft Entra ID",
+            },
+            {
+              id: "governance",
+              title: "Microsoft Agent 365 + Foundry Control Plane",
+              icon: "policy",
+              sub: "The Microsoft anchor for managing agents organization-wide — register, govern, trace, evaluate, and monitor every agent in one place.",
+              tech: ["Microsoft Agent 365", "Microsoft Foundry Control Plane", "Microsoft Purview", "Azure Policy"],
+              msBadge: "Microsoft Agent 365",
+            },
+            {
+              id: "security",
+              title: "Security & Monitoring",
+              icon: "observe",
+              sub: "See what every agent is doing, catch problems early, and respond fast.",
+              tech: ["Microsoft Defender", "Sentinel", "OpenTelemetry", "AI Red Teaming Agent"],
+              note: "Addresses OWASP LLM06 — Excessive Agency",
+              msBadge: "Sentinel + Defender XDR",
+            },
+            {
+              id: "cost",
+              title: "Cost & Token Control",
+              icon: "cost",
+              sub: "Track token spend per agent, route to the right model for the job, and bill back to the business owner.",
+              tech: ["Tag taxonomy", "Model routing", "Showback dashboards"],
+              note: "Addresses OWASP LLM10 — Unbounded Consumption",
+              msBadge: "Microsoft Cost Management",
+            },
+          ],
+        },
+      ];
+
+      // ---------- RENDER ----------
+      const planesEl = document.getElementById("planes");
+      const legendEl = document.getElementById("legend");
+
+      // Per-plane concept refs + seller questions (Phase B)
+      const PLANE_EXTRAS = {
+        experience: {
+          concepts: [
+            { id: "risk-tiers", label: "Risk Tiers" },
+            { id: "trust-contracts", label: "Trust Contracts" },
+          ],
+          questions: [
+            "Which copilots and vertical AI tools do your employees already use today?",
+            "Where do you want AI to show up &mdash; chat, inline in business apps, or both?",
+            "How are citizen-built agents created today, and who reviews them before they go live?",
+            "What approval flows do you require for agent actions that affect customers, records, or money?",
+          ],
+        },
+        model: {
+          concepts: [
+            { id: "progressive-governance", label: "Progressive Governance" },
+            { id: "portfolio-management", label: "Agent Portfolio" },
+            { id: "agent-bom", label: "Agent Bill of Materials" },
+          ],
+          questions: [
+            "Where are teams building AI today?",
+            "Are different groups using different agent platforms?",
+            "Do business users have a safe path to create agents?",
+            "Are teams duplicating agent logic across tools?",
+            "Do you expect AI development to consolidate or remain federated?",
+          ],
+        },
+        fabric: {
+          concepts: [
+            { id: "federated-zones", label: "Federated AI Zones" },
+          ],
+          questions: [
+            "How are agents connecting to tools, APIs, and workflows?",
+            "Are you using or evaluating MCP-style patterns?",
+            "Do you have a standard way to expose tools safely to agents?",
+            "How do you avoid every team building its own one-off integration model?",
+          ],
+        },
+        data: {
+          concepts: [
+            { id: "ai-system-of-record", label: "AI System of Record" },
+            { id: "agent-bom", label: "Agent Bill of Materials" },
+          ],
+          questions: [
+            "What data sources do agents need to access?",
+            "How do agents reach SaaS, on-prem, and cloud data?",
+            "How do you enforce data boundaries when agents move information between systems?",
+            "Are labels, DLP, and compliance policies applied consistently to AI interactions?",
+          ],
+        },
+        control: {
+          concepts: [
+            { id: "ai-system-of-record", label: "AI System of Record" },
+            { id: "trust-contracts", label: "Trust Contracts" },
+            { id: "risk-tiers", label: "Risk Tiers" },
+            { id: "progressive-governance", label: "Progressive Governance" },
+            { id: "finops-by-outcome", label: "FinOps by Outcome" },
+            { id: "portfolio-management", label: "Agent Portfolio" },
+          ],
+          questions: [
+            "Do you have an inventory of all agents, and who owns each one?",
+            "What is your approval process for agent deployment, and how do you retire agents no longer needed?",
+            "Do your agents have identities &mdash; and can you trace an action from prompt to tool call to output?",
+            "Can you investigate what an agent did and why, and detect risky or anomalous behavior?",
+            "Can you tie token usage to business outcomes &mdash; cost per resolved case, per generated doc, per avoided hour?",
+            "Which agents are delivering value, which are creating cost without impact, and how do you decide what to scale, fix, or retire?",
+          ],
+        },
+      };
+
+      function renderLegend() {
+        if (!legendEl) return;
+        legendEl.innerHTML = PLANES.map(
+          (p) =>
+            `<span class="legend-item"><span class="swatch" style="background: var(${p.color})"></span>${p.title.split(" ")[0]}</span>`,
+        ).join("");
+      }
+
+      function renderPlanes() {
+        planesEl.innerHTML = PLANES.map((p) => {
+          const nodes = p.nodes
+            .map((n) => {
+              const badges = [];
+              if (n.gap) badges.push(`<span class="badge">${n.gap}</span>`);
+              const noteHtml = n.note ? `<div class="node-note">${n.note}</div>` : "";
+              const msBadgeHtml = n.msBadge ? `<div class="node-ms-badge" title="Microsoft product that delivers this">${n.msBadge}</div>` : "";
+              return `
+              <button class="node" data-plane="${p.id}" data-node="${n.id}" style="--plane-color: var(${p.color}); --plane-soft: var(${p.colorSoft});">
+                <div class="node-title"><span class="node-icon">${ICONS[n.icon] || ICONS.app}</span>${n.title}</div>
+                <div class="node-sub">${n.sub}</div>
+                ${noteHtml}
+                ${msBadgeHtml}
+                <div class="badge-row">${badges.join("")}</div>
+              </button>`;
+            })
+            .join("");
+          const platforms = (p.platforms || [])
+            .map(
+              (pl) =>
+                `<span class="platform-chip"><span class="vendor-dot" style="background:${VENDORS[pl.vendor] || "#888"}"></span>${pl.name}</span>`,
+            )
+            .join("");
+          const platformStrip = platforms
+            ? `<div class="platforms"><span class="label">Examples</span>${platforms}</div>`
+            : "";
+          const captionStrip = p.caption
+            ? `<div class="plane-caption"><strong>${p.caption.label}:</strong>${p.caption.tags.map((t) => `<span class="rmf-tag">${t}</span>`).join("")}</div>`
+            : "";
+          const extras = PLANE_EXTRAS[p.id] || {};
+          const conceptStrip = (extras.concepts && extras.concepts.length)
+            ? `<div class="plane-concepts"><span class="lbl">Concepts</span>${extras.concepts
+                .map((c) => `<a href="concepts.html#${c.id}" title="Read the concept">${c.label}</a>`)
+                .join("")}</div>`
+            : "";
+          const questionsHtml = (extras.questions && extras.questions.length)
+            ? `<details class="plane-questions"><summary>Questions to ask the customer</summary><ul>${extras.questions
+                .map((q) => `<li>${q}</li>`)
+                .join("")}</ul></details>`
+            : "";
+          return `
+            <div class="plane" data-plane-id="${p.id}" style="--plane-color: var(${p.color}); --plane-soft: var(${p.colorSoft});">
+              <div class="plane-header">
+                <div class="plane-title">${p.title}</div>
+                <div class="plane-desc">${p.desc}</div>
+                ${conceptStrip}
+              </div>
+              ${platformStrip}
+              ${captionStrip}
+              <div class="nodes">${nodes}</div>
+              ${questionsHtml}
+            </div>`;
+        }).join("");
+      }
+
+      // ---------- Drawer ----------
+      const scrim = document.getElementById("scrim");
+      const drawer = document.getElementById("drawer");
+      const dIcon = document.getElementById("d-icon");
+      const dTitle = document.getElementById("d-title");
+      const dSubtitle = document.getElementById("d-subtitle");
+      const dBody = document.getElementById("d-body");
+      document.getElementById("d-close").addEventListener("click", closeDrawer);
+      scrim.addEventListener("click", closeDrawer);
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeDrawer();
+      });
+
+      function openNode(planeId, nodeId) {
+        const plane = PLANES.find((p) => p.id === planeId);
+        const node = plane.nodes.find((n) => n.id === nodeId);
+        drawer.style.setProperty("--plane-color", `var(${plane.color})`);
+        drawer.style.setProperty("--plane-soft", `var(${plane.colorSoft})`);
+        dIcon.innerHTML = ICONS[node.icon] || ICONS.app;
+        dTitle.textContent = node.title;
+        dSubtitle.textContent = `${plane.title} · ${node.gap || "Capability"}`;
+        dBody.innerHTML = `
+          <div class="drawer-section">
+            <h4>Purpose</h4>
+            <p>${node.sub}</p>
+          </div>
+          <div class="drawer-section">
+            <h4>Representative technologies</h4>
+            <div class="tech-chips">${node.tech.map((t) => `<span class="tech-chip">${t}</span>`).join("")}</div>
+          </div>
+          <div class="drawer-section">
+            <h4>Why it matters</h4>
+            <p>This capability is a building block of the <strong>${plane.title.toLowerCase()}</strong>. Without it, the federation degrades into platform silos and ad-hoc integrations.</p>
+          </div>`;
+        scrim.classList.add("open");
+        drawer.classList.add("open");
+        drawer.setAttribute("aria-hidden", "false");
+      }
+      function closeDrawer() {
+        scrim.classList.remove("open");
+        drawer.classList.remove("open");
+        drawer.setAttribute("aria-hidden", "true");
+      }
+
+      // ---------- Theme toggle ----------
+      document.getElementById("themeToggle").addEventListener("click", () => {
+        const cur = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+        document.documentElement.setAttribute("data-theme", cur);
+        // Force a redraw of any active trace so colors update
+        if (activeSourceId) drawConnectorsFor(activeSourceId);
+      });
+
+      // ---------- Relationships (which nodes touch which) ----------
+      const LINKS = [
+        // Experience -> Build / Control / Data
+        ["m365-copilot", "dev-platform"],
+        ["m365-copilot", "identity"],
+        ["m365-copilot", "governance"],
+        ["m365-copilot", "systems-of-record"],
+        ["m365-copilot", "mcp"],
+        ["vertical-copilots", "dev-platform"],
+        ["vertical-copilots", "identity"],
+        ["vertical-copilots", "governance"],
+        ["vertical-copilots", "apis"],
+        ["vertical-copilots", "a2a"],
+        ["vertical-copilots", "systems-of-record"],
+        ["human-oversight", "governance"],
+        ["human-oversight", "security"],
+        // Build plane internals
+        ["dev-platform", "models"],
+        ["dev-platform", "runtime"],
+        ["dev-platform", "tools-sdks"],
+        ["dev-platform", "governance"],
+        ["dev-platform", "knowledge-grounding"],
+        ["models", "runtime"],
+        ["models", "cost"],
+        ["runtime", "identity"],
+        ["runtime", "governance"],
+        ["runtime", "security"],
+        ["runtime", "cost"],
+        ["runtime", "mcp"],
+        ["runtime", "a2a"],
+        ["runtime", "apis"],
+        ["runtime", "knowledge-grounding"],
+        ["runtime", "systems-of-record"],
+        ["runtime", "analytics-data"],
+        // Fabric to data/runtime
+        ["mcp", "tools-sdks"],
+        ["mcp", "systems-of-record"],
+        ["mcp", "knowledge-grounding"],
+        ["a2a", "tools-sdks"],
+        ["a2a", "identity"],
+        ["a2a", "governance"],
+        ["apis", "systems-of-record"],
+        ["apis", "analytics-data"],
+        ["apis", "identity"],
+        // Knowledge & grounding reach
+        ["knowledge-grounding", "systems-of-record"],
+        ["knowledge-grounding", "analytics-data"],
+        ["knowledge-grounding", "catalog-lineage"],
+        // Data plane internals
+        ["systems-of-record", "catalog-lineage"],
+        ["analytics-data", "catalog-lineage"],
+        ["catalog-lineage", "governance"],
+        // Control plane reach
+        ["identity", "systems-of-record"],
+        ["security", "systems-of-record"],
+        ["security", "analytics-data"],
+        ["cost", "governance"],
+      ];
+      const LINK_MAP = new Map();
+      LINKS.forEach(([a, b]) => {
+        if (!LINK_MAP.has(a)) LINK_MAP.set(a, new Set());
+        if (!LINK_MAP.has(b)) LINK_MAP.set(b, new Set());
+        LINK_MAP.get(a).add(b);
+        LINK_MAP.get(b).add(a);
+      });
+
+      // ---------- Scenarios ----------
+      const SCENARIOS = {
+        citizen: {
+          title: "Citizen-built HR agent",
+          steps: [
+            { node: "human-oversight", text: "An HR business analyst — not a developer — wants an agent to answer benefits questions." },
+            { node: "dev-platform", text: "They build it in Copilot Studio. Logic, prompts, and skills are stored centrally with full lifecycle management." },
+            { node: "governance", text: "Foundry / Purview applies approved policies and data classifications automatically." },
+            { node: "identity", text: "Entra ID controls who can use the agent and what data it can see, per role." },
+            { node: "systems-of-record", text: "Agent reaches into M365 Graph and the on-prem HRIS via governed connectors." },
+            { node: "cost", text: "Token spend is tagged and billed back to the HR cost center." },
+            { node: "m365-copilot", text: "Employees use it in Teams. Same simple chat surface, no separate app to learn." },
+          ],
+        },
+        customer360: {
+          title: "Multi-source customer 360",
+          steps: [
+            { node: "vertical-copilots", text: "A sales rep asks Salesforce Agentforce for a full customer view." },
+            { node: "identity", text: "One sign-in lets the agent act on the rep's behalf across every system." },
+            { node: "dev-platform", text: "The Customer 360 agent was built once in Foundry; deployed to Salesforce, Teams, and the web." },
+            { node: "a2a", text: "Through Agent2Agent, it discovers and delegates to SAP Joule and Salesforce Agentforce via their Agent Cards." },
+            { node: "mcp", text: "It also calls tools and prompts on the corporate MCP servers — same agent, different protocol." },
+            { node: "knowledge-grounding", text: "Foundry IQ grounds the answer in curated knowledge so the rep sees source-of-truth content, not hallucinations." },
+            { node: "systems-of-record", text: "Pulls live data from Salesforce, SAP, M365, and an on-prem order DB." },
+            { node: "analytics-data", text: "Joins behavioral usage data from Snowflake and Fabric." },
+            { node: "catalog-lineage", text: "Purview tracks lineage so the rep — and auditors — know where each fact came from." },
+          ],
+        },
+        expense: {
+          title: "Cost-aware expense agent",
+          steps: [
+            { node: "m365-copilot", text: "Employee submits an expense by chatting with M365 Copilot in Teams." },
+            { node: "dev-platform", text: "The expense agent was built in Copilot Studio and registered centrally." },
+            { node: "models", text: "Simple OCR uses a small model; tricky disputes route to a larger one — managed automatically." },
+            { node: "cost", text: "Every token is tagged to Finance. The team sees per-agent and per-user cost in real time." },
+            { node: "apis", text: "Agent posts via API Management to SAP and the corporate card system." },
+            { node: "systems-of-record", text: "SAP records the expense; Outlook delivers the approval." },
+            { node: "security", text: "Sentinel logs the full chain; Defender flags anything anomalous." },
+          ],
+        },
+        itops: {
+          title: "Autonomous IT incident triage",
+          steps: [
+            { node: "vertical-copilots", text: "A P2 incident lands in ServiceNow ITSM — Now Assist routes it to the triage agent." },
+            { node: "dev-platform", text: "The triage agent was built once in Foundry and registered centrally; SREs reuse it across regions." },
+            { node: "models", text: "A small model classifies severity in milliseconds; complex incidents escalate to a larger reasoning model." },
+            { node: "tools-sdks", text: "The agent only calls signed runbook tools from the central registry — no ad-hoc shell commands." },
+            { node: "apis", text: "Diagnostic probes (health checks, log queries, dependency maps) flow through API Management." },
+            { node: "a2a", text: "It suspects a security event and hands off to the Defender agent via Agent2Agent — cross-vendor, in seconds." },
+            { node: "security", text: "Sentinel captures every tool call, decision, and result as one continuous trace." },
+            { node: "human-oversight", text: "Confidence below threshold? It escalates to the on-call engineer with a complete summary and recommended next step." },
+            { node: "catalog-lineage", text: "Resolution is logged and joined to the CMDB — fuel for the post-mortem and the next eval cycle." },
+          ],
+        },
+        swe: {
+          title: "Engineering copilot (code → PR)",
+          steps: [
+            { node: "vertical-copilots", text: "A developer asks GitHub Copilot in VS Code to implement a feature from a Jira ticket." },
+            { node: "dev-platform", text: "The engineering agent was authored in Foundry; logic, prompts, and skills are versioned centrally." },
+            { node: "mcp", text: "It calls the repo MCP server to read code, the Jira MCP server to read the ticket, and the build MCP server to run tests." },
+            { node: "tools-sdks", text: "Every tool comes from the signed central catalog — no rogue plugins, no shadow tooling." },
+            { node: "models", text: "Routine refactors use a small model; tricky architecture changes route to a larger reasoning model." },
+            { node: "runtime", text: "The agent runs in the dev environment closest to the repo — same governance, lower latency." },
+            { node: "governance", text: "Foundry evals run pre-merge: regression risk, security weaknesses, license violations — all flagged before review." },
+            { node: "human-oversight", text: "A senior engineer reviews the PR and merges it. The agent never ships unreviewed." },
+            { node: "catalog-lineage", text: "Every prompt, diff, eval, and approval is logged — audit-ready and reusable as training signal." },
+          ],
+        },
+      };
+
+      // ---------- Hover-to-trace + connector drawing ----------
+      const allNodesSel = ".node";
+      let overlay = null;
+      let activeSourceId = null;
+      let scenarioTimer = null;
+      let scenarioPlaying = false;
+
+      function ensureOverlay() {
+        if (overlay && overlay.isConnected) return overlay;
+        overlay = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        overlay.setAttribute("class", "planes-overlay");
+        overlay.setAttribute("id", "planesOverlay");
+        overlay.setAttribute("aria-hidden", "true");
+        planesEl.appendChild(overlay);
+        return overlay;
+      }
+
+      function nodeCenter(id, planesRect) {
+        const el = document.querySelector(`.node[data-node="${id}"]`);
+        if (!el) return null;
+        const r = el.getBoundingClientRect();
+        return {
+          el,
+          x: r.left + r.width / 2 - planesRect.left,
+          y: r.top + r.height / 2 - planesRect.top,
+          top: r.top - planesRect.top,
+          bottom: r.bottom - planesRect.top,
+        };
+      }
+
+      function drawConnectorsFor(sourceId, extraTargets = null) {
+        ensureOverlay();
+        overlay.innerHTML = "";
+        const planesRect = planesEl.getBoundingClientRect();
+        overlay.setAttribute("width", planesRect.width);
+        overlay.setAttribute("height", planesRect.height);
+        overlay.setAttribute("viewBox", `0 0 ${planesRect.width} ${planesRect.height}`);
+        const src = nodeCenter(sourceId, planesRect);
+        if (!src) return;
+        const targets = extraTargets || [...(LINK_MAP.get(sourceId) || [])];
+        targets.forEach((tid) => {
+          const t = nodeCenter(tid, planesRect);
+          if (!t) return;
+          const midY = (src.y + t.y) / 2;
+          // Curved bezier with vertical bend so the line reads as "flowing between planes"
+          const d = `M ${src.x} ${src.y} C ${src.x} ${midY}, ${t.x} ${midY}, ${t.x} ${t.y}`;
+          const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+          path.setAttribute("d", d);
+          overlay.appendChild(path);
+        });
+      }
+
+      function highlightTrace(sourceId, options = {}) {
+        const { active = false, trailNodes = [] } = options;
+        const linked = LINK_MAP.get(sourceId) || new Set();
+        document.querySelectorAll(allNodesSel).forEach((n) => {
+          n.classList.remove("traced", "traced-active", "dimmed");
+          const id = n.dataset.node;
+          if (id === sourceId) {
+            n.classList.add(active ? "traced-active" : "traced");
+          } else if (linked.has(id) || trailNodes.includes(id)) {
+            n.classList.add("traced");
+          } else {
+            n.classList.add("dimmed");
+          }
+        });
+        activeSourceId = sourceId;
+        drawConnectorsFor(sourceId);
+      }
+
+      function clearTrace() {
+        document.querySelectorAll(allNodesSel).forEach((n) =>
+          n.classList.remove("traced", "traced-active", "dimmed"),
+        );
+        if (overlay) overlay.innerHTML = "";
+        activeSourceId = null;
+      }
+
+      // Wire hover on each node (skip if scenario is playing or challenge is active)
+      function wireHover() {
+        document.querySelectorAll(allNodesSel).forEach((btn) => {
+          btn.addEventListener("mouseenter", () => {
+            if (scenarioPlaying || challengeActive) return;
+            highlightTrace(btn.dataset.node);
+          });
+        });
+        planesEl.addEventListener("mouseleave", () => {
+          if (scenarioPlaying || challengeActive) return;
+          clearTrace();
+        });
+      }
+
+      // ---------- Scenario walkthrough ----------
+      const captionEl = document.getElementById("scenarioCaption");
+      const defaultCaption = captionEl ? captionEl.innerHTML : "";
+
+      function stopScenario() {
+        if (scenarioTimer) clearTimeout(scenarioTimer);
+        scenarioTimer = null;
+        scenarioPlaying = false;
+      }
+
+      function playScenario(key) {
+        stopScenario();
+        stopWalk();
+        // A scenario walkthrough takes over the canvas — clear any active challenge.
+        if (challengeActive) applyChallenge(null);
+        document.querySelectorAll(".scenario-btn").forEach((b) =>
+          b.classList.toggle("active", b.dataset.scenario === key),
+        );
+        if (key === "clear") {
+          clearTrace();
+          captionEl.innerHTML = defaultCaption;
+          return;
+        }
+        const scenario = SCENARIOS[key];
+        if (!scenario) return;
+        scenarioPlaying = true;
+        let i = 0;
+        const tick = () => {
+          if (i >= scenario.steps.length) {
+            scenarioPlaying = false;
+            return;
+          }
+          const step = scenario.steps[i];
+          const trail = scenario.steps.slice(0, i).map((s) => s.node);
+          highlightTrace(step.node, { active: true, trailNodes: trail });
+          captionEl.innerHTML = `<strong>${i + 1}/${scenario.steps.length} · ${scenario.title}</strong>${step.text}`;
+          i++;
+          scenarioTimer = setTimeout(tick, 2200);
+        };
+        tick();
+      }
+
+      document.querySelectorAll(".scenario-btn").forEach((b) => {
+        b.addEventListener("click", () => playScenario(b.dataset.scenario));
+      });
+
+      // Redraw connectors on resize / scroll so lines stay aligned
+      let resizeRaf = null;
+      function scheduleRedraw() {
+        if (resizeRaf) cancelAnimationFrame(resizeRaf);
+        resizeRaf = requestAnimationFrame(() => {
+          if (activeSourceId) drawConnectorsFor(activeSourceId);
+        });
+      }
+      window.addEventListener("resize", scheduleRedraw);
+      window.addEventListener("scroll", scheduleRedraw, { passive: true });
+
+      // ---------- Wire up ----------
+      renderLegend();
+      renderPlanes();
+      document.querySelectorAll(".node").forEach((btn) => {
+        btn.addEventListener("click", () => openNode(btn.dataset.plane, btn.dataset.node));
+      });
+      wireHover();
+
+      // ---------- Customer-conversation lenses ----------
+      const LENSES = {
+        security: {
+          label: "Security & Trust",
+          glowNodes: ["identity", "governance", "security", "catalog-lineage", "knowledge-grounding", "human-oversight"],
+          suggestedScenario: "itops",
+          objections: [
+            {
+              quote: "We already use ChatGPT &mdash; we don't need this.",
+              response: "Then you already have an AI estate &mdash; you just can't see it. Extending Defender for Cloud Apps and Purview to that traffic turns shadow AI into a governed inventory in a week.",
+              pivotTo: { label: "See the Control plane", target: "control" },
+            },
+            {
+              quote: "We're an AWS shop. Microsoft Security doesn't fit us.",
+              response: "Sentinel, Defender, and Purview were rebuilt as multi-cloud control planes years ago &mdash; they ingest AWS logs, AWS IAM, and Bedrock telemetry. The AI control plane sits above the runtime cloud.",
+              pivotTo: { label: "See cross-cloud control", target: "control" },
+            },
+            {
+              quote: "Our SOC is already overwhelmed.",
+              response: "AI-aware Sentinel reduces noise, not adds to it &mdash; auto-triage on Tier-1 incidents plus prompt-injection detections that didn't exist in the SOC before. The IT incident triage scenario shows the pattern.",
+              pivotTo: { label: "Walk the IT triage scenario", target: "itops", isScenario: true },
+            },
+            {
+              quote: "Agents will leak our data.",
+              response: "Only if identity and DLP don't follow them. Entra workload identity for the agent, Purview labels on the data, Defender on the runtime &mdash; same controls you trust for users, applied to agents.",
+              pivotTo: { label: "See the Data + Control planes", target: "data" },
+            },
+          ],
+        },
+        architecture: {
+          label: "AI Architecture",
+          glowNodes: ["dev-platform", "models", "runtime", "mcp", "a2a", "apis", "tools-sdks", "governance"],
+          suggestedScenario: "customer360",
+          objections: [
+            {
+              quote: "We've standardized on LangChain (or another framework).",
+              response: "Keep it &mdash; LangChain agents speak MCP and A2A like everyone else. Foundry's value isn't replacing the framework, it's the central registry, evals, and identity that wrap whatever you build.",
+              pivotTo: { label: "See the Build + Fabric planes", target: "model" },
+            },
+            {
+              quote: "We can build the control plane ourselves.",
+              response: "You can, but every six months a new protocol (MCP, A2A, signed manifests, agent cards) ships and you'll re-build. Foundry tracks the standards; your team builds the agents that matter to the business.",
+              pivotTo: { label: "See the Control plane", target: "control" },
+            },
+            {
+              quote: "We don't want vendor lock-in to one cloud.",
+              response: "The federated model is the opposite of lock-in. MCP, A2A, and APIM are open or open-style protocols. Agents run on the cloud closest to the data &mdash; Foundry is the control plane above, not the runtime.",
+              pivotTo: { label: "See cross-cloud runtime", target: "model" },
+            },
+            {
+              quote: "Our integrations are all custom APIs &mdash; MCP is overkill.",
+              response: "Custom APIs are fine for one or two agents. By the tenth agent, every team is rebuilding auth, schemas, and rate-limits. MCP servers fronted by APIM let you do it once and govern at the gateway.",
+              pivotTo: { label: "Walk the Customer 360 scenario", target: "customer360", isScenario: true },
+            },
+          ],
+        },
+        experience: {
+          label: "AI Experience",
+          glowNodes: ["m365-copilot", "vertical-copilots", "human-oversight", "dev-platform", "knowledge-grounding", "systems-of-record"],
+          suggestedScenario: "citizen",
+          objections: [
+            {
+              quote: "We bought GitHub Copilot &mdash; isn't that enough?",
+              response: "GitHub Copilot is one experience for developers. M365 Copilot, business-app copilots, and citizen-built agents are how the other 90% of employees see AI. Same control plane underneath, very different surfaces.",
+              pivotTo: { label: "See the Experience plane", target: "experience" },
+            },
+            {
+              quote: "Adoption is stuck &mdash; people don't know what to ask.",
+              response: "Citizen-built agents fix this. A business owner builds an agent for their team's most-asked question; usage spikes because the agent answers the question, not the human. The HR scenario is the pattern.",
+              pivotTo: { label: "Walk the Citizen HR scenario", target: "citizen", isScenario: true },
+            },
+            {
+              quote: "We need agents inside our business apps, not just chat.",
+              response: "Business-app copilots (SAP Joule, Salesforce Agentforce, ServiceNow Now Assist) live exactly there. With A2A, they collaborate; with one control plane, they're inventoried the same way. Same governance, different doorways.",
+              pivotTo: { label: "See the Experience plane", target: "experience" },
+            },
+            {
+              quote: "Citizen developers will create a mess.",
+              response: "Only if there's no platform. Copilot Studio + Foundry registers every citizen-built agent centrally &mdash; with identity, DLP, evals, and cost tags inherited automatically. Freedom for the builder, control for IT.",
+              pivotTo: { label: "Walk the Citizen HR scenario", target: "citizen", isScenario: true },
+            },
+          ],
+        },
+      };
+
+      const lensButtons = document.querySelectorAll(".lens-btn");
+      const objectionsEl = document.getElementById("objections");
+      const objGridEl = document.getElementById("objGrid");
+      const objLensPillEl = document.getElementById("objectionsLensPill");
+      const leaveBehindLinkEl = document.getElementById("leaveBehindLink");
+
+      function applyLens(lensId) {
+        const lens = LENSES[lensId];
+        const root = document.documentElement;
+        if (!lens) {
+          root.removeAttribute("data-lens");
+          lensButtons.forEach((b) => b.classList.toggle("active", b.dataset.lens === "all"));
+          document.querySelectorAll(".node").forEach((n) => n.classList.remove("lens-glow"));
+          objectionsEl.hidden = true;
+          if (leaveBehindLinkEl) leaveBehindLinkEl.href = "leave-behind.html";
+          return;
+        }
+        root.setAttribute("data-lens", lensId);
+        lensButtons.forEach((b) => b.classList.toggle("active", b.dataset.lens === lensId));
+        document.querySelectorAll(".node").forEach((n) => {
+          n.classList.toggle("lens-glow", lens.glowNodes.includes(n.dataset.node));
+        });
+        // Objections
+        objLensPillEl.textContent = lens.label;
+        objGridEl.innerHTML = lens.objections.map((o) => `
+          <div class="obj-card">
+            <div class="obj-quote">${o.quote}</div>
+            <div class="obj-response">${o.response}</div>
+            ${o.pivotTo ? `<div class="obj-pivot">Pivot &rarr; <a href="#" data-pivot-target="${o.pivotTo.target}" data-pivot-scenario="${o.pivotTo.isScenario ? "1" : "0"}">${o.pivotTo.label}</a></div>` : ""}
+          </div>`).join("");
+        objectionsEl.hidden = false;
+        objGridEl.querySelectorAll("[data-pivot-target]").forEach((a) => {
+          a.addEventListener("click", (e) => {
+            e.preventDefault();
+            const target = a.dataset.pivotTarget;
+            const isScenario = a.dataset.pivotScenario === "1";
+            if (isScenario) {
+              const sbtn = document.querySelector(`.scenario-btn[data-scenario="${target}"]`);
+              if (sbtn) sbtn.click();
+              document.querySelector(".scenarios")?.scrollIntoView({ behavior: "smooth", block: "center" });
+            } else {
+              const plane = document.querySelector(`.plane[data-plane-id="${target}"]`);
+              if (plane) plane.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
+          });
+        });
+        if (leaveBehindLinkEl) leaveBehindLinkEl.href = `leave-behind.html?lens=${lensId}`;
+      }
+
+      lensButtons.forEach((b) => {
+        b.addEventListener("click", () => {
+          const id = b.dataset.lens;
+          if (id === "all" || document.documentElement.getAttribute("data-lens") === id) {
+            applyLens(null);
+          } else {
+            applyLens(id);
+          }
+        });
+      });
+
+      // Init from URL ?lens=security|architecture|experience
+      try {
+        const params = new URL(window.location.href).searchParams;
+        const lensParam = params.get("lens");
+        if (lensParam && LENSES[lensParam]) {
+          applyLens(lensParam);
+        } else {
+          applyLens(null);
+        }
+      } catch (e) {
+        applyLens(null);
+      }
+
+      // ---------- 6-step customer-conversation flow ----------
+      document.querySelectorAll("[data-flow-target]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const target = btn.dataset.flowTarget;
+          let el = null;
+          if (target === "reality") {
+            el = document.getElementById("reality");
+          } else if (target === "risk") {
+            el = document.getElementById("tensions-details");
+            if (el) el.open = true;
+          } else if (target === "architecture") {
+            el = document.getElementById("canvas");
+          } else if (target === "trust") {
+            el = document.querySelector('.plane[data-plane-id="control"]');
+          } else if (target === "economics") {
+            el = document.querySelector('.node[data-node="cost"]') ||
+                 document.querySelector('.plane[data-plane-id="control"]');
+          } else if (target === "outcome") {
+            const link = document.getElementById("leaveBehindLink");
+            if (link && link.href) { window.location.href = link.href; return; }
+          }
+          if (el && el.scrollIntoView) el.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      });
+
+      // ---------- Customer challenge selector (seller tool) ----------
+      let challengeActive = false;
+
+      const CHALLENGES = [
+        {
+          id: "platform",
+          accent: "--layer-model",
+          outcome: "adoption",
+          outcomeLabel: "Faster adoption",
+          soundbite: "Build agents in one governed place, and you compound time-to-value across every team — instead of paying the integration tax in every department.",
+          metaLayer: "Build plane",
+          personas: ["cio", "ai"],
+          customerQuote: "We want a singular Agent Development Platform.",
+          shortAnswer:
+            "One place to build agents. Foundry for pro developers, Copilot Studio for business users \u2014 with logic, prompts, skills, and evals stored centrally and reusable across surfaces.",
+          pointAt: ["dev-platform", "tools-sdks", "governance"],
+          points: [
+            "Are you trying to standardize <em>where</em> agents are built, or <em>how they\u2019re governed and secured once deployed?</em>",
+            "If teams build agents in different platforms today, how do you ensure <strong>consistent security and policy enforcement</strong> across them?",
+            "Do you have a way to <strong>observe and inventory all agents</strong>, regardless of where they are built?",
+            "What happens when an agent is created outside your &ldquo;preferred&rdquo; platform \u2014 how do you detect and govern it?",
+          ],
+          seeItWork: { label: "M365 HR Benefits Agent", href: "use-cases.html#m365-hr" },
+        },
+        {
+          id: "multi-cloud",
+          accent: "--layer-fabric",
+          outcome: "freedom",
+          outcomeLabel: "Cloud freedom",
+          soundbite: "Your data, apps, and people don’t live in one cloud — your agents shouldn’t either. A federated fabric lets agents work where the work is.",
+          metaLayer: "Fabric & runtime",
+          personas: ["cio", "ai"],
+          customerQuote: "We want to develop agents across clouds and SaaS apps.",
+          shortAnswer:
+            "Build once, deploy anywhere. The same agent runs on Azure, AWS, GCP, on-prem, or inside Salesforce, SAP, and ServiceNow \u2014 reaching data wherever it lives.",
+          pointAt: ["runtime", "mcp", "a2a", "apis", "vertical-copilots", "systems-of-record"],
+          points: [
+            "How are your agents currently <strong>connecting to enterprise data, APIs, and SaaS platforms</strong>?",
+            "Are you able to <strong>monitor agent interactions across environments</strong> in a unified way?",
+            "Do you have a consistent model to apply <strong>security, identity, and governance policies across clouds</strong>?",
+            "Are teams rebuilding similar capabilities because there\u2019s no shared <strong>governed interoperability model</strong>?",
+          ],
+          seeItWork: { label: "SAP Procurement Approval Agent", href: "use-cases.html#sap-po" },
+        },
+        {
+          id: "cost",
+          accent: "--layer-experience",
+          outcome: "cost",
+          outcomeLabel: "Predictable cost",
+          soundbite: "AI cost only feels unpredictable when nobody owns it. Token-level visibility plus showback turns agent spend into a managed budget line.",
+          metaLayer: "Cost & FinOps",
+          personas: ["cio", "lob"],
+          customerQuote: "We want control over token usage and cost/billing.",
+          shortAnswer:
+            "See every token, route to the right-sized model, and bill back to the business owner \u2014 so spend stays predictable even as agents proliferate.",
+          pointAt: ["cost", "models", "governance", "runtime"],
+          points: [
+            "Do you have visibility into <strong>which agents are driving cost and consumption</strong>?",
+            "Can you correlate <strong>agent activity (prompts, tool calls, outcomes)</strong> to cost drivers?",
+            "How do you <strong>govern usage policies</strong> to prevent runaway agent execution or overconsumption?",
+            "If an agent becomes inefficient or misconfigured, how quickly can you <strong>detect and act on it</strong>?",
+          ],
+          seeItWork: { label: "Cost-aware expense agent", href: "use-cases.html" },
+        },
+        {
+          id: "control",
+          accent: "--layer-control",
+          outcome: "risk",
+          outcomeLabel: "Lower risk",
+          soundbite: "One control plane is how ‘governed AI’ stops being a slide and becomes a daily operating posture — across every cloud, every agent.",
+          metaLayer: "Control plane",
+          personas: ["ciso", "cio"],
+          customerQuote: "We want a unified control plane for identity, governance, and security.",
+          shortAnswer:
+            "One identity, one set of policies, one trace per agent \u2014 across every cloud and SaaS app, aligned to NIST AI RMF.",
+          pointAt: ["identity", "governance", "security", "catalog-lineage"],
+          points: [
+            "Do your agents have <strong>identities with defined permissions and ownership</strong>, similar to users or apps?",
+            "Can you <strong>apply consistent policies (access, DLP, conditional access)</strong> across all agents?",
+            "How do you <strong>govern lifecycle</strong> \u2014 creation, approval, monitoring, and decommissioning of agents?",
+            "If an incident occurs, can you <strong>trace an agent\u2019s actions end-to-end</strong> and investigate it?",
+            "Do you have a <strong>single place to observe, govern, and secure all agents</strong>, including third-party ones?",
+          ],
+          seeItWork: { label: "ServiceNow IT Incident Triage Agent", href: "use-cases.html#servicenow-incident" },
+        },
+        {
+          id: "risk",
+          accent: "--layer-control",
+          outcome: "risk",
+          outcomeLabel: "Lower risk",
+          soundbite: "Prompt injection, leakage, and rogue agents are real — and solvable when every agent has identity, policy, and live monitoring from day one.",
+          metaLayer: "GenAI risk & security",
+          personas: ["ciso"],
+          customerQuote: "We need to manage GenAI risk — prompt injection, leakage, rogue agents.",
+          shortAnswer:
+            "Real-time monitoring, red-teaming, and runtime guardrails — from Foundry safety evals to Defender / Sentinel coverage for every agent action.",
+          pointAt: ["security", "governance", "identity"],
+          points: [
+            "How are you protecting against <strong>prompt injection, data leakage, or rogue agent behavior</strong>?",
+            "Do you have <strong>real-time monitoring and threat detection</strong> for agent activity?",
+          ],
+          seeItWork: { label: "ServiceNow IT Incident Triage Agent", href: "use-cases.html#servicenow-incident" },
+        },
+        {
+          id: "sensitive",
+          accent: "--layer-data",
+          outcome: "risk",
+          outcomeLabel: "Lower risk",
+          soundbite: "Sensitive data shouldn’t have to move for AI to be useful. Ground agents on data where it lives — with the labels, controls, and audit you already trust.",
+          metaLayer: "Sensitive data & on-prem",
+          personas: ["ciso", "cdo"],
+          customerQuote: "We can’t move sensitive data to the cloud just to use agents.",
+          shortAnswer:
+            "Ground agents in data that stays where it lives — Foundry Local + private MCP servers + Purview policies, with full lineage end to end.",
+          pointAt: ["knowledge-grounding", "catalog-lineage", "runtime", "mcp"],
+          points: [
+            "How are you ensuring agents respect <strong>data boundaries, labels, and compliance policies</strong>?",
+            "Can you track <strong>data flow from input → agent → output</strong> across systems?",
+          ],
+          seeItWork: { label: "Citizen-built HR Benefits Agent", href: "scenarios/citizen-hr.html" },
+        },
+        {
+          id: "scale",
+          accent: "--layer-model",
+          outcome: "adoption",
+          outcomeLabel: "Faster adoption",
+          soundbite: "Most AI programs don’t fail at the pilot — they fail at production. Central registries, evals, and consumption limits make the leap repeatable.",
+          metaLayer: "Pilot → production",
+          personas: ["cio", "ai"],
+          customerQuote: "Pilots work — production at scale is where it falls apart.",
+          shortAnswer:
+            "Central registry, signed releases, pre-prod evals, consumption limits, and approval workflows turn one-off pilots into a managed agent portfolio.",
+          pointAt: ["dev-platform", "governance", "cost"],
+          points: [
+            "What changes when you move from pilot to production in terms of <strong>governance and control</strong>?",
+            "How do you prevent <strong>agent sprawl and unmanaged growth</strong>?",
+          ],
+          seeItWork: { label: "Multi-source Customer 360", href: "scenarios/customer360.html" },
+        },
+        {
+          id: "modal",
+          accent: "--layer-experience",
+          outcome: "adoption",
+          outcomeLabel: "Faster adoption",
+          soundbite: "Voice and vision agents are coming fast. The cost of getting them wrong is letting them grow up outside your control plane.",
+          metaLayer: "Multi-modal & advanced",
+          personas: ["ai", "lob"],
+          customerQuote: "Voice, vision, and tool-using agents are next — not just chat.",
+          shortAnswer:
+            "Multi-modal agents inherit the same identity, policy, cost tagging, and trace fabric as text agents — no parallel control plane.",
+          pointAt: ["models", "runtime", "tools-sdks"],
+          points: [
+            "Do you have visibility into <strong>how different agent types behave and interact</strong>?",
+            "Can you enforce <strong>security and governance consistently across modalities</strong>?",
+          ],
+          seeItWork: { label: "Use cases (M365 / SAP / ServiceNow)", href: "use-cases.html" },
+        },
+        {
+          id: "citizen-dev",
+          accent: "--layer-model",
+          outcome: "adoption",
+          outcomeLabel: "Faster adoption",
+          soundbite: "Letting business users build is the speed lever. A signed tool catalog and central approval keep it from becoming the risk lever.",
+          metaLayer: "Citizen dev + guardrails",
+          personas: ["lob", "ai"],
+          customerQuote: "Citizen builders need to move fast — without breaking things.",
+          shortAnswer:
+            "Copilot Studio for builders, central registry + signed MCP catalog + admin approval policies — fast paths with guardrails built in.",
+          pointAt: ["dev-platform", "tools-sdks", "governance", "human-oversight"],
+          points: [
+            "How are you enabling builders while still enforcing <strong>enterprise guardrails and policies</strong>?",
+            "Can new agents be created without <strong>security review or central visibility</strong>?",
+          ],
+          seeItWork: { label: "Citizen-built HR Benefits Agent", href: "scenarios/citizen-hr.html" },
+        },
+        {
+          id: "observability",
+          accent: "--layer-control",
+          outcome: "risk",
+          outcomeLabel: "Lower risk",
+          soundbite: "If you can’t trace what your agents are doing, you can’t trust them — and you can’t improve them. Trace every step, every time.",
+          metaLayer: "Observability & quality",
+          personas: ["ciso", "cdo", "ai"],
+          customerQuote: "We can’t debug or measure what our agents actually do.",
+          shortAnswer:
+            "Foundry traces every step — prompt, reasoning, tool calls, results — and pairs it with evals for quality, safety, and cost across every runtime.",
+          pointAt: ["governance", "catalog-lineage", "cost"],
+          points: [
+            "Can you trace <strong>prompt → reasoning → tool → result → output</strong> for your agents?",
+            "Do you have a way to <strong>measure agent effectiveness, reliability, and risk</strong>?",
+            "How are you identifying <strong>which agents deliver value vs. introduce risk</strong>?",
+          ],
+          seeItWork: { label: "Cost-aware Expense Agent", href: "scenarios/expense.html" },
+        },
+      ];
+
+      const challengeGrid = document.getElementById("challengeGrid");
+      const challengePanel = document.getElementById("challengePanel");
+      const cpOutcome = document.getElementById("cpOutcome");
+      const cpQuote = document.getElementById("cpQuote");
+      const cpSoundbite = document.getElementById("cpSoundbite");
+      const cpAnswer = document.getElementById("cpAnswer");
+      const cpPoints = document.getElementById("cpPoints");
+      const cpPointAt = document.getElementById("cpPointAt");
+      const cpSeeItWork = document.getElementById("cpSeeItWork");
+      const cpClear = document.getElementById("cpClear");
+      const cpCopy = document.getElementById("cpCopy");
+      const outcomesBar = document.querySelector(".outcomes-bar");
+      const clearFiltersBtn = document.getElementById("clearFilters");
+      let activeOutcome = null;
+      let activePersona = null;
+
+      function nodeLabelById(id) {
+        for (const p of PLANES) {
+          for (const n of p.nodes) if (n.id === id) return n.title;
+        }
+        return id;
+      }
+
+      function renderChallenges() {
+        if (!challengeGrid) return;
+        const cards = CHALLENGES.map((c) => `
+          <button type="button" class="challenge-card" data-challenge="${c.id}" data-outcome="${c.outcome || ""}" style="--accent: var(${c.accent});">
+            <div class="challenge-meta"><span class="dot"></span>${c.metaLayer}</div>
+            <div class="challenge-quote">${c.customerQuote}</div>
+            <div class="challenge-outcome">${c.outcomeLabel || ""}</div>
+          </button>
+        `).join("");
+        challengeGrid.innerHTML = cards;
+        challengeGrid.querySelectorAll("button.challenge-card").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const id = btn.dataset.challenge;
+            if (btn.classList.contains("active")) applyChallenge(null);
+            else applyChallenge(id);
+          });
+        });
+      }
+
+      function setOutcomeFilter(outcome) {
+        activeOutcome = outcome || null;
+        applyFilters();
+      }
+      function setPersonaFilter(persona) {
+        activePersona = persona || null;
+        applyFilters();
+      }
+      function applyFilters() {
+        if (outcomesBar) {
+          outcomesBar.querySelectorAll(".outcome-chip").forEach((b) => {
+            b.classList.toggle("active", !!activeOutcome && b.dataset.outcome === activeOutcome);
+          });
+          outcomesBar.querySelectorAll(".persona-chip").forEach((b) => {
+            b.classList.toggle("active", !!activePersona && b.dataset.persona === activePersona);
+          });
+        }
+        challengeGrid.querySelectorAll(".challenge-card").forEach((b) => {
+          const id = b.dataset.challenge;
+          const c = CHALLENGES.find((x) => x.id === id);
+          const outcomeOk = !activeOutcome || (c && c.outcome === activeOutcome);
+          const personaOk = !activePersona || (c && Array.isArray(c.personas) && c.personas.includes(activePersona));
+          b.hidden = !(outcomeOk && personaOk);
+        });
+        const activeBtn = challengeGrid.querySelector(".challenge-card.active");
+        if (activeBtn && activeBtn.hidden) applyChallenge(null);
+      }
+
+      if (outcomesBar) {
+        outcomesBar.querySelectorAll(".outcome-chip").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const next = btn.dataset.outcome || "";
+            setOutcomeFilter(next && activeOutcome === next ? null : (next || null));
+          });
+        });
+        outcomesBar.querySelectorAll(".persona-chip").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const next = btn.dataset.persona || "";
+            setPersonaFilter(next && activePersona === next ? null : (next || null));
+          });
+        });
+      }
+      if (clearFiltersBtn) {
+        clearFiltersBtn.addEventListener("click", () => {
+          activeOutcome = null;
+          activePersona = null;
+          applyFilters();
+        });
+      }
+
+      // ---------- WALK THE ARCHITECTURE ----------
+      let walkTimer = null;
+      let walkPlaying = false;
+      const walkArchBtn = document.getElementById("walkArchBtn");
+      function stopWalk() {
+        if (walkTimer) clearTimeout(walkTimer);
+        walkTimer = null;
+        walkPlaying = false;
+        document.querySelectorAll(".plane").forEach((p) => {
+          p.classList.remove("plane-walked-active", "plane-walked-dim");
+        });
+        if (walkArchBtn) walkArchBtn.classList.remove("active");
+      }
+      function walkArchitecture() {
+        if (walkPlaying) { stopWalk(); captionEl && (captionEl.innerHTML = defaultCaption); return; }
+        stopScenario();
+        if (challengeActive) applyChallenge(null);
+        clearTrace();
+        document.querySelectorAll(".scenario-btn").forEach((b) => b.classList.remove("active"));
+        if (walkArchBtn) walkArchBtn.classList.add("active");
+        walkPlaying = true;
+        const planes = Array.from(document.querySelectorAll(".plane"));
+        let i = 0;
+        const tick = () => {
+          if (i >= planes.length) {
+            walkTimer = setTimeout(() => {
+              stopWalk();
+              if (captionEl) captionEl.innerHTML = defaultCaption;
+            }, 2200);
+            return;
+          }
+          planes.forEach((p, idx) => {
+            p.classList.toggle("plane-walked-active", idx === i);
+            p.classList.toggle("plane-walked-dim", idx !== i);
+          });
+          const pd = PLANES[i];
+          if (captionEl && pd) {
+            captionEl.innerHTML = `<strong>${i + 1}/${planes.length} · ${pd.title}</strong> — ${pd.desc}`;
+          }
+          i++;
+          walkTimer = setTimeout(tick, 2400);
+        };
+        tick();
+      }
+      if (walkArchBtn) walkArchBtn.addEventListener("click", walkArchitecture);
+
+      // ---------- COPY TALK TRACK ----------
+      function copyTalkTrack() {
+        const activeBtn = challengeGrid.querySelector(".challenge-card.active");
+        if (!activeBtn) return;
+        const id = activeBtn.dataset.challenge;
+        const c = CHALLENGES.find((x) => x.id === id);
+        if (!c) return;
+        const stripHtml = (s) => s.replace(/<[^>]+>/g, "");
+        const archHref = new URL(c.seeItWork.href, location.href).href;
+        const text = [
+          `Customer outcome: ${c.outcomeLabel || ""}`,
+          `Customer says: “${c.customerQuote}”`,
+          ``,
+          `Say this: ${c.soundbite || ""}`,
+          ``,
+          `The short answer: ${c.shortAnswer}`,
+          ``,
+          `Discovery questions:`,
+          ...c.points.map((p) => `  - ${stripHtml(p)}`),
+          ``,
+          `See it in action: ${c.seeItWork.label} — ${archHref}`,
+        ].join("\n");
+        const flash = () => {
+          if (!cpCopy) return;
+          const original = cpCopy.querySelector("svg") ? cpCopy.childNodes[cpCopy.childNodes.length - 1].textContent : cpCopy.textContent;
+          cpCopy.classList.add("copied");
+          const label = cpCopy.childNodes[cpCopy.childNodes.length - 1];
+          if (label && label.nodeType === 3) label.textContent = " Copied!";
+          setTimeout(() => {
+            cpCopy.classList.remove("copied");
+            if (label && label.nodeType === 3) label.textContent = original;
+          }, 1600);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(flash).catch(() => {
+            // Fallback: textarea + execCommand
+            const ta = document.createElement("textarea");
+            ta.value = text; document.body.appendChild(ta); ta.select();
+            try { document.execCommand("copy"); flash(); } finally { document.body.removeChild(ta); }
+          });
+        }
+      }
+      if (cpCopy) cpCopy.addEventListener("click", copyTalkTrack);
+
+      // ---------- PRESENTER MODE ----------
+      const presenterToggle = document.getElementById("presenterToggle");
+      if (presenterToggle) {
+        presenterToggle.addEventListener("click", () => {
+          const on = document.documentElement.classList.toggle("presenter");
+          presenterToggle.classList.toggle("active", on);
+          presenterToggle.setAttribute("aria-pressed", on ? "true" : "false");
+        });
+      }
+
+
+      function applyChallenge(id) {
+        const c = CHALLENGES.find((x) => x.id === id);
+        stopWalk();
+        challengeGrid.querySelectorAll(".challenge-card").forEach((b) =>
+          b.classList.toggle("active", b.dataset && b.dataset.challenge === id),
+        );
+        if (!c) {
+          challengeActive = false;
+          challengePanel.hidden = true;
+          document.querySelectorAll(".node").forEach((n) => {
+            n.classList.remove("cha-target", "cha-dim");
+          });
+          document.documentElement.style.removeProperty("--accent");
+          return;
+        }
+        challengeActive = true;
+        // Stop any scenario walkthrough or hover trace.
+        stopScenario();
+        clearTrace();
+        document.documentElement.style.setProperty("--accent", `var(${c.accent})`);
+        const targets = new Set(c.pointAt);
+        document.querySelectorAll(".node").forEach((n) => {
+          const nid = n.dataset.node;
+          n.classList.toggle("cha-target", targets.has(nid));
+          n.classList.toggle("cha-dim", !targets.has(nid));
+        });
+        cpOutcome.textContent = c.outcomeLabel || "";
+        cpOutcome.style.display = c.outcomeLabel ? "" : "none";
+        cpQuote.textContent = `\u201c${c.customerQuote}\u201d`;
+        cpSoundbite.textContent = c.soundbite || "";
+        cpSoundbite.style.display = c.soundbite ? "" : "none";
+        cpAnswer.innerHTML = `<strong>The short answer.</strong> ${c.shortAnswer}`;
+        cpPoints.innerHTML = c.points.map((p) => `<li>${p}</li>`).join("");
+        cpPointAt.innerHTML = c.pointAt.map((nid) => `<span class="pa-chip">${nodeLabelById(nid)}</span>`).join("");
+        cpSeeItWork.innerHTML = `<strong>See it in action:</strong> <a href="${c.seeItWork.href}">${c.seeItWork.label} \u2192</a>`;
+        challengePanel.hidden = false;
+      }
+
+      if (cpClear) cpClear.addEventListener("click", () => applyChallenge(null));
+      renderChallenges();
+    </script>
+  </body>
+</html>
