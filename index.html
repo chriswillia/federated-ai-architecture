@@ -1794,6 +1794,8 @@
         <button class="scenario-btn" data-scenario="citizen">Citizen-built HR agent</button>
         <button class="scenario-btn" data-scenario="customer360">Multi-source customer 360</button>
         <button class="scenario-btn" data-scenario="expense">Cost-aware expense agent</button>
+        <button class="scenario-btn" data-scenario="itops">Autonomous IT incident triage</button>
+        <button class="scenario-btn" data-scenario="swe">Engineering copilot (code → PR)</button>
         <button class="scenario-btn clear" data-scenario="clear">Clear</button>
         <span class="scenario-sep" aria-hidden="true">•</span>
         <button class="scenario-btn walk-arch" id="walkArchBtn" type="button" title="Walk through the five layers in order">▶ Walk the architecture</button>
@@ -2397,6 +2399,34 @@
             { node: "apis", text: "Agent posts via API Management to SAP and the corporate card system." },
             { node: "systems-of-record", text: "SAP records the expense; Outlook delivers the approval." },
             { node: "security", text: "Sentinel logs the full chain; Defender flags anything anomalous." },
+          ],
+        },
+        itops: {
+          title: "Autonomous IT incident triage",
+          steps: [
+            { node: "vertical-copilots", text: "A P2 incident lands in ServiceNow ITSM — Now Assist routes it to the triage agent." },
+            { node: "dev-platform", text: "The triage agent was built once in Foundry and registered centrally; SREs reuse it across regions." },
+            { node: "models", text: "A small model classifies severity in milliseconds; complex incidents escalate to a larger reasoning model." },
+            { node: "tools-sdks", text: "The agent only calls signed runbook tools from the central registry — no ad-hoc shell commands." },
+            { node: "apis", text: "Diagnostic probes (health checks, log queries, dependency maps) flow through API Management." },
+            { node: "a2a", text: "It suspects a security event and hands off to the Defender agent via Agent2Agent — cross-vendor, in seconds." },
+            { node: "security", text: "Sentinel captures every tool call, decision, and result as one continuous trace." },
+            { node: "human-oversight", text: "Confidence below threshold? It escalates to the on-call engineer with a complete summary and recommended next step." },
+            { node: "catalog-lineage", text: "Resolution is logged and joined to the CMDB — fuel for the post-mortem and the next eval cycle." },
+          ],
+        },
+        swe: {
+          title: "Engineering copilot (code → PR)",
+          steps: [
+            { node: "vertical-copilots", text: "A developer asks GitHub Copilot in VS Code to implement a feature from a Jira ticket." },
+            { node: "dev-platform", text: "The engineering agent was authored in Foundry; logic, prompts, and skills are versioned centrally." },
+            { node: "mcp", text: "It calls the repo MCP server to read code, the Jira MCP server to read the ticket, and the build MCP server to run tests." },
+            { node: "tools-sdks", text: "Every tool comes from the signed central catalog — no rogue plugins, no shadow tooling." },
+            { node: "models", text: "Routine refactors use a small model; tricky architecture changes route to a larger reasoning model." },
+            { node: "runtime", text: "The agent runs in the dev environment closest to the repo — same governance, lower latency." },
+            { node: "governance", text: "Foundry evals run pre-merge: regression risk, security weaknesses, license violations — all flagged before review." },
+            { node: "human-oversight", text: "A senior engineer reviews the PR and merges it. The agent never ships unreviewed." },
+            { node: "catalog-lineage", text: "Every prompt, diff, eval, and approval is logged — audit-ready and reusable as training signal." },
           ],
         },
       };
