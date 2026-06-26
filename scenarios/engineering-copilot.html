@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Multi-source Customer 360 · Federated AI Environment</title>
-    <meta name="description" content="Detailed reference architecture for a cross-vendor Customer 360 agent: Salesforce Agentforce, SAP Joule, and a Foundry-built central agent collaborating via Agent2Agent." />
+    <title>Engineering Copilot (code &rarr; PR) &middot; Federated AI Environment</title>
+    <meta name="description" content="Detailed reference architecture for an engineering copilot that takes a Jira ticket from code to a reviewed PR: MCP-grounded repo + tests, signed tool catalog, pre-merge Foundry evals, and human reviewers in the loop." />
     <script>
       (function () {
         try {
@@ -34,7 +34,7 @@
         --layer-fabric: #0891b2;     --layer-fabric-soft: #cffafe;
         --layer-data: #16a34a;       --layer-data-soft: #dcfce7;
         --layer-model: #65a30d;      --layer-model-soft: #ecfccb;
-        --scenario-accent: var(--layer-fabric);
+        --scenario-accent: var(--layer-model);
       }
       [data-theme="dark"] {
         --cp-bg: #1b1a19; --cp-surface: #252423; --cp-surface-soft: #2d2c2b;
@@ -84,8 +84,8 @@
       .outcome-banner {
         margin: 10px 0;
         padding: 12px 16px;
-        border-left: 4px solid var(--layer-fabric);
-        background: color-mix(in srgb, var(--layer-fabric) 8%, var(--cp-surface-soft));
+        border-left: 4px solid var(--layer-model);
+        background: color-mix(in srgb, var(--layer-model) 8%, var(--cp-surface-soft));
         border-radius: 0 10px 10px 0;
         font-size: 13.5px;
         line-height: 1.5;
@@ -174,62 +174,65 @@
 
     <main>
       <section class="page-hero">
-        <div class="crumbs"><a href="../index.html">Reference architecture</a> &nbsp;/&nbsp; Scenarios &nbsp;/&nbsp; Multi-source Customer 360</div>
-        <h2>Multi-source Customer 360 (Cross-vendor agent collaboration)</h2>
-        <p class="subtitle">SAP Joule, Salesforce Agentforce, and a Foundry-built central agent working together as one.</p>
-        <div class="outcome-banner">By the end of this flow, a sales rep sees a single unified view across CRM, ERP, and support — stitched together by agents collaborating cross-vendor, with permissions and lineage preserved end-to-end.</div>
+        <div class="crumbs"><a href="../index.html">Reference architecture</a> &nbsp;/&nbsp; Scenarios &nbsp;/&nbsp; Engineering Copilot (code &rarr; PR)</div>
+        <h2>Engineering Copilot (code &rarr; PR)</h2>
+        <p class="subtitle">A development agent that reads a Jira ticket, grounds in the repo and tests via MCP, drafts a diff, runs pre-merge evals, and opens a PR for a human to approve &mdash; with a complete audit trail.</p>
+        <div class="outcome-banner">By the end of this flow, a developer goes from a Jira ticket to a reviewable PR with diffs, passing tests, and an eval scorecard &mdash; without leaving VS Code, and without anything shipping unreviewed.</div>
         <p class="lead">
-          A sales rep asks <strong>Salesforce Agentforce</strong> for a complete view of an account. Behind the scenes,
-          Agentforce uses <strong>Agent2Agent (A2A)</strong> to discover and delegate to your <strong>Foundry-built Customer 360 agent</strong>
-          and <strong>SAP Joule</strong>. They collaborate via <strong>Agent Cards</strong>, pull from Salesforce, SAP S/4HANA, M365 Graph,
-          and Snowflake, ground in <strong>Foundry IQ</strong>, and return a unified view with lineage tracked in Purview.
+          A developer asks <strong>GitHub Copilot</strong> in VS Code to implement a Jira ticket. The engineering agent &mdash;
+          built once in <strong>Foundry</strong> and versioned centrally &mdash; reads the ticket and the repo through
+          <strong>MCP servers</strong>, drafts a diff, runs tests in a sandboxed build MCP, and submits the result for
+          <strong>pre-merge Foundry evals</strong> (regression risk, OWASP weaknesses, license check). It opens a GitHub PR
+          with the diff, test results, and an eval scorecard. A senior engineer reviews and merges &mdash; the agent never
+          ships unreviewed. Every prompt, diff, eval, and approval lands in Purview for audit and the next eval cycle.
         </p>
       </section>
 
       <section class="addresses" aria-label="Customer challenges addressed">
         <span class="label">Addresses</span>
-        <a class="chip" href="../index.html#challenges-heading">&ldquo;Develop agents across clouds and SaaS apps&rdquo;</a>
-        <a class="chip" href="../index.html#challenges-heading">&ldquo;Unified Control Plane&rdquo;</a>
-        <a class="chip" href="../index.html#challenges-heading">&ldquo;Singular Agent Development Platform&rdquo;</a>
+        <a class="chip" href="../index.html#challenges-heading">&ldquo;Freedom to build, governed by default&rdquo;</a>
+        <a class="chip" href="../index.html#challenges-heading">&ldquo;Trusted tool catalog&rdquo;</a>
+        <a class="chip" href="../index.html#challenges-heading">&ldquo;Eval everything, ship safely&rdquo;</a>
+        <a class="chip" href="../index.html#challenges-heading">&ldquo;Audit trail across the stack&rdquo;</a>
       </section>
 
       <section class="at-a-glance" aria-label="At a glance">
-        <div class="aag-card"><div class="aag-label">Built by</div><div class="aag-value">Sales engineering + IT</div><div class="aag-detail">Foundry pro-dev for the central agent</div></div>
-        <div class="aag-card"><div class="aag-label">Used by</div><div class="aag-value">Sales reps</div><div class="aag-detail">In Salesforce, Teams, or web</div></div>
-        <div class="aag-card"><div class="aag-label">Runs on</div><div class="aag-value">Foundry + SaaS hosts</div><div class="aag-detail">Azure (central) · Salesforce · SAP BTP</div></div>
-        <div class="aag-card"><div class="aag-label">Touches data in</div><div class="aag-value">Salesforce · SAP · M365 · Snowflake</div><div class="aag-detail">Plus on-prem order DB</div></div>
-        <div class="aag-card"><div class="aag-label">Cost owner</div><div class="aag-value">Per-agent attribution</div><div class="aag-detail">Tracked across vendors (still emerging)</div></div>
+        <div class="aag-card"><div class="aag-label">Built by</div><div class="aag-value">Platform engineering</div><div class="aag-detail">Copilot Studio + Agents Framework</div></div>
+        <div class="aag-card"><div class="aag-label">Used by</div><div class="aag-value">Developers in VS Code</div><div class="aag-detail">GitHub Copilot surface; PR review in GitHub</div></div>
+        <div class="aag-card"><div class="aag-label">Runs on</div><div class="aag-value">Foundry Agent Service</div><div class="aag-detail">Sandboxed build MCP for test runs</div></div>
+        <div class="aag-card"><div class="aag-label">Touches data in</div><div class="aag-value">Repos + Jira + build artifacts</div><div class="aag-detail">GitHub, Atlassian Jira, Foundry IQ</div></div>
+        <div class="aag-card"><div class="aag-label">Cost owner</div><div class="aag-value">Engineering org</div><div class="aag-detail">Per-team, per-repo token tagging for showback</div></div>
       </section>
 
       <section class="section" aria-label="Components">
         <h3>Reference architecture &middot; Components by layer</h3>
-        <p class="section-sub">Cross-vendor agent collaboration relies on shared protocols (A2A, MCP), federated identity, and one place to see lineage.</p>
+        <p class="section-sub">A dev agent grounded in repo, tickets, and tests &mdash; with evals gating the merge.</p>
         <div class="components-grid" id="components"></div>
       </section>
 
       <section class="section" aria-label="Flow">
         <h3>The flow</h3>
-        <p class="section-sub">Three agents from three vendors collaborate to answer a single sales-rep question.</p>
+        <p class="section-sub">Ticket &rarr; MCP-grounded read of repo + tests &rarr; plan &amp; draft diff &rarr; sandboxed test run &rarr; Foundry evals &rarr; PR for human review &rarr; logged for audit and next eval.</p>
         <div class="flow-wrap"><div class="flow-grid" id="flow"></div></div>
       </section>
 
       <section class="section" aria-label="Outcomes">
         <h3>What success looks like</h3>
         <div class="card-grid">
-          <div class="out-card"><div class="out-title">360&deg; view in seconds, not weeks</div><div class="out-body">Sales rep gets a unified account picture without manually pivoting between Salesforce, SAP, and Snowflake dashboards.</div></div>
-          <div class="out-card"><div class="out-title">No vendor lock-in</div><div class="out-body">Vendor-neutral protocols (A2A, MCP) mean the central agent can collaborate with whatever SaaS the customer adopts next.</div></div>
-          <div class="out-card"><div class="out-title">Data stays where it lives</div><div class="out-body">No copy-out to a central lake. Each agent queries its own system and returns artifacts the collaborator can use.</div></div>
-          <div class="out-card"><div class="out-title">One audit trail</div><div class="out-body">Purview lineage and Foundry Control Plane traces show which agent touched which data and why.</div></div>
+          <div class="out-card"><div class="out-title">Faster delivery on routine work</div><div class="out-body">Refactors, dependency bumps, and small features land in hours &mdash; developers spend their time on architecture and review, not boilerplate.</div></div>
+          <div class="out-card"><div class="out-title">Quality stays high</div><div class="out-body">Pre-merge evals catch regressions, security weaknesses, and license issues before review &mdash; reviewers see the score, not the surprise.</div></div>
+          <div class="out-card"><div class="out-title">Tooling stays sane</div><div class="out-body">The agent only calls signed MCP servers from the central catalog &mdash; no shadow plugins, no rogue endpoints, no surprise data exfil.</div></div>
+          <div class="out-card"><div class="out-title">Audit-ready by default</div><div class="out-body">Every prompt, diff, test result, eval, and reviewer decision is in Purview &mdash; the SOX/SOC2 evidence is just a query.</div></div>
         </div>
       </section>
 
       <section class="section" aria-label="Considerations">
         <h3>Considerations</h3>
         <div class="card-grid">
-          <div class="cons-card"><div class="out-title">A2A is still maturing</div><div class="out-body">Agent Card discovery, capability negotiation, and task lifecycle are early. Expect version churn and bespoke fallbacks for the first year.</div></div>
-          <div class="cons-card"><div class="out-title">Cross-vendor workload identity</div><div class="out-body">Federating Entra, Salesforce, SAP IAS for agent-to-agent calls is harder than human SSO. Plan tokens, scopes, and rotation early.</div></div>
-          <div class="cons-card"><div class="out-title">Per-agent cost attribution gets tricky</div><div class="out-body">When SAP Joule calls your Foundry agent which calls Agentforce, who pays which tokens? Tag conventions need to cross vendor boundaries.</div></div>
-          <div class="cons-card"><div class="out-title">Latency budget</div><div class="out-body">Each hop adds 100&ndash;500ms. For real-time sales conversations, cache aggressively and design parallel A2A calls where you can.</div></div>
+          <div class="cons-card"><div class="out-title">Eval suites are the gate</div><div class="out-body">Pre-merge evals are only as good as the suite. Plan dedicated owners to maintain regression sets, security checks, and license rules in Foundry.</div></div>
+          <div class="cons-card"><div class="out-title">Human review is non-negotiable</div><div class="out-body">No auto-merge. The agent drafts; a senior engineer ships. This is both a quality and an OWASP LLM01 (Prompt Injection) mitigation.</div></div>
+          <div class="cons-card"><div class="out-title">Sandbox the build MCP</div><div class="out-body">Test execution must run in an isolated, ephemeral environment &mdash; no prod credentials, no shared state, no outbound network beyond allowlist.</div></div>
+          <div class="cons-card"><div class="out-title">OWASP LLM02 (Sensitive Disclosure)</div><div class="out-body">Scope repo MCP access to the developer&rsquo;s permissioned scope. Redact secrets in logs. Block uploads of customer data into prompts.</div></div>
         </div>
       </section>
 
@@ -237,10 +240,10 @@
         <span class="label">Related</span>
         <a href="../index.html">Reference architecture</a>
         <a href="citizen-hr.html">Citizen-built HR Benefits Agent</a>
+        <a href="customer360.html">Multi-source Customer 360</a>
         <a href="expense.html">Cost-aware Expense Agent</a>
         <a href="it-incident-triage.html">Autonomous IT Incident Triage</a>
-        <a href="engineering-copilot.html">Engineering Copilot (code &rarr; PR)</a>
-        <a href="../use-cases.html#sap-po">SAP Procurement Approval Agent</a>
+        <a href="../use-cases.html">Use cases (M365 / SAP / ServiceNow)</a>
       </section>
 
       <footer class="app">
@@ -273,48 +276,50 @@
 
       const COMPONENTS = {
         exp: [
-          { name: "Salesforce Agentforce", vendor: "salesforce", role: "Where the sales rep asks the question, inside Salesforce." },
-          { name: "M365 Copilot (Teams)", vendor: "microsoft", role: "Alternative surface for the same agent." },
-          { name: "Web app surface", vendor: "oss", role: "Embedded in internal account-planning tools." },
-        ],
-        ctl: [
-          { name: "Microsoft Entra ID + SAP IAS + Salesforce", vendor: "microsoft", role: "Federated identity so agents act on the rep's behalf across vendors." },
-          { name: "Microsoft Agent 365 + Foundry Control Plane", vendor: "microsoft", role: "Central registry, trace, evaluation, and monitoring for cross-vendor agents." },
-          { name: "Microsoft Purview", vendor: "microsoft", role: "Lineage across every system the agents touch." },
-          { name: "Sentinel + Defender", vendor: "microsoft", role: "Detect anomalous cross-agent behavior." },
-        ],
-        fab: [
-          { name: "Agent2Agent (A2A)", vendor: "oss", role: "Agentforce, Joule, and the Foundry agent discover and call each other via Agent Cards." },
-          { name: "Model Context Protocol (MCP)", vendor: "oss", role: "Tool and data binding for each agent &mdash; vendor-neutral." },
-          { name: "Azure API Management", vendor: "microsoft", role: "Gateway for legacy data sources without native agent integrations." },
+          { name: "GitHub Copilot in VS Code", vendor: "microsoft", role: "Where developers prompt the engineering agent from their IDE." },
+          { name: "GitHub PR review", vendor: "microsoft", role: "The agent opens PRs here; humans review, comment, and merge." },
+          { name: "Teams notification", vendor: "microsoft", role: "Reviewers get a Teams ping with the eval scorecard summary." },
         ],
         bld: [
-          { name: "Foundry Agent Service (central C360 agent)", vendor: "microsoft", role: "Hosts your unifying Customer 360 agent built in Foundry." },
-          { name: "Salesforce Agentforce platform", vendor: "salesforce", role: "Sales-rep-facing agent inside Salesforce." },
-          { name: "SAP Joule + Joule Studio", vendor: "sap", role: "Procurement / supply-side agent inside SAP." },
+          { name: "Foundry Agent Service", vendor: "microsoft", role: "Hosts and orchestrates the engineering agent and its tool calls." },
+          { name: "Engineering agent (Copilot Studio + Agents Framework)", vendor: "microsoft", role: "Versioned prompts, skills, and orchestration logic &mdash; centrally registered." },
+          { name: "Model router (small + large)", vendor: "microsoft", role: "Routine edits use a small model; architecture changes route to a larger reasoning model." },
+          { name: "GitHub Actions runners", vendor: "microsoft", role: "Where the build MCP server runs tests inside a sandboxed env." },
+        ],
+        fab: [
+          { name: "Repo MCP server", vendor: "oss", role: "Read code, files, and dependency graph &mdash; scoped to the developer&rsquo;s permissions." },
+          { name: "Jira / Confluence MCP server", vendor: "oss", role: "Fetch ticket, acceptance criteria, design docs, and linked specs." },
+          { name: "Build / test MCP server", vendor: "oss", role: "Runs unit + integration tests in an isolated sandbox; streams results back." },
+          { name: "Azure API Management", vendor: "microsoft", role: "Gateway for tool calls; central throttling, auth, and audit." },
+          { name: "Signed tool catalog", vendor: "microsoft", role: "Only registered, signed MCP servers can be invoked &mdash; no shadow plugins." },
         ],
         dat: [
-          { name: "Foundry IQ", vendor: "microsoft", role: "Grounds central agent responses in curated knowledge." },
-          { name: "Salesforce Data Cloud", vendor: "salesforce", role: "Customer master, opportunities, and pipeline." },
-          { name: "SAP S/4HANA", vendor: "sap", role: "Order history, commitments, and supply view." },
-          { name: "Microsoft Graph", vendor: "microsoft", role: "Recent meetings, emails, and account contacts." },
-          { name: "Snowflake / Fabric", vendor: "snowflake", role: "Behavioral usage and analytics joins." },
-          { name: "On-prem order DB", vendor: "oss", role: "Legacy data that hasn't migrated yet." },
+          { name: "Source repos (GitHub)", vendor: "microsoft", role: "Source-of-truth for code; the agent reads through the repo MCP, writes via PR." },
+          { name: "Jira / Confluence", vendor: "oss", role: "Authoritative for ticket state, acceptance criteria, and design history." },
+          { name: "Foundry IQ", vendor: "microsoft", role: "Vector index over architecture docs, code style guides, and runbooks for grounding." },
+          { name: "Catalog + lineage (Purview)", vendor: "microsoft", role: "Tracks every prompt, diff, eval, and approval &mdash; lineage from ticket to merge." },
+        ],
+        ctl: [
+          { name: "Microsoft Entra ID", vendor: "microsoft", role: "Developer identity + workload identity for the agent; least-privilege repo scope." },
+          { name: "Foundry evals + traces", vendor: "microsoft", role: "Pre-merge evals score regression risk, security, and license; trace per run." },
+          { name: "Microsoft Sentinel", vendor: "microsoft", role: "Anomaly detection on agent + MCP behavior; alerts on shadow-tool attempts." },
+          { name: "Microsoft Defender for DevOps", vendor: "microsoft", role: "Secret scanning, supply-chain checks, and posture on the repo + pipeline." },
+          { name: "Cost tags (Engineering)", vendor: "microsoft", role: "Per-team, per-repo token tagging for showback to the engineering org." },
         ],
       };
 
       const FLOW_STEPS = [
-        { lane: "exp", title: "Ask Agentforce", detail: "Sales rep opens a Salesforce account and asks for a unified customer view." },
-        { lane: "ctl", title: "Federate identity", detail: "Entra ID, Salesforce IAM, and SAP IAS federate so each agent acts on the rep's behalf." },
-        { lane: "bld", title: "Agentforce delegates", detail: "Agentforce identifies the question is multi-source and delegates to the central agent." },
-        { lane: "fab", title: "Discover via A2A", detail: "Agentforce reads the Foundry agent's Agent Card and the Joule Agent Card to find capabilities." },
-        { lane: "bld", title: "Central agent runs", detail: "The Foundry-built Customer 360 agent orchestrates the cross-vendor request." },
-        { lane: "fab", title: "Call SAP via A2A", detail: "Central agent invokes Joule through Agent2Agent for the supply / order view." },
-        { lane: "fab", title: "Tools via MCP", detail: "Each agent calls its native tools (CRM lookups, ERP reads) through MCP servers." },
-        { lane: "dat", title: "Ground in Foundry IQ", detail: "Central agent retrieves curated playbooks and prior account notes so the summary stays factual." },
-        { lane: "dat", title: "Pull cross-vendor data", detail: "Salesforce Data Cloud, SAP S/4HANA, M365 Graph, Snowflake, and an on-prem order DB return fresh data." },
-        { lane: "ctl", title: "Lineage tracked", detail: "Purview records every data touch; Foundry Control Plane logs each A2A and MCP call." },
-        { lane: "exp", title: "Unified view returned", detail: "Agentforce renders the unified Customer 360 with sources and citations." },
+        { lane: "exp", title: "Ticket in VS Code", detail: "A developer asks GitHub Copilot in VS Code to implement a Jira ticket." },
+        { lane: "ctl", title: "Authenticate + scope", detail: "Entra ID confirms the developer; the agent gets least-privilege access to just this repo and this ticket." },
+        { lane: "bld", title: "Route to agent", detail: "Foundry routes to the engineering agent; logic, prompts, and skills are versioned centrally." },
+        { lane: "fab", title: "Read ticket via MCP", detail: "The Jira MCP server returns the ticket, acceptance criteria, and linked design docs." },
+        { lane: "fab", title: "Read repo via MCP", detail: "The repo MCP server returns relevant files, dependency graph, and test scaffolding." },
+        { lane: "bld", title: "Plan + draft diff", detail: "A larger reasoning model plans the change; a smaller model writes the routine edits." },
+        { lane: "fab", title: "Run tests via MCP", detail: "The build MCP server runs unit + integration tests in a sandboxed env; results stream back." },
+        { lane: "ctl", title: "Pre-merge evals", detail: "Foundry evals score regression risk, OWASP weaknesses, and license violations &mdash; all flagged before review." },
+        { lane: "exp", title: "PR opened in GitHub", detail: "The agent opens a PR with the diff, test results, and an eval scorecard &mdash; nothing more, nothing less." },
+        { lane: "exp", title: "HITL review", detail: "A senior engineer reviews and merges. The agent never ships unreviewed." },
+        { lane: "dat", title: "Lineage in Purview", detail: "Ticket &rarr; prompts &rarr; diffs &rarr; evals &rarr; approval are linked in Purview for audit and the next eval cycle." },
       ];
 
       const compsEl = document.getElementById("components");

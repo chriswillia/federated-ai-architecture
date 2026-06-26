@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Multi-source Customer 360 · Federated AI Environment</title>
-    <meta name="description" content="Detailed reference architecture for a cross-vendor Customer 360 agent: Salesforce Agentforce, SAP Joule, and a Foundry-built central agent collaborating via Agent2Agent." />
+    <title>Autonomous IT Incident Triage &middot; Federated AI Environment</title>
+    <meta name="description" content="Detailed reference architecture for an autonomous IT incident triage agent: signed runbooks, A2A handoff to the SOC, full Sentinel trace, and human-in-the-loop escalation when confidence drops." />
     <script>
       (function () {
         try {
@@ -34,7 +34,7 @@
         --layer-fabric: #0891b2;     --layer-fabric-soft: #cffafe;
         --layer-data: #16a34a;       --layer-data-soft: #dcfce7;
         --layer-model: #65a30d;      --layer-model-soft: #ecfccb;
-        --scenario-accent: var(--layer-fabric);
+        --scenario-accent: var(--layer-control);
       }
       [data-theme="dark"] {
         --cp-bg: #1b1a19; --cp-surface: #252423; --cp-surface-soft: #2d2c2b;
@@ -84,8 +84,8 @@
       .outcome-banner {
         margin: 10px 0;
         padding: 12px 16px;
-        border-left: 4px solid var(--layer-fabric);
-        background: color-mix(in srgb, var(--layer-fabric) 8%, var(--cp-surface-soft));
+        border-left: 4px solid var(--layer-control);
+        background: color-mix(in srgb, var(--layer-control) 8%, var(--cp-surface-soft));
         border-radius: 0 10px 10px 0;
         font-size: 13.5px;
         line-height: 1.5;
@@ -174,62 +174,65 @@
 
     <main>
       <section class="page-hero">
-        <div class="crumbs"><a href="../index.html">Reference architecture</a> &nbsp;/&nbsp; Scenarios &nbsp;/&nbsp; Multi-source Customer 360</div>
-        <h2>Multi-source Customer 360 (Cross-vendor agent collaboration)</h2>
-        <p class="subtitle">SAP Joule, Salesforce Agentforce, and a Foundry-built central agent working together as one.</p>
-        <div class="outcome-banner">By the end of this flow, a sales rep sees a single unified view across CRM, ERP, and support — stitched together by agents collaborating cross-vendor, with permissions and lineage preserved end-to-end.</div>
+        <div class="crumbs"><a href="../index.html">Reference architecture</a> &nbsp;/&nbsp; Scenarios &nbsp;/&nbsp; Autonomous IT Incident Triage</div>
+        <h2>Autonomous IT Incident Triage</h2>
+        <p class="subtitle">An agent that classifies, diagnoses, and resolves Tier-1 incidents on its own &mdash; with signed runbooks, security A2A handoff, and human-in-the-loop escalation when confidence drops.</p>
+        <div class="outcome-banner">By the end of this flow, most P2/P3 incidents close themselves in minutes &mdash; with a complete, auditable action trail in Sentinel and a clean handoff to humans (or to the SOC) the moment something doesn&rsquo;t fit the runbook.</div>
         <p class="lead">
-          A sales rep asks <strong>Salesforce Agentforce</strong> for a complete view of an account. Behind the scenes,
-          Agentforce uses <strong>Agent2Agent (A2A)</strong> to discover and delegate to your <strong>Foundry-built Customer 360 agent</strong>
-          and <strong>SAP Joule</strong>. They collaborate via <strong>Agent Cards</strong>, pull from Salesforce, SAP S/4HANA, M365 Graph,
-          and Snowflake, ground in <strong>Foundry IQ</strong>, and return a unified view with lineage tracked in Purview.
+          An alert fires in <strong>Sentinel</strong> and opens a P2 incident in <strong>ServiceNow ITSM</strong>.
+          <strong>Now Assist</strong> routes it to a Foundry-hosted triage agent. The agent classifies severity with a small model,
+          escalates complex cases to a larger reasoning model, and only ever calls signed runbook tools from the central catalog.
+          Diagnostics flow through <strong>Azure API Management</strong>; suspected security events hand off to a Defender agent
+          via <strong>Agent2Agent</strong>; everything lands in one Sentinel trace. If confidence drops below threshold, the agent
+          pages the on-call engineer with a complete summary.
         </p>
       </section>
 
       <section class="addresses" aria-label="Customer challenges addressed">
         <span class="label">Addresses</span>
-        <a class="chip" href="../index.html#challenges-heading">&ldquo;Develop agents across clouds and SaaS apps&rdquo;</a>
+        <a class="chip" href="../index.html#challenges-heading">&ldquo;Autonomous + human-in-the-loop&rdquo;</a>
         <a class="chip" href="../index.html#challenges-heading">&ldquo;Unified Control Plane&rdquo;</a>
-        <a class="chip" href="../index.html#challenges-heading">&ldquo;Singular Agent Development Platform&rdquo;</a>
+        <a class="chip" href="../index.html#challenges-heading">&ldquo;A2A across vendors&rdquo;</a>
+        <a class="chip" href="../index.html#challenges-heading">&ldquo;Trusted tool catalog&rdquo;</a>
       </section>
 
       <section class="at-a-glance" aria-label="At a glance">
-        <div class="aag-card"><div class="aag-label">Built by</div><div class="aag-value">Sales engineering + IT</div><div class="aag-detail">Foundry pro-dev for the central agent</div></div>
-        <div class="aag-card"><div class="aag-label">Used by</div><div class="aag-value">Sales reps</div><div class="aag-detail">In Salesforce, Teams, or web</div></div>
-        <div class="aag-card"><div class="aag-label">Runs on</div><div class="aag-value">Foundry + SaaS hosts</div><div class="aag-detail">Azure (central) · Salesforce · SAP BTP</div></div>
-        <div class="aag-card"><div class="aag-label">Touches data in</div><div class="aag-value">Salesforce · SAP · M365 · Snowflake</div><div class="aag-detail">Plus on-prem order DB</div></div>
-        <div class="aag-card"><div class="aag-label">Cost owner</div><div class="aag-value">Per-agent attribution</div><div class="aag-detail">Tracked across vendors (still emerging)</div></div>
+        <div class="aag-card"><div class="aag-label">Built by</div><div class="aag-value">IT Ops + SRE</div><div class="aag-detail">Copilot Studio + Agents Framework</div></div>
+        <div class="aag-card"><div class="aag-label">Used by</div><div class="aag-value">L1/L2 operators, SREs</div><div class="aag-detail">ServiceNow ITSM + Teams + on-call</div></div>
+        <div class="aag-card"><div class="aag-label">Runs on</div><div class="aag-value">Foundry Agent Service</div><div class="aag-detail">Small + large model router</div></div>
+        <div class="aag-card"><div class="aag-label">Touches data in</div><div class="aag-value">ServiceNow CMDB + Azure Monitor</div><div class="aag-detail">Prometheus, Defender signals</div></div>
+        <div class="aag-card"><div class="aag-label">Cost owner</div><div class="aag-value">IT Operations</div><div class="aag-detail">Per-incident token tagging for showback</div></div>
       </section>
 
       <section class="section" aria-label="Components">
         <h3>Reference architecture &middot; Components by layer</h3>
-        <p class="section-sub">Cross-vendor agent collaboration relies on shared protocols (A2A, MCP), federated identity, and one place to see lineage.</p>
+        <p class="section-sub">An autonomous agent &mdash; bounded by a signed tool catalog and a tight escalation policy.</p>
         <div class="components-grid" id="components"></div>
       </section>
 
       <section class="section" aria-label="Flow">
         <h3>The flow</h3>
-        <p class="section-sub">Three agents from three vendors collaborate to answer a single sales-rep question.</p>
+        <p class="section-sub">Alert &rarr; classify &rarr; reason &rarr; act through signed tools &rarr; A2A handoff to the SOC if needed &rarr; HITL when confidence drops &rarr; post-mortem record.</p>
         <div class="flow-wrap"><div class="flow-grid" id="flow"></div></div>
       </section>
 
       <section class="section" aria-label="Outcomes">
         <h3>What success looks like</h3>
         <div class="card-grid">
-          <div class="out-card"><div class="out-title">360&deg; view in seconds, not weeks</div><div class="out-body">Sales rep gets a unified account picture without manually pivoting between Salesforce, SAP, and Snowflake dashboards.</div></div>
-          <div class="out-card"><div class="out-title">No vendor lock-in</div><div class="out-body">Vendor-neutral protocols (A2A, MCP) mean the central agent can collaborate with whatever SaaS the customer adopts next.</div></div>
-          <div class="out-card"><div class="out-title">Data stays where it lives</div><div class="out-body">No copy-out to a central lake. Each agent queries its own system and returns artifacts the collaborator can use.</div></div>
-          <div class="out-card"><div class="out-title">One audit trail</div><div class="out-body">Purview lineage and Foundry Control Plane traces show which agent touched which data and why.</div></div>
+          <div class="out-card"><div class="out-title">Most Tier-1 tickets self-resolve</div><div class="out-body">Pattern incidents (password resets, common service restarts, known runbook scenarios) close in minutes without an operator in the loop.</div></div>
+          <div class="out-card"><div class="out-title">MTTR drops sharply on complex incidents</div><div class="out-body">When humans are needed, they get a summary, a hypothesis, and the diagnostics already done &mdash; not a blank screen and an alert.</div></div>
+          <div class="out-card"><div class="out-title">Security gets a fast lane</div><div class="out-body">Anything that looks like an attacker exits ITSM and lands in Defender via A2A &mdash; in seconds, not after a manual escalation queue.</div></div>
+          <div class="out-card"><div class="out-title">Every action is auditable</div><div class="out-body">Sentinel captures every tool call, model decision, and outcome. The CMDB stays clean for the post-mortem.</div></div>
         </div>
       </section>
 
       <section class="section" aria-label="Considerations">
         <h3>Considerations</h3>
         <div class="card-grid">
-          <div class="cons-card"><div class="out-title">A2A is still maturing</div><div class="out-body">Agent Card discovery, capability negotiation, and task lifecycle are early. Expect version churn and bespoke fallbacks for the first year.</div></div>
-          <div class="cons-card"><div class="out-title">Cross-vendor workload identity</div><div class="out-body">Federating Entra, Salesforce, SAP IAS for agent-to-agent calls is harder than human SSO. Plan tokens, scopes, and rotation early.</div></div>
-          <div class="cons-card"><div class="out-title">Per-agent cost attribution gets tricky</div><div class="out-body">When SAP Joule calls your Foundry agent which calls Agentforce, who pays which tokens? Tag conventions need to cross vendor boundaries.</div></div>
-          <div class="cons-card"><div class="out-title">Latency budget</div><div class="out-body">Each hop adds 100&ndash;500ms. For real-time sales conversations, cache aggressively and design parallel A2A calls where you can.</div></div>
+          <div class="cons-card"><div class="out-title">Tool catalog is the security boundary</div><div class="out-body">The agent can only do what your signed runbook tools let it do. Treat the catalog like prod code &mdash; review, sign, and monitor it.</div></div>
+          <div class="cons-card"><div class="out-title">Escalation threshold needs tuning</div><div class="out-body">Set the confidence threshold too high and humans get paged for everything; too low and the agent muddles through. Plan to iterate weekly for the first 90 days.</div></div>
+          <div class="cons-card"><div class="out-title">OWASP LLM07 (Insecure Plugin Design)</div><div class="out-body">Every runbook tool needs least-privilege auth, parameter validation, and dry-run mode. Workload identities, not shared service accounts.</div></div>
+          <div class="cons-card"><div class="out-title">A2A trust requires Agent Cards</div><div class="out-body">The Defender hand-off only works if both sides publish signed Agent Cards through the central registry. No registry, no A2A.</div></div>
         </div>
       </section>
 
@@ -237,10 +240,10 @@
         <span class="label">Related</span>
         <a href="../index.html">Reference architecture</a>
         <a href="citizen-hr.html">Citizen-built HR Benefits Agent</a>
+        <a href="customer360.html">Multi-source Customer 360</a>
         <a href="expense.html">Cost-aware Expense Agent</a>
-        <a href="it-incident-triage.html">Autonomous IT Incident Triage</a>
         <a href="engineering-copilot.html">Engineering Copilot (code &rarr; PR)</a>
-        <a href="../use-cases.html#sap-po">SAP Procurement Approval Agent</a>
+        <a href="../use-cases.html">Use cases (M365 / SAP / ServiceNow)</a>
       </section>
 
       <footer class="app">
@@ -273,48 +276,49 @@
 
       const COMPONENTS = {
         exp: [
-          { name: "Salesforce Agentforce", vendor: "salesforce", role: "Where the sales rep asks the question, inside Salesforce." },
-          { name: "M365 Copilot (Teams)", vendor: "microsoft", role: "Alternative surface for the same agent." },
-          { name: "Web app surface", vendor: "oss", role: "Embedded in internal account-planning tools." },
-        ],
-        ctl: [
-          { name: "Microsoft Entra ID + SAP IAS + Salesforce", vendor: "microsoft", role: "Federated identity so agents act on the rep's behalf across vendors." },
-          { name: "Microsoft Agent 365 + Foundry Control Plane", vendor: "microsoft", role: "Central registry, trace, evaluation, and monitoring for cross-vendor agents." },
-          { name: "Microsoft Purview", vendor: "microsoft", role: "Lineage across every system the agents touch." },
-          { name: "Sentinel + Defender", vendor: "microsoft", role: "Detect anomalous cross-agent behavior." },
-        ],
-        fab: [
-          { name: "Agent2Agent (A2A)", vendor: "oss", role: "Agentforce, Joule, and the Foundry agent discover and call each other via Agent Cards." },
-          { name: "Model Context Protocol (MCP)", vendor: "oss", role: "Tool and data binding for each agent &mdash; vendor-neutral." },
-          { name: "Azure API Management", vendor: "microsoft", role: "Gateway for legacy data sources without native agent integrations." },
+          { name: "ServiceNow Now Assist", vendor: "servicenow", role: "Routes the incident to the triage agent based on category and CI." },
+          { name: "ServiceNow ITSM workspace", vendor: "servicenow", role: "Where L1/L2 operators see the agent&rsquo;s actions and the live trace." },
+          { name: "Teams + PagerDuty on-call", vendor: "microsoft", role: "Escalation surface when confidence is below threshold." },
         ],
         bld: [
-          { name: "Foundry Agent Service (central C360 agent)", vendor: "microsoft", role: "Hosts your unifying Customer 360 agent built in Foundry." },
-          { name: "Salesforce Agentforce platform", vendor: "salesforce", role: "Sales-rep-facing agent inside Salesforce." },
-          { name: "SAP Joule + Joule Studio", vendor: "sap", role: "Procurement / supply-side agent inside SAP." },
+          { name: "Foundry Agent Service", vendor: "microsoft", role: "Hosts and orchestrates the triage agent and its tools at runtime." },
+          { name: "Triage agent (Copilot Studio)", vendor: "microsoft", role: "Classification + reasoning logic, versioned and centrally registered." },
+          { name: "Model router (small + large)", vendor: "microsoft", role: "Sub-100ms classification with a small model; reasoning escalates to a larger one." },
+          { name: "Microsoft Agents Framework", vendor: "microsoft", role: "Custom skills for runbook orchestration and escalation policy." },
+        ],
+        fab: [
+          { name: "Runbook MCP server", vendor: "oss", role: "Signed catalog of tools: health-check, log-query, service-restart, dependency-map." },
+          { name: "CMDB MCP server", vendor: "oss", role: "Read-only tools to query CIs, owners, and dependencies for context." },
+          { name: "Azure API Management", vendor: "microsoft", role: "Gateway to monitoring, CMDB, and product APIs; throttling + workload auth." },
+          { name: "Agent2Agent (A2A)", vendor: "microsoft", role: "Hand-off protocol from the triage agent to the Defender agent for security events." },
         ],
         dat: [
-          { name: "Foundry IQ", vendor: "microsoft", role: "Grounds central agent responses in curated knowledge." },
-          { name: "Salesforce Data Cloud", vendor: "salesforce", role: "Customer master, opportunities, and pipeline." },
-          { name: "SAP S/4HANA", vendor: "sap", role: "Order history, commitments, and supply view." },
-          { name: "Microsoft Graph", vendor: "microsoft", role: "Recent meetings, emails, and account contacts." },
-          { name: "Snowflake / Fabric", vendor: "snowflake", role: "Behavioral usage and analytics joins." },
-          { name: "On-prem order DB", vendor: "oss", role: "Legacy data that hasn't migrated yet." },
+          { name: "ServiceNow CMDB", vendor: "servicenow", role: "Authoritative source for CIs, services, owners, and dependencies." },
+          { name: "Azure Monitor / Log Analytics", vendor: "microsoft", role: "Live logs, metrics, and traces from the affected systems." },
+          { name: "Prometheus + Grafana", vendor: "oss", role: "Time-series metrics for in-cluster signal correlation." },
+          { name: "Defender for Cloud signals", vendor: "microsoft", role: "Security telemetry the triage agent checks before declaring an incident benign." },
+        ],
+        ctl: [
+          { name: "Microsoft Entra ID", vendor: "microsoft", role: "Identity for the agent and the on-call engineer; workload identity for tool calls." },
+          { name: "Microsoft Sentinel", vendor: "microsoft", role: "Single trace of every tool call, model decision, and outcome &mdash; SIEM + audit in one." },
+          { name: "Microsoft Defender XDR", vendor: "microsoft", role: "Receives A2A hand-off when the triage agent suspects an attacker, not a fault." },
+          { name: "Foundry evals + traces", vendor: "microsoft", role: "Per-incident eval scores feed the next training cycle; degraded runs alert ops." },
+          { name: "Cost tags (IT Ops)", vendor: "microsoft", role: "Per-incident, per-model token tagging for IT Ops showback." },
         ],
       };
 
       const FLOW_STEPS = [
-        { lane: "exp", title: "Ask Agentforce", detail: "Sales rep opens a Salesforce account and asks for a unified customer view." },
-        { lane: "ctl", title: "Federate identity", detail: "Entra ID, Salesforce IAM, and SAP IAS federate so each agent acts on the rep's behalf." },
-        { lane: "bld", title: "Agentforce delegates", detail: "Agentforce identifies the question is multi-source and delegates to the central agent." },
-        { lane: "fab", title: "Discover via A2A", detail: "Agentforce reads the Foundry agent's Agent Card and the Joule Agent Card to find capabilities." },
-        { lane: "bld", title: "Central agent runs", detail: "The Foundry-built Customer 360 agent orchestrates the cross-vendor request." },
-        { lane: "fab", title: "Call SAP via A2A", detail: "Central agent invokes Joule through Agent2Agent for the supply / order view." },
-        { lane: "fab", title: "Tools via MCP", detail: "Each agent calls its native tools (CRM lookups, ERP reads) through MCP servers." },
-        { lane: "dat", title: "Ground in Foundry IQ", detail: "Central agent retrieves curated playbooks and prior account notes so the summary stays factual." },
-        { lane: "dat", title: "Pull cross-vendor data", detail: "Salesforce Data Cloud, SAP S/4HANA, M365 Graph, Snowflake, and an on-prem order DB return fresh data." },
-        { lane: "ctl", title: "Lineage tracked", detail: "Purview records every data touch; Foundry Control Plane logs each A2A and MCP call." },
-        { lane: "exp", title: "Unified view returned", detail: "Agentforce renders the unified Customer 360 with sources and citations." },
+        { lane: "exp", title: "Alert fires", detail: "Sentinel detects an anomaly; ServiceNow ITSM opens a P2 incident and assigns it to the triage agent." },
+        { lane: "ctl", title: "Authenticate + scope", detail: "Entra ID and workload identity confirm the agent may read this incident and its CIs &mdash; nothing more." },
+        { lane: "bld", title: "Classify severity", detail: "A small model in Foundry classifies the incident in milliseconds; uncertain cases escalate to reasoning." },
+        { lane: "bld", title: "Plan + reason", detail: "A larger model produces a hypothesis and a runbook plan from the symptoms, owners, and recent changes." },
+        { lane: "fab", title: "Call signed runbooks", detail: "The agent only ever invokes tools from the central runbook catalog &mdash; health-check, log-query, restart." },
+        { lane: "fab", title: "Diagnose via APM", detail: "Azure API Management gates every call to monitoring, CMDB, and product APIs with workload auth and throttling." },
+        { lane: "dat", title: "Read CMDB + telemetry", detail: "Pulls live logs from Azure Monitor, metrics from Prometheus, and CI context from ServiceNow CMDB." },
+        { lane: "fab", title: "A2A to the SOC", detail: "Looks like an attacker, not a fault? Hand off to the Defender agent via Agent2Agent &mdash; cross-vendor, in seconds." },
+        { lane: "ctl", title: "Trace everything", detail: "Sentinel captures every tool call, every decision, and every result as one continuous, auditable chain." },
+        { lane: "exp", title: "HITL escalation", detail: "If confidence falls below threshold, the agent pages on-call with a summary and a recommended next step." },
+        { lane: "dat", title: "Post-mortem record", detail: "Resolution + lineage land in the CMDB; the run feeds the Foundry eval set for the next cycle." },
       ];
 
       const compsEl = document.getElementById("components");
