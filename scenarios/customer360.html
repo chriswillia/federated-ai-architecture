@@ -81,6 +81,27 @@
       .page-hero h2 { margin: 0 0 6px 0; font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
       .page-hero .subtitle { margin: 0 0 10px 0; font-size: 13.5px; color: var(--cp-text-muted); max-width: 920px; }
       .page-hero .lead { margin: 0; font-size: 13.5px; max-width: 920px; }
+      .outcome-banner {
+        margin: 10px 0;
+        padding: 12px 16px;
+        border-left: 4px solid var(--layer-fabric);
+        background: color-mix(in srgb, var(--layer-fabric) 8%, var(--cp-surface-soft));
+        border-radius: 0 10px 10px 0;
+        font-size: 13.5px;
+        line-height: 1.5;
+        color: var(--cp-text);
+        max-width: 920px;
+      }
+      .outcome-banner::before {
+        content: "Outcome for the customer";
+        display: block;
+        font-size: 10.5px;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        font-weight: 700;
+        color: var(--cp-text-muted);
+        margin-bottom: 4px;
+      }
       .addresses { margin: 14px 22px 0 22px; padding: 12px 16px; background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 10px; display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; font-size: 12px; }
       .addresses .label { color: var(--cp-text-muted); text-transform: uppercase; letter-spacing: 0.5px; font-size: 10.5px; font-weight: 700; }
       .addresses .chip { font-size: 12px; padding: 4px 10px; background: var(--cp-surface-soft); border: 1px solid var(--cp-border); border-radius: 999px; color: var(--cp-text); text-decoration: none; }
@@ -156,6 +177,7 @@
         <div class="crumbs"><a href="../index.html">Reference architecture</a> &nbsp;/&nbsp; Scenarios &nbsp;/&nbsp; Multi-source Customer 360</div>
         <h2>Multi-source Customer 360 (Cross-vendor agent collaboration)</h2>
         <p class="subtitle">SAP Joule, Salesforce Agentforce, and a Foundry-built central agent working together as one.</p>
+        <div class="outcome-banner">By the end of this flow, a sales rep sees a single unified view across CRM, ERP, and support — stitched together by agents collaborating cross-vendor, with permissions and lineage preserved end-to-end.</div>
         <p class="lead">
           A sales rep asks <strong>Salesforce Agentforce</strong> for a complete view of an account. Behind the scenes,
           Agentforce uses <strong>Agent2Agent (A2A)</strong> to discover and delegate to your <strong>Foundry-built Customer 360 agent</strong>

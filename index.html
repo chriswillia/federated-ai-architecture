@@ -430,20 +430,29 @@
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        font-size: 11.5px;
-        padding: 4px 10px;
+        font-size: 11px;
+        padding: 3px 9px;
         border-radius: 999px;
         background: var(--plane-soft, var(--cp-surface-soft));
         border: 1px solid var(--cp-border);
-        color: var(--cp-text);
+        color: var(--cp-text-muted);
         white-space: nowrap;
+        opacity: 0.72;
+        transition: opacity 120ms ease, color 120ms ease, border-color 120ms ease;
+      }
+      .platform-chip:hover {
+        opacity: 1;
+        color: var(--cp-text);
+        border-color: var(--plane-color, var(--cp-accent));
       }
       .platform-chip .vendor-dot {
-        width: 8px;
-        height: 8px;
+        width: 7px;
+        height: 7px;
         border-radius: 2px;
         flex-shrink: 0;
+        opacity: 0.6;
       }
+      .platform-chip:hover .vendor-dot { opacity: 1; }
       .platform-chip .vendor {
         color: var(--cp-text-muted);
         font-size: 10.5px;
@@ -1403,14 +1412,19 @@
       /* Outcomes ribbon */
       .outcomes-bar {
         display: flex;
-        flex-wrap: wrap;
-        align-items: center;
+        flex-direction: column;
         gap: 8px;
         margin: 0 0 16px 0;
         padding: 10px 14px;
         background: var(--cp-surface);
         border: 1px solid var(--cp-border);
         border-radius: 12px;
+      }
+      .filter-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
       }
       .outcomes-label {
         font-size: 10.5px;
@@ -1419,8 +1433,11 @@
         color: var(--cp-text-muted);
         font-weight: 700;
         margin-right: 4px;
+        min-width: 60px;
       }
-      .outcome-chip {
+      .outcome-chip,
+      .persona-chip,
+      .filter-clear {
         appearance: none;
         font-family: inherit;
         font-size: 12.5px;
@@ -1436,7 +1453,8 @@
         gap: 6px;
         transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
       }
-      .outcome-chip::before {
+      .outcome-chip::before,
+      .persona-chip::before {
         content: "";
         width: 8px;
         height: 8px;
@@ -1448,15 +1466,27 @@
       .outcome-chip[data-outcome="cost"]     { --chip-accent: var(--layer-model); }
       .outcome-chip[data-outcome="risk"]     { --chip-accent: var(--layer-control); }
       .outcome-chip[data-outcome="freedom"]  { --chip-accent: var(--layer-fabric); }
-      .outcome-chip:hover {
+      .persona-chip { --chip-accent: var(--cp-text-muted); }
+      .persona-chip[data-persona="cio"]  { --chip-accent: var(--layer-model); }
+      .persona-chip[data-persona="ciso"] { --chip-accent: var(--layer-control); }
+      .persona-chip[data-persona="cdo"]  { --chip-accent: var(--layer-data); }
+      .persona-chip[data-persona="ai"]   { --chip-accent: var(--layer-fabric); }
+      .persona-chip[data-persona="lob"]  { --chip-accent: var(--layer-experience); }
+      .outcome-chip:hover,
+      .persona-chip:hover {
         border-color: var(--chip-accent, var(--cp-accent));
       }
-      .outcome-chip.active {
+      .outcome-chip.active,
+      .persona-chip.active {
         background: color-mix(in srgb, var(--chip-accent, var(--cp-accent)) 14%, var(--cp-surface));
         border-color: var(--chip-accent, var(--cp-accent));
       }
-      .outcome-chip-clear::before { display: none; }
-      .outcome-chip-clear { color: var(--cp-text-muted); font-weight: 500; }
+      .filter-clear {
+        color: var(--cp-text-muted);
+        font-weight: 500;
+        margin-left: auto;
+      }
+      .filter-clear:hover { color: var(--cp-text); border-color: var(--cp-accent); }
 
       /* Hero "Why federated?" expander */
       .hero-why {
@@ -1534,6 +1564,68 @@
         margin-bottom: 4px;
       }
 
+      /* Copy talk track button */
+      .cp-copy {
+        appearance: none;
+        font-family: inherit;
+        font-size: 11.5px;
+        font-weight: 600;
+        cursor: pointer;
+        padding: 5px 10px;
+        border-radius: 6px;
+        border: 1px solid var(--cp-border);
+        background: var(--cp-surface);
+        color: var(--cp-text-muted);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 8px;
+        transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
+      }
+      .cp-copy:hover { color: var(--cp-text); border-color: var(--cp-accent); }
+      .cp-copy.copied {
+        background: color-mix(in srgb, var(--accent, var(--cp-accent)) 18%, var(--cp-surface));
+        color: var(--cp-text);
+        border-color: var(--accent, var(--cp-accent));
+      }
+
+      /* Walk-the-architecture button + highlight states */
+      .scenario-sep {
+        color: var(--cp-text-muted);
+        opacity: 0.5;
+        margin: 0 4px;
+      }
+      .scenario-btn.walk-arch {
+        border-color: var(--cp-accent);
+        color: var(--cp-text);
+      }
+      .scenario-btn.walk-arch.active {
+        background: color-mix(in srgb, var(--cp-accent) 14%, var(--cp-surface));
+        border-color: var(--cp-accent);
+      }
+      .plane.plane-walked-active {
+        box-shadow: 0 0 0 3px var(--plane-color, var(--cp-accent));
+        z-index: 2;
+        transition: box-shadow 200ms ease, opacity 200ms ease, filter 200ms ease;
+      }
+      .plane.plane-walked-dim {
+        opacity: 0.32;
+        filter: saturate(0.55);
+        transition: opacity 200ms ease, filter 200ms ease;
+      }
+
+      /* Presenter mode — strip noise for screen-share */
+      html.presenter .hero,
+      html.presenter footer.app,
+      html.presenter details.collapsible {
+        display: none !important;
+      }
+      html.presenter main { padding-top: 8px; }
+      #presenterToggle.active {
+        background: color-mix(in srgb, var(--cp-accent) 18%, var(--cp-surface));
+        border-color: var(--cp-accent);
+      }
+
       /* Node highlight state when a challenge is active */
       .node.cha-target {
         box-shadow: 0 0 0 2px var(--accent, var(--cp-accent));
@@ -1603,6 +1695,11 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h13M13 5l7 7-7 7"/></svg>
           Use cases
         </a>
+        <button class="icon-btn" id="presenterToggle" title="Presenter mode (hides hero, tensions, references for screen-share)" aria-label="Presenter mode" aria-pressed="false">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8M12 18v3"/>
+          </svg>
+        </button>
         <button class="icon-btn" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="4"></circle>
@@ -1637,13 +1734,23 @@
       </section>
 
       <!-- Outcomes ribbon (customer-outcome filter) -->
-      <section class="outcomes-bar" aria-label="Filter challenges by customer outcome">
-        <span class="outcomes-label">What does your customer want?</span>
-        <button type="button" class="outcome-chip" data-outcome="adoption">Faster adoption</button>
-        <button type="button" class="outcome-chip" data-outcome="cost">Predictable cost</button>
-        <button type="button" class="outcome-chip" data-outcome="risk">Lower risk</button>
-        <button type="button" class="outcome-chip" data-outcome="freedom">Cloud freedom</button>
-        <button type="button" class="outcome-chip outcome-chip-clear" data-outcome="">Show all</button>
+      <section class="outcomes-bar" aria-label="Filter challenges">
+        <div class="filter-row">
+          <span class="outcomes-label">Outcome</span>
+          <button type="button" class="outcome-chip" data-outcome="adoption">Faster adoption</button>
+          <button type="button" class="outcome-chip" data-outcome="cost">Predictable cost</button>
+          <button type="button" class="outcome-chip" data-outcome="risk">Lower risk</button>
+          <button type="button" class="outcome-chip" data-outcome="freedom">Cloud freedom</button>
+        </div>
+        <div class="filter-row">
+          <span class="outcomes-label">Persona</span>
+          <button type="button" class="persona-chip" data-persona="cio">CIO</button>
+          <button type="button" class="persona-chip" data-persona="ciso">CISO</button>
+          <button type="button" class="persona-chip" data-persona="cdo">CDO</button>
+          <button type="button" class="persona-chip" data-persona="ai">Head of AI</button>
+          <button type="button" class="persona-chip" data-persona="lob">Line of business</button>
+          <button type="button" class="filter-clear" id="clearFilters">Clear filters</button>
+        </div>
       </section>
 
       <!-- Customer challenge selector (seller tool) -->
@@ -1661,6 +1768,10 @@
             </div>
             <button class="cp-clear" id="cpClear" type="button" title="Clear selection" aria-label="Clear selection">×</button>
           </div>
+          <button class="cp-copy" id="cpCopy" type="button" title="Copy this talk track to clipboard">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy talk track
+          </button>
           <div class="cp-soundbite" id="cpSoundbite"></div>
           <div class="cp-answer" id="cpAnswer"></div>
           <div class="cp-row">
@@ -1684,6 +1795,8 @@
         <button class="scenario-btn" data-scenario="customer360">Multi-source customer 360</button>
         <button class="scenario-btn" data-scenario="expense">Cost-aware expense agent</button>
         <button class="scenario-btn clear" data-scenario="clear">Clear</button>
+        <span class="scenario-sep" aria-hidden="true">•</span>
+        <button class="scenario-btn walk-arch" id="walkArchBtn" type="button" title="Walk through the five layers in order">▶ Walk the architecture</button>
         <div class="scenario-links" aria-label="Full reference architectures">
           <span class="lbl">Full reference architecture &rarr;</span>
           <a href="scenarios/citizen-hr.html">Citizen HR agent</a>
@@ -1778,8 +1891,8 @@
     </main>
 
     <footer class="app">
-      Federated AI Environment · Interactive reference · Color groups: warm = business/experience,
-      cool = control/fabric, green/olive = data/model, neutral = infrastructure.
+      Federated AI Environment · Interactive seller reference ·
+      <a href="https://github.com/chriswillia/federated-ai-architecture" target="_blank" rel="noopener noreferrer">View on GitHub</a>
     </footer>
 
     <!-- Drawer -->
@@ -2392,6 +2505,7 @@
 
       function playScenario(key) {
         stopScenario();
+        stopWalk();
         // A scenario walkthrough takes over the canvas — clear any active challenge.
         if (challengeActive) applyChallenge(null);
         document.querySelectorAll(".scenario-btn").forEach((b) =>
@@ -2455,6 +2569,7 @@
           outcomeLabel: "Faster adoption",
           soundbite: "Build agents in one governed place, and you compound time-to-value across every team — instead of paying the integration tax in every department.",
           metaLayer: "Build plane",
+          personas: ["cio", "ai"],
           customerQuote: "We want a singular Agent Development Platform.",
           shortAnswer:
             "One place to build agents. Foundry for pro developers, Copilot Studio for business users \u2014 with logic, prompts, skills, and evals stored centrally and reusable across surfaces.",
@@ -2474,6 +2589,7 @@
           outcomeLabel: "Cloud freedom",
           soundbite: "Your data, apps, and people don’t live in one cloud — your agents shouldn’t either. A federated fabric lets agents work where the work is.",
           metaLayer: "Fabric & runtime",
+          personas: ["cio", "ai"],
           customerQuote: "We want to develop agents across clouds and SaaS apps.",
           shortAnswer:
             "Build once, deploy anywhere. The same agent runs on Azure, AWS, GCP, on-prem, or inside Salesforce, SAP, and ServiceNow \u2014 reaching data wherever it lives.",
@@ -2493,6 +2609,7 @@
           outcomeLabel: "Predictable cost",
           soundbite: "AI cost only feels unpredictable when nobody owns it. Token-level visibility plus showback turns agent spend into a managed budget line.",
           metaLayer: "Cost & FinOps",
+          personas: ["cio", "lob"],
           customerQuote: "We want control over token usage and cost/billing.",
           shortAnswer:
             "See every token, route to the right-sized model, and bill back to the business owner \u2014 so spend stays predictable even as agents proliferate.",
@@ -2512,6 +2629,7 @@
           outcomeLabel: "Lower risk",
           soundbite: "One control plane is how ‘governed AI’ stops being a slide and becomes a daily operating posture — across every cloud, every agent.",
           metaLayer: "Control plane",
+          personas: ["ciso", "cio"],
           customerQuote: "We want a unified control plane for identity, governance, and security.",
           shortAnswer:
             "One identity, one set of policies, one trace per agent \u2014 across every cloud and SaaS app, aligned to NIST AI RMF.",
@@ -2532,6 +2650,7 @@
           outcomeLabel: "Lower risk",
           soundbite: "Prompt injection, leakage, and rogue agents are real — and solvable when every agent has identity, policy, and live monitoring from day one.",
           metaLayer: "GenAI risk & security",
+          personas: ["ciso"],
           customerQuote: "We need to manage GenAI risk — prompt injection, leakage, rogue agents.",
           shortAnswer:
             "Real-time monitoring, red-teaming, and runtime guardrails — from Foundry safety evals to Defender / Sentinel coverage for every agent action.",
@@ -2549,6 +2668,7 @@
           outcomeLabel: "Lower risk",
           soundbite: "Sensitive data shouldn’t have to move for AI to be useful. Ground agents on data where it lives — with the labels, controls, and audit you already trust.",
           metaLayer: "Sensitive data & on-prem",
+          personas: ["ciso", "cdo"],
           customerQuote: "We can’t move sensitive data to the cloud just to use agents.",
           shortAnswer:
             "Ground agents in data that stays where it lives — Foundry Local + private MCP servers + Purview policies, with full lineage end to end.",
@@ -2566,6 +2686,7 @@
           outcomeLabel: "Faster adoption",
           soundbite: "Most AI programs don’t fail at the pilot — they fail at production. Central registries, evals, and consumption limits make the leap repeatable.",
           metaLayer: "Pilot → production",
+          personas: ["cio", "ai"],
           customerQuote: "Pilots work — production at scale is where it falls apart.",
           shortAnswer:
             "Central registry, signed releases, pre-prod evals, consumption limits, and approval workflows turn one-off pilots into a managed agent portfolio.",
@@ -2583,6 +2704,7 @@
           outcomeLabel: "Faster adoption",
           soundbite: "Voice and vision agents are coming fast. The cost of getting them wrong is letting them grow up outside your control plane.",
           metaLayer: "Multi-modal & advanced",
+          personas: ["ai", "lob"],
           customerQuote: "Voice, vision, and tool-using agents are next — not just chat.",
           shortAnswer:
             "Multi-modal agents inherit the same identity, policy, cost tagging, and trace fabric as text agents — no parallel control plane.",
@@ -2600,6 +2722,7 @@
           outcomeLabel: "Faster adoption",
           soundbite: "Letting business users build is the speed lever. A signed tool catalog and central approval keep it from becoming the risk lever.",
           metaLayer: "Citizen dev + guardrails",
+          personas: ["lob", "ai"],
           customerQuote: "Citizen builders need to move fast — without breaking things.",
           shortAnswer:
             "Copilot Studio for builders, central registry + signed MCP catalog + admin approval policies — fast paths with guardrails built in.",
@@ -2617,6 +2740,7 @@
           outcomeLabel: "Lower risk",
           soundbite: "If you can’t trace what your agents are doing, you can’t trust them — and you can’t improve them. Trace every step, every time.",
           metaLayer: "Observability & quality",
+          personas: ["ciso", "cdo", "ai"],
           customerQuote: "We can’t debug or measure what our agents actually do.",
           shortAnswer:
             "Foundry traces every step — prompt, reasoning, tool calls, results — and pairs it with evals for quality, safety, and cost across every runtime.",
@@ -2640,8 +2764,11 @@
       const cpPointAt = document.getElementById("cpPointAt");
       const cpSeeItWork = document.getElementById("cpSeeItWork");
       const cpClear = document.getElementById("cpClear");
+      const cpCopy = document.getElementById("cpCopy");
       const outcomesBar = document.querySelector(".outcomes-bar");
+      const clearFiltersBtn = document.getElementById("clearFilters");
       let activeOutcome = null;
+      let activePersona = null;
 
       function nodeLabelById(id) {
         for (const p of PLANES) {
@@ -2671,14 +2798,27 @@
 
       function setOutcomeFilter(outcome) {
         activeOutcome = outcome || null;
+        applyFilters();
+      }
+      function setPersonaFilter(persona) {
+        activePersona = persona || null;
+        applyFilters();
+      }
+      function applyFilters() {
         if (outcomesBar) {
           outcomesBar.querySelectorAll(".outcome-chip").forEach((b) => {
             b.classList.toggle("active", !!activeOutcome && b.dataset.outcome === activeOutcome);
           });
+          outcomesBar.querySelectorAll(".persona-chip").forEach((b) => {
+            b.classList.toggle("active", !!activePersona && b.dataset.persona === activePersona);
+          });
         }
         challengeGrid.querySelectorAll(".challenge-card").forEach((b) => {
-          const o = b.dataset.outcome;
-          b.hidden = !!activeOutcome && o !== activeOutcome;
+          const id = b.dataset.challenge;
+          const c = CHALLENGES.find((x) => x.id === id);
+          const outcomeOk = !activeOutcome || (c && c.outcome === activeOutcome);
+          const personaOk = !activePersona || (c && Array.isArray(c.personas) && c.personas.includes(activePersona));
+          b.hidden = !(outcomeOk && personaOk);
         });
         const activeBtn = challengeGrid.querySelector(".challenge-card.active");
         if (activeBtn && activeBtn.hidden) applyChallenge(null);
@@ -2688,18 +2828,128 @@
         outcomesBar.querySelectorAll(".outcome-chip").forEach((btn) => {
           btn.addEventListener("click", () => {
             const next = btn.dataset.outcome || "";
-            if (next && activeOutcome === next) {
-              setOutcomeFilter(null);
-            } else {
-              setOutcomeFilter(next || null);
-            }
+            setOutcomeFilter(next && activeOutcome === next ? null : (next || null));
           });
+        });
+        outcomesBar.querySelectorAll(".persona-chip").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const next = btn.dataset.persona || "";
+            setPersonaFilter(next && activePersona === next ? null : (next || null));
+          });
+        });
+      }
+      if (clearFiltersBtn) {
+        clearFiltersBtn.addEventListener("click", () => {
+          activeOutcome = null;
+          activePersona = null;
+          applyFilters();
+        });
+      }
+
+      // ---------- WALK THE ARCHITECTURE ----------
+      let walkTimer = null;
+      let walkPlaying = false;
+      const walkArchBtn = document.getElementById("walkArchBtn");
+      function stopWalk() {
+        if (walkTimer) clearTimeout(walkTimer);
+        walkTimer = null;
+        walkPlaying = false;
+        document.querySelectorAll(".plane").forEach((p) => {
+          p.classList.remove("plane-walked-active", "plane-walked-dim");
+        });
+        if (walkArchBtn) walkArchBtn.classList.remove("active");
+      }
+      function walkArchitecture() {
+        if (walkPlaying) { stopWalk(); captionEl && (captionEl.innerHTML = defaultCaption); return; }
+        stopScenario();
+        if (challengeActive) applyChallenge(null);
+        clearTrace();
+        document.querySelectorAll(".scenario-btn").forEach((b) => b.classList.remove("active"));
+        if (walkArchBtn) walkArchBtn.classList.add("active");
+        walkPlaying = true;
+        const planes = Array.from(document.querySelectorAll(".plane"));
+        let i = 0;
+        const tick = () => {
+          if (i >= planes.length) {
+            walkTimer = setTimeout(() => {
+              stopWalk();
+              if (captionEl) captionEl.innerHTML = defaultCaption;
+            }, 2200);
+            return;
+          }
+          planes.forEach((p, idx) => {
+            p.classList.toggle("plane-walked-active", idx === i);
+            p.classList.toggle("plane-walked-dim", idx !== i);
+          });
+          const pd = PLANES[i];
+          if (captionEl && pd) {
+            captionEl.innerHTML = `<strong>${i + 1}/${planes.length} · ${pd.title}</strong> — ${pd.desc}`;
+          }
+          i++;
+          walkTimer = setTimeout(tick, 2400);
+        };
+        tick();
+      }
+      if (walkArchBtn) walkArchBtn.addEventListener("click", walkArchitecture);
+
+      // ---------- COPY TALK TRACK ----------
+      function copyTalkTrack() {
+        const activeBtn = challengeGrid.querySelector(".challenge-card.active");
+        if (!activeBtn) return;
+        const id = activeBtn.dataset.challenge;
+        const c = CHALLENGES.find((x) => x.id === id);
+        if (!c) return;
+        const stripHtml = (s) => s.replace(/<[^>]+>/g, "");
+        const archHref = new URL(c.seeItWork.href, location.href).href;
+        const text = [
+          `Customer outcome: ${c.outcomeLabel || ""}`,
+          `Customer says: “${c.customerQuote}”`,
+          ``,
+          `Say this: ${c.soundbite || ""}`,
+          ``,
+          `The short answer: ${c.shortAnswer}`,
+          ``,
+          `Discovery questions:`,
+          ...c.points.map((p) => `  - ${stripHtml(p)}`),
+          ``,
+          `See it in action: ${c.seeItWork.label} — ${archHref}`,
+        ].join("\n");
+        const flash = () => {
+          if (!cpCopy) return;
+          const original = cpCopy.querySelector("svg") ? cpCopy.childNodes[cpCopy.childNodes.length - 1].textContent : cpCopy.textContent;
+          cpCopy.classList.add("copied");
+          const label = cpCopy.childNodes[cpCopy.childNodes.length - 1];
+          if (label && label.nodeType === 3) label.textContent = " Copied!";
+          setTimeout(() => {
+            cpCopy.classList.remove("copied");
+            if (label && label.nodeType === 3) label.textContent = original;
+          }, 1600);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(flash).catch(() => {
+            // Fallback: textarea + execCommand
+            const ta = document.createElement("textarea");
+            ta.value = text; document.body.appendChild(ta); ta.select();
+            try { document.execCommand("copy"); flash(); } finally { document.body.removeChild(ta); }
+          });
+        }
+      }
+      if (cpCopy) cpCopy.addEventListener("click", copyTalkTrack);
+
+      // ---------- PRESENTER MODE ----------
+      const presenterToggle = document.getElementById("presenterToggle");
+      if (presenterToggle) {
+        presenterToggle.addEventListener("click", () => {
+          const on = document.documentElement.classList.toggle("presenter");
+          presenterToggle.classList.toggle("active", on);
+          presenterToggle.setAttribute("aria-pressed", on ? "true" : "false");
         });
       }
 
 
       function applyChallenge(id) {
         const c = CHALLENGES.find((x) => x.id === id);
+        stopWalk();
         challengeGrid.querySelectorAll(".challenge-card").forEach((b) =>
           b.classList.toggle("active", b.dataset && b.dataset.challenge === id),
         );
