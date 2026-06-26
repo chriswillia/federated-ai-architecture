@@ -908,31 +908,32 @@
         display: flex;
         flex-wrap: wrap;
         align-items: center;
-        gap: 6px 8px;
-        padding-top: 4px;
-        font-size: 12px;
+        gap: 8px;
+        margin-top: 8px;
+        padding-top: 10px;
+        border-top: 1px dashed var(--cp-border);
       }
       .scenario-links .lbl {
+        font-size: 11px;
         text-transform: uppercase;
         letter-spacing: 0.08em;
-        font-size: 10.5px;
-        font-weight: 700;
         color: var(--cp-text-soft);
+        margin-right: 4px;
       }
       .scenario-links a {
-        color: var(--cp-link);
-        text-decoration: none;
-        padding: 2px 10px;
+        appearance: none;
+        background: var(--cp-bg-elevated);
         border: 1px solid var(--cp-border);
         border-radius: 999px;
-        background: var(--cp-bg-elevated);
+        padding: 6px 14px;
+        font: inherit;
+        font-size: 12.5px;
+        color: var(--cp-text);
+        text-decoration: none;
       }
       .scenario-links a:hover {
         border-color: var(--cp-accent);
         color: var(--cp-accent);
-      }
-      .scenario-links .sep {
-        color: var(--cp-text-soft);
       }
       .interact-hint {
         font-size: 11.5px;
@@ -1800,16 +1801,12 @@
         <span class="scenario-sep" aria-hidden="true">•</span>
         <button class="scenario-btn walk-arch" id="walkArchBtn" type="button" title="Walk through the five layers in order">▶ Walk the architecture</button>
         <div class="scenario-links" aria-label="Full reference architectures">
-          <span class="lbl">Full reference architecture &rarr;</span>
-          <a href="scenarios/citizen-hr.html">Citizen HR agent</a>
-          <span class="sep">&middot;</span>
-          <a href="scenarios/customer360.html">Customer 360</a>
-          <span class="sep">&middot;</span>
-          <a href="scenarios/expense.html">Expense agent</a>
-          <span class="sep">&middot;</span>
-          <a href="scenarios/it-incident-triage.html">IT incident triage</a>
-          <span class="sep">&middot;</span>
-          <a href="scenarios/engineering-copilot.html">Engineering copilot</a>
+          <span class="lbl">Full reference architecture</span>
+          <a href="scenarios/citizen-hr.html">Citizen-built HR agent</a>
+          <a href="scenarios/customer360.html">Multi-source customer 360</a>
+          <a href="scenarios/expense.html">Cost-aware expense agent</a>
+          <a href="scenarios/it-incident-triage.html">Autonomous IT incident triage</a>
+          <a href="scenarios/engineering-copilot.html">Engineering copilot (code &rarr; PR)</a>
         </div>
         <span class="scenario-caption" id="scenarioCaption">Tip: hover any component to see what it connects to. Click for details.</span>
       </section>
