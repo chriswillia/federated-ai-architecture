@@ -554,6 +554,20 @@
         width: 14px;
         height: 14px;
       }
+      a.cloud-chip-link {
+        text-decoration: none;
+        color: var(--cp-text-muted);
+        margin-left: 6px;
+        border-style: dashed;
+        cursor: pointer;
+        transition: color 120ms ease, border-color 120ms ease, background 120ms ease;
+      }
+      a.cloud-chip-link:hover {
+        color: var(--cp-accent);
+        border-color: var(--cp-accent);
+        border-style: solid;
+        background: color-mix(in srgb, var(--cp-accent) 6%, var(--cp-surface));
+      }
 
       /* ---------- Side compare panel ---------- */
       .compare {
@@ -2208,7 +2222,7 @@
           <span class="hero-eyebrow">For the AI &amp; business leader conversation</span>
           <h2 style="margin: 0 0 6px 0;">AI in your daily work, governed by default.</h2>
           <p style="margin: 0 0 10px 0; color: var(--cp-text-muted); max-width: 880px;">
-            Employees use <strong>M365 Copilot</strong>, vertical copilots, and citizen-built agents
+            Employees use <strong>M365 Copilot</strong>, business-app copilots, and citizen-built agents
             in <strong>Copilot Studio</strong> &mdash; one chat surface, every business app, every
             backend system &mdash; without IT chasing shadow tools or rebuilding integrations per
             department.
@@ -2343,6 +2357,10 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
             Edge / Sovereign
           </span>
+          <a class="cloud-chip cloud-chip-link" href="concepts.html#federated-zones" title="Open the Federated AI Zones maturity map">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            See the AI zones map &rarr;
+          </a>
         </div>
       </section>
 
@@ -2501,7 +2519,7 @@
             },
             {
               id: "vertical-copilots",
-              title: "Vertical Copilots",
+              title: "Business App Copilots",
               icon: "copilot",
               sub: "AI built into business apps like SAP, Salesforce, and ServiceNow.",
               tech: ["SAP Joule", "Salesforce Agentforce", "ServiceNow Now Assist"],
@@ -3257,7 +3275,7 @@
           objections: [
             {
               quote: "We bought GitHub Copilot &mdash; isn't that enough?",
-              response: "GitHub Copilot is one experience for developers. M365 Copilot, vertical copilots, and citizen-built agents are how the other 90% of employees see AI. Same control plane underneath, very different surfaces.",
+              response: "GitHub Copilot is one experience for developers. M365 Copilot, business-app copilots, and citizen-built agents are how the other 90% of employees see AI. Same control plane underneath, very different surfaces.",
               pivotTo: { label: "See the Experience plane", target: "experience" },
             },
             {
@@ -3267,7 +3285,7 @@
             },
             {
               quote: "We need agents inside our business apps, not just chat.",
-              response: "Vertical copilots (SAP Joule, Salesforce Agentforce, ServiceNow Now Assist) live exactly there. With A2A, they collaborate; with one control plane, they're inventoried the same way. Same governance, different doorways.",
+              response: "Business-app copilots (SAP Joule, Salesforce Agentforce, ServiceNow Now Assist) live exactly there. With A2A, they collaborate; with one control plane, they're inventoried the same way. Same governance, different doorways.",
               pivotTo: { label: "See the Experience plane", target: "experience" },
             },
             {

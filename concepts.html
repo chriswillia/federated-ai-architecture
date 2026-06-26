@@ -183,6 +183,131 @@
       #progressive-governance { --accent: #a855f7; }
       #portfolio-management   { --accent: #ec4899; }
       #federated-zones        { --accent: #f97316; }
+
+      /* ---------- Federated AI Zones mini-canvas ---------- */
+      .zones-intro {
+        margin: 4px 0 14px;
+        color: var(--cp-text-muted);
+        font-size: 13px;
+      }
+      .zones-legend {
+        display: flex; flex-wrap: wrap; gap: 12px;
+        margin: 4px 0 14px;
+        padding: 10px 12px;
+        background: var(--cp-bg-elevated);
+        border: 1px solid var(--cp-border);
+        border-radius: 8px;
+        font-size: 11.5px;
+        color: var(--cp-text-muted);
+      }
+      .zones-legend .item { display: inline-flex; align-items: center; gap: 6px; }
+      .zones-legend .swatch {
+        width: 12px; height: 12px; border-radius: 3px;
+        border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+      }
+      .zmat-native    { --zmat-color: #22c55e; --zmat-bg: color-mix(in srgb, #22c55e 18%, transparent); }
+      .zmat-federated { --zmat-color: #06b6d4; --zmat-bg: color-mix(in srgb, #06b6d4 18%, transparent); }
+      .zmat-emerging  { --zmat-color: #f59e0b; --zmat-bg: color-mix(in srgb, #f59e0b 20%, transparent); }
+      .zmat-manual    { --zmat-color: #94a3b8; --zmat-bg: color-mix(in srgb, #94a3b8 18%, transparent); }
+      .zones-legend .zmat-native    .swatch { background: #22c55e; }
+      .zones-legend .zmat-federated .swatch { background: #06b6d4; }
+      .zones-legend .zmat-emerging  .swatch { background: #f59e0b; }
+      .zones-legend .zmat-manual    .swatch { background: #94a3b8; }
+
+      .zones-grid {
+        display: grid;
+        grid-template-columns: minmax(170px, 1.4fr) repeat(5, minmax(100px, 1fr));
+        gap: 1px;
+        background: var(--cp-border);
+        border: 1px solid var(--cp-border);
+        border-radius: 10px;
+        overflow: hidden;
+        font-size: 12px;
+      }
+      .zones-grid > .zh, .zones-grid > .zc {
+        background: var(--cp-surface);
+        padding: 10px 12px;
+      }
+      .zones-grid > .zh {
+        background: var(--cp-bg-elevated);
+        font-weight: 700;
+        font-size: 10.5px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--cp-text-soft);
+      }
+      .zones-grid > .zh.dim { color: var(--cp-text-muted); }
+      .zones-grid > .zlabel {
+        background: var(--cp-bg-elevated);
+        display: flex; flex-direction: column; gap: 4px;
+      }
+      .zones-grid > .zlabel .zname {
+        font-size: 12.5px; font-weight: 600;
+        color: var(--cp-text);
+        border-left: 3px solid var(--zone-color, var(--cp-accent));
+        padding-left: 8px;
+      }
+      .zones-grid > .zlabel .zex {
+        font-size: 11px; color: var(--cp-text-muted);
+        padding-left: 11px;
+        line-height: 1.4;
+      }
+      .zones-grid > .zc {
+        text-align: center;
+        position: relative;
+      }
+      .zones-grid > .zc .zmat {
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 4px 10px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        border-radius: 999px;
+        color: var(--zmat-color);
+        background: var(--zmat-bg);
+        border: 1px solid color-mix(in srgb, var(--zmat-color) 35%, transparent);
+      }
+      .zones-grid > .zc .zmat::before {
+        content: "";
+        width: 6px; height: 6px; border-radius: 50%;
+        background: var(--zmat-color);
+      }
+      .zones-grid > .zc .znote {
+        display: block;
+        margin-top: 4px;
+        font-size: 10.5px;
+        color: var(--cp-text-soft);
+        line-height: 1.3;
+      }
+      @media (max-width: 900px) {
+        .zones-grid {
+          grid-template-columns: 1fr;
+        }
+        .zones-grid > .zh:not(.zh-zone) { display: none; }
+        .zones-grid > .zc {
+          display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;
+          text-align: left;
+        }
+        .zones-grid > .zc::before {
+          content: attr(data-dim);
+          font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em;
+          font-weight: 700; color: var(--cp-text-soft);
+          flex: 1;
+        }
+      }
+
+      .zones-takeaway {
+        margin-top: 14px;
+        padding: 12px 14px;
+        background: var(--cp-bg-elevated);
+        border: 1px solid var(--cp-border);
+        border-radius: 8px;
+        font-size: 12.5px;
+        color: var(--cp-text-muted);
+        line-height: 1.55;
+      }
+      .zones-takeaway strong { color: var(--cp-text); }
     </style>
   </head>
   <body>
@@ -359,13 +484,90 @@
           The enterprise AI estate is zoned. The framework should not pretend every zone is governed
           equally today &mdash; it should show maturity by zone.
         </p>
-        <ul class="tier-list">
-          <li><strong>Zone 1 &mdash; Microsoft-native AI.</strong> M365 Copilot, Copilot Studio, Foundry.</li>
-          <li><strong>Zone 2 &mdash; SaaS-native AI.</strong> SAP, ServiceNow, Salesforce, Workday, and other vendor copilots.</li>
-          <li><strong>Zone 3 &mdash; Cloud-native AI.</strong> AWS, Google, Databricks, Snowflake, and other hyperscaler / data-platform AI.</li>
-          <li><strong>Zone 4 &mdash; Custom AI.</strong> Internal apps, pro-code agents, custom APIs.</li>
-          <li><strong>Zone 5 &mdash; Local / endpoint AI.</strong> Developer tools, local agents, browser agents, unmanaged tools.</li>
-        </ul>
+        <p class="zones-intro">
+          Five zones, five control-plane dimensions. Each cell is an honest read of how much of the
+          Microsoft control plane reaches that zone today &mdash; not where the roadmap says it will be
+          in 18 months. Use this in customer conversations to scope the gap and the work.
+        </p>
+
+        <div class="zones-legend" aria-label="Maturity legend">
+          <span class="item zmat-native"><span class="swatch"></span>Native &mdash; first-party coverage today</span>
+          <span class="item zmat-federated"><span class="swatch"></span>Federated &mdash; works via integration today</span>
+          <span class="item zmat-emerging"><span class="swatch"></span>Emerging &mdash; partial, evolving</span>
+          <span class="item zmat-manual"><span class="swatch"></span>Manual &mdash; case-by-case, requires lift</span>
+        </div>
+
+        <div class="zones-grid" role="table" aria-label="Federated AI Zones &mdash; control-plane maturity heatmap">
+          <!-- header -->
+          <div class="zh zh-zone" role="columnheader">Zone</div>
+          <div class="zh" role="columnheader">Identity</div>
+          <div class="zh" role="columnheader">Governance &amp; Inventory</div>
+          <div class="zh" role="columnheader">Observability</div>
+          <div class="zh" role="columnheader">Data &amp; DLP</div>
+          <div class="zh" role="columnheader">Cost &amp; FinOps</div>
+
+          <!-- Zone 1: Microsoft-native -->
+          <div class="zc zlabel" style="--zone-color: #464feb;">
+            <span class="zname">Z1 &middot; Microsoft-native AI</span>
+            <span class="zex">M365 Copilot, Copilot Studio, Foundry</span>
+          </div>
+          <div class="zc" data-dim="Identity"><span class="zmat zmat-native">Native</span><span class="znote">Entra ID throughout</span></div>
+          <div class="zc" data-dim="Governance &amp; Inventory"><span class="zmat zmat-native">Native</span><span class="znote">Agent 365 + Foundry control plane</span></div>
+          <div class="zc" data-dim="Observability"><span class="zmat zmat-native">Native</span><span class="znote">Sentinel + Defender XDR + Foundry traces</span></div>
+          <div class="zc" data-dim="Data &amp; DLP"><span class="zmat zmat-native">Native</span><span class="znote">Purview labels + DLP inline</span></div>
+          <div class="zc" data-dim="Cost &amp; FinOps"><span class="zmat zmat-native">Native</span><span class="znote">Cost Management + token tags</span></div>
+
+          <!-- Zone 2: SaaS-native -->
+          <div class="zc zlabel" style="--zone-color: #06b6d4;">
+            <span class="zname">Z2 &middot; SaaS-native AI</span>
+            <span class="zex">SAP Joule, ServiceNow Now Assist, Salesforce Agentforce, Workday</span>
+          </div>
+          <div class="zc" data-dim="Identity"><span class="zmat zmat-federated">Federated</span><span class="znote">Entra &rarr; SaaS via SAML / SCIM</span></div>
+          <div class="zc" data-dim="Governance &amp; Inventory"><span class="zmat zmat-federated">Federated</span><span class="znote">Agent 365 inventories A2A-registered agents</span></div>
+          <div class="zc" data-dim="Observability"><span class="zmat zmat-emerging">Emerging</span><span class="znote">Vendor telemetry varies by SaaS</span></div>
+          <div class="zc" data-dim="Data &amp; DLP"><span class="zmat zmat-federated">Federated</span><span class="znote">Purview connectors per app</span></div>
+          <div class="zc" data-dim="Cost &amp; FinOps"><span class="zmat zmat-manual">Manual</span><span class="znote">Each SaaS bills separately</span></div>
+
+          <!-- Zone 3: Cloud-native -->
+          <div class="zc zlabel" style="--zone-color: #84cc16;">
+            <span class="zname">Z3 &middot; Cloud-native AI</span>
+            <span class="zex">AWS Bedrock, Google Vertex, Databricks, Snowflake Cortex</span>
+          </div>
+          <div class="zc" data-dim="Identity"><span class="zmat zmat-federated">Federated</span><span class="znote">Entra &harr; AWS IAM / GCP IAM</span></div>
+          <div class="zc" data-dim="Governance &amp; Inventory"><span class="zmat zmat-emerging">Emerging</span><span class="znote">Agent 365 catalogs via APIs</span></div>
+          <div class="zc" data-dim="Observability"><span class="zmat zmat-federated">Federated</span><span class="znote">Sentinel data connectors + OTel</span></div>
+          <div class="zc" data-dim="Data &amp; DLP"><span class="zmat zmat-emerging">Emerging</span><span class="znote">Purview multi-cloud expanding</span></div>
+          <div class="zc" data-dim="Cost &amp; FinOps"><span class="zmat zmat-federated">Federated</span><span class="znote">Cost Management multi-cloud</span></div>
+
+          <!-- Zone 4: Custom AI -->
+          <div class="zc zlabel" style="--zone-color: #a855f7;">
+            <span class="zname">Z4 &middot; Custom AI</span>
+            <span class="zex">Internal apps, pro-code agents, custom APIs, in-house tools</span>
+          </div>
+          <div class="zc" data-dim="Identity"><span class="zmat zmat-federated">Federated</span><span class="znote">Entra workload identity for agents</span></div>
+          <div class="zc" data-dim="Governance &amp; Inventory"><span class="zmat zmat-federated">Federated</span><span class="znote">Manifest + Agent 365 registration</span></div>
+          <div class="zc" data-dim="Observability"><span class="zmat zmat-native">Native</span><span class="znote">If instrumented with OTel + Foundry</span></div>
+          <div class="zc" data-dim="Data &amp; DLP"><span class="zmat zmat-native">Native</span><span class="znote">Purview + DLP when connected</span></div>
+          <div class="zc" data-dim="Cost &amp; FinOps"><span class="zmat zmat-federated">Federated</span><span class="znote">Tag taxonomy + Cost Management</span></div>
+
+          <!-- Zone 5: Local / endpoint -->
+          <div class="zc zlabel" style="--zone-color: #f97316;">
+            <span class="zname">Z5 &middot; Local / endpoint AI</span>
+            <span class="zex">Dev tools, browser agents, local models, unmanaged tools</span>
+          </div>
+          <div class="zc" data-dim="Identity"><span class="zmat zmat-manual">Manual</span><span class="znote">Often runs as the user</span></div>
+          <div class="zc" data-dim="Governance &amp; Inventory"><span class="zmat zmat-emerging">Emerging</span><span class="znote">Defender for Cloud Apps shadow-AI discovery</span></div>
+          <div class="zc" data-dim="Observability"><span class="zmat zmat-emerging">Emerging</span><span class="znote">Endpoint + browser telemetry</span></div>
+          <div class="zc" data-dim="Data &amp; DLP"><span class="zmat zmat-emerging">Emerging</span><span class="znote">Endpoint DLP + browser controls</span></div>
+          <div class="zc" data-dim="Cost &amp; FinOps"><span class="zmat zmat-manual">Manual</span><span class="znote">Usually invisible to finance</span></div>
+        </div>
+
+        <p class="zones-takeaway">
+          <strong>Read it left to right:</strong> a single zone tells you where to invest next.
+          <strong>Read it top to bottom:</strong> a single control dimension tells you how consistent
+          your AI estate is on that axis. Zones aren't a maturity ladder &mdash; they're <em>concurrent
+          realities</em> every enterprise will live with for years. The control plane has to span all five.
+        </p>
         <p class="strongline">The enterprise AI estate is zoned. The control plane must understand those zones.</p>
       </section>
     </main>
