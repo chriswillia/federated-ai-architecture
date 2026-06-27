@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Honest tensions &amp; references &mdash; Trusted Federated AI</title>
+    <script>
+      (() => {
+        const param = new URLSearchParams(window.location.search).get("scoutTheme");
+        const theme = param || (localStorage.getItem("federated-ai-theme")) || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <style>
+      :root {
+        color-scheme: light;
+        --cp-bg: #f7f4ef;
+        --cp-bg-elevated: #fcfbf8;
+        --cp-surface: #ffffff;
+        --cp-surface-soft: #f5f5f5;
+        --cp-border: #dedede;
+        --cp-border-strong: #919191;
+        --cp-text: #242424;
+        --cp-text-muted: #5c5c5c;
+        --cp-text-soft: #6f6f6f;
+        --cp-accent: #b11f4b;
+        --cp-accent-fg: #ffffff;
+        --cp-warning: #f59e0b;
+        --cp-link: #0078d4;
+        --cp-panel-strong: rgba(255, 255, 255, 0.96);
+
+        --layer-control: #2f6f8f;
+      }
+      html[data-theme="dark"] {
+        color-scheme: dark;
+        --cp-bg: #3d3b3a;
+        --cp-bg-elevated: #343231;
+        --cp-surface: #292929;
+        --cp-surface-soft: #2e2e2e;
+        --cp-border: #474747;
+        --cp-border-strong: #5f5f5f;
+        --cp-text: #dedede;
+        --cp-text-muted: #919191;
+        --cp-text-soft: #b0b0b0;
+        --cp-accent: #fd8ea1;
+        --cp-accent-fg: #1a1a1a;
+        --cp-warning: #fbbf24;
+        --cp-link: #4da6ff;
+        --cp-panel-strong: rgba(41, 41, 41, 0.96);
+
+        --layer-control: #6fb0c9;
+      }
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0; padding: 0;
+        background: var(--cp-bg); color: var(--cp-text);
+        font-family: "Segoe UI", Aptos, Calibri, -apple-system, BlinkMacSystemFont, sans-serif;
+        font-size: 15px; line-height: 1.5;
+      }
+
+      header.app {
+        position: sticky; top: 0; z-index: 20;
+        background: var(--cp-panel-strong);
+        backdrop-filter: saturate(140%) blur(12px);
+        border-bottom: 1px solid var(--cp-border);
+      }
+      .header-inner {
+        max-width: 1400px; margin: 0 auto; padding: 14px 28px;
+        display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+      }
+      .brand { display: flex; align-items: center; gap: 12px; min-width: 280px; }
+      .brand-mark {
+        width: 34px; height: 34px; border-radius: 8px;
+        background: var(--cp-accent); color: var(--cp-accent-fg);
+        display: grid; place-items: center;
+        font-weight: 700; letter-spacing: 0.5px;
+      }
+      .brand-text h1 { font-size: 16px; margin: 0; font-weight: 600; }
+      .brand-text p { font-size: 12px; margin: 0; color: var(--cp-text-muted); }
+      .header-spacer { flex: 1; }
+      .nav-link {
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 7px 12px; font-size: 12.5px; font-weight: 500;
+        color: var(--cp-text); background: var(--cp-surface);
+        border: 1px solid var(--cp-border); border-radius: 8px;
+        text-decoration: none; height: 36px; line-height: 1;
+      }
+      .nav-link:hover { border-color: var(--cp-accent); color: var(--cp-accent); }
+      .icon-btn {
+        appearance: none; background: var(--cp-surface);
+        color: var(--cp-text); border: 1px solid var(--cp-border);
+        border-radius: 8px; width: 36px; height: 36px; cursor: pointer;
+        display: grid; place-items: center;
+      }
+      .icon-btn:hover { border-color: var(--cp-border-strong); }
+
+      main { max-width: 1200px; margin: 0 auto; padding: 28px; }
+
+      .page-intro {
+        margin: 0 0 22px;
+        padding: 18px 22px;
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-left: 4px solid var(--cp-warning);
+        border-radius: 12px;
+      }
+      .page-intro h2 { margin: 0 0 6px; font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
+      .page-intro p { margin: 0; color: var(--cp-text-muted); font-size: 13.5px; max-width: 820px; }
+
+      .tensions {
+        margin: 0 0 28px;
+        padding: 20px 22px 22px;
+        border-radius: 14px;
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+        border-left: 4px solid var(--cp-warning);
+      }
+      .tensions h3 {
+        margin: 0 0 4px 0; font-size: 18px; font-weight: 600; color: var(--cp-text);
+      }
+      .tensions .tensions-sub {
+        margin: 0 0 14px 0; font-size: 13px; color: var(--cp-text-muted);
+      }
+      .tensions-grid {
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 12px;
+      }
+      .tension-card {
+        padding: 14px 16px; border-radius: 10px;
+        background: var(--cp-surface-soft);
+        border: 1px solid var(--cp-border);
+      }
+      .tension-title {
+        font-size: 13.5px; font-weight: 600; color: var(--cp-text); margin-bottom: 4px;
+      }
+      .tension-body {
+        font-size: 12.5px; color: var(--cp-text-muted); line-height: 1.5;
+      }
+
+      .references {
+        margin: 0;
+        padding: 20px 22px;
+        border-radius: 14px;
+        background: var(--cp-surface);
+        border: 1px solid var(--cp-border);
+      }
+      .references h3 {
+        margin: 0 0 10px; font-size: 18px; font-weight: 600; color: var(--cp-text);
+      }
+      .references p.sub { margin: 0 0 14px; color: var(--cp-text-muted); font-size: 13px; }
+      .references ul {
+        margin: 0; padding: 0; list-style: none;
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 10px 22px;
+      }
+      .references li { font-size: 13px; color: var(--cp-text-muted); line-height: 1.5; }
+      .references a { color: var(--cp-link, var(--layer-control)); text-decoration: none; font-weight: 500; }
+      .references a:hover { text-decoration: underline; }
+      .references li .src {
+        display: block; font-size: 11.5px; color: var(--cp-text-soft); margin-top: 2px;
+      }
+
+      footer.app {
+        max-width: 1200px; margin: 32px auto 0;
+        padding: 16px 28px 36px;
+        color: var(--cp-text-soft); font-size: 12px;
+        border-top: 1px solid var(--cp-border);
+      }
+      footer.app a { color: var(--cp-link); text-decoration: none; }
+      footer.app a:hover { text-decoration: underline; }
+    </style>
+  </head>
+  <body>
+    <header class="app">
+      <div class="header-inner">
+        <div class="brand">
+          <div class="brand-mark">AI</div>
+          <div class="brand-text">
+            <h1>Trusted Federated AI</h1>
+            <p>Honest tensions &middot; Specs &amp; primary sources</p>
+          </div>
+        </div>
+        <div class="header-spacer"></div>
+        <a class="nav-link" href="index.html" title="Back to the executive overview">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H6M12 5l-7 7 7 7"/></svg>
+          Home
+        </a>
+        <a class="nav-link" href="architect.html" title="Open the architect reference">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Architect view
+        </a>
+        <button class="icon-btn" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-intro">
+        <h2>Honest tensions &amp; references</h2>
+        <p>A federated AI environment is the right direction, but it isn&rsquo;t free of trade-offs. Below: five contradictions worth naming up front before the customer raises them, and the primary sources behind the architecture.</p>
+      </section>
+
+      <section class="tensions" id="tensions" aria-labelledby="tensions-heading">
+        <h3 id="tensions-heading">Honest tensions &mdash; 5 trade-offs worth naming up front</h3>
+        <p class="tensions-sub">Name these before the customer does. It buys credibility and shortens the architecture debate.</p>
+        <div class="tensions-grid">
+          <div class="tension-card">
+            <div class="tension-title">Single control plane vs vendor reality</div>
+            <div class="tension-body">Every hyperscaler ships its own control surface. &ldquo;One control plane&rdquo; is an outcome &mdash; it requires integration glue, not just a logo.</div>
+          </div>
+          <div class="tension-card">
+            <div class="tension-title">Workload identity is harder than it sounds</div>
+            <div class="tension-body">Human SSO is solved. Federating identities for agents &mdash; across Entra, AWS IAM, GCP IAM, and SaaS &mdash; is still emerging and operationally fragile.</div>
+          </div>
+          <div class="tension-card">
+            <div class="tension-title">Citizen development vs governance load</div>
+            <div class="tension-body">Letting business users build agents accelerates value and multiplies what governance, security, and FinOps must inspect. Plan for the load.</div>
+          </div>
+          <div class="tension-card">
+            <div class="tension-title">Cost attribution at agent granularity</div>
+            <div class="tension-body">Token-level showback per agent, per user, per business unit isn&rsquo;t standard yet. Tags, model routing, and bill-back discipline are still bespoke.</div>
+          </div>
+          <div class="tension-card">
+            <div class="tension-title">MCP and A2A overlap at the edges</div>
+            <div class="tension-body">The protocols are complementary in theory (tool calls vs agent collaboration), but their boundaries blur in practice. Expect overlap and version churn.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="references" id="references" aria-labelledby="references-heading">
+        <h3 id="references-heading">References &mdash; specs and primary sources</h3>
+        <p class="sub">Every claim in the reference architecture maps back to one of these.</p>
+        <ul>
+          <li><a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener noreferrer">Model Context Protocol (MCP)</a><span class="src">Open specification &middot; Anthropic</span></li>
+          <li><a href="https://a2aproject.github.io/A2A/" target="_blank" rel="noopener noreferrer">Agent2Agent (A2A) Protocol</a><span class="src">Open specification &middot; Google</span></li>
+          <li><a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noopener noreferrer">NIST AI Risk Management Framework (AI RMF 1.0)</a><span class="src">NIST</span></li>
+          <li><a href="https://genai.owasp.org/llm-top-10/" target="_blank" rel="noopener noreferrer">OWASP Top 10 for LLM Applications (2025)</a><span class="src">OWASP</span></li>
+          <li><a href="https://learn.microsoft.com/en-us/azure/ai-foundry/" target="_blank" rel="noopener noreferrer">Microsoft Foundry documentation</a><span class="src">Microsoft Learn</span></li>
+          <li><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/" target="_blank" rel="noopener noreferrer">Microsoft Copilot Studio documentation</a><span class="src">Microsoft Learn</span></li>
+        </ul>
+      </section>
+    </main>
+
+    <footer class="app">
+      Trusted Federated AI Operating Model &middot; Honest tensions &middot;
+      <a href="index.html">Home</a> &middot;
+      <a href="architect.html">Architect view</a> &middot;
+      <a href="concepts.html">Concepts</a> &middot;
+      <a href="talk-tracks.html">Talk tracks</a> &middot;
+      <a href="use-cases.html">Use cases</a> &middot;
+      <a href="leave-behind.html">Leave-behind</a> &middot;
+      <a href="https://github.com/chriswillia/federated-ai-architecture" target="_blank" rel="noopener noreferrer">View on GitHub</a>
+    </footer>
+
+    <script>
+      const themeBtn = document.getElementById("themeToggle");
+      if (themeBtn) {
+        themeBtn.addEventListener("click", () => {
+          const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+          document.documentElement.setAttribute("data-theme", next);
+          try { localStorage.setItem("federated-ai-theme", next); } catch (e) {}
+        });
+      }
+    </script>
+  </body>
+</html>
