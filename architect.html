@@ -6,12 +6,12 @@
     <title>Trusted Federated AI Operating Model — Reference</title>
     <script>
       (() => {
-        const param = new URLSearchParams(window.location.search).get("scoutTheme");
-        const theme =
-          param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        const saved = (() => { try { return localStorage.getItem("federated-ai-theme"); } catch (e) { return null; } })();
+        const theme = saved || (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
         document.documentElement.setAttribute("data-theme", theme);
       })();
     </script>
+    <link rel="stylesheet" href="assets/style.css" />
     <style>
       :root {
         color-scheme: light;
@@ -2077,33 +2077,7 @@
     </style>
   </head>
   <body>
-    <header class="app">
-      <div class="header-inner">
-        <div class="brand">
-          <div class="brand-mark">AI</div>
-          <div class="brand-text">
-            <h1>Trusted Federated AI</h1>
-            <p>Operating Model · Reference architecture</p>
-          </div>
-        </div>
-        <div class="header-spacer"></div>
-        <a class="nav-link" href="use-cases.html" title="See real-world flows for M365, SAP, and ServiceNow">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h13M13 5l7 7-7 7"/></svg>
-          Use cases
-        </a>
-        <button class="icon-btn" id="presenterToggle" title="Presenter mode (hides hero, tensions, references for screen-share)" aria-label="Presenter mode" aria-pressed="false">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8M12 18v3"/>
-          </svg>
-        </button>
-        <button class="icon-btn" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="4"></circle>
-            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
-          </svg>
-        </button>
-      </div>
-    </header>
+    <div id="app-header"></div>
 
     <main>
       <!-- Punchline: the big idea customers should walk away remembering -->
@@ -2240,70 +2214,7 @@
         </div>
       </section>
 
-      <!-- Outcomes ribbon (customer-outcome filter) -->
-      <section class="outcomes-bar" aria-label="Filter challenges">
-        <div class="filter-row">
-          <span class="outcomes-label">Outcome</span>
-          <button type="button" class="outcome-chip" data-outcome="adoption">Faster adoption</button>
-          <button type="button" class="outcome-chip" data-outcome="cost">Predictable cost</button>
-          <button type="button" class="outcome-chip" data-outcome="risk">Lower risk</button>
-          <button type="button" class="outcome-chip" data-outcome="freedom">Cloud freedom</button>
-        </div>
-        <div class="filter-row">
-          <span class="outcomes-label">Persona</span>
-          <button type="button" class="persona-chip" data-persona="cio">CIO</button>
-          <button type="button" class="persona-chip" data-persona="ciso">CISO</button>
-          <button type="button" class="persona-chip" data-persona="cdo">CDO</button>
-          <button type="button" class="persona-chip" data-persona="ai">Head of AI</button>
-          <button type="button" class="persona-chip" data-persona="lob">Line of business</button>
-          <button type="button" class="filter-clear" id="clearFilters">Clear filters</button>
-        </div>
-      </section>
-
-      <!-- Customer challenge selector (seller tool) -->
-      <section class="challenges" aria-labelledby="challenges-heading">
-        <div class="challenges-head">
-          <h2 id="challenges-heading">Talk to customers about…</h2>
-          <p>Pick the conversation your customer wants to have. We’ll surface the customer’s own words, a sound-bite you can say out loud, suggested discovery questions, and the architecture pieces that deliver the outcome.</p>
-        </div>
-        <div class="challenge-grid" id="challengeGrid"></div>
-        <div class="challenge-panel" id="challengePanel" hidden>
-          <div class="cp-head">
-            <div class="cp-headline">
-              <div class="cp-outcome" id="cpOutcome"></div>
-              <div class="cp-quote" id="cpQuote"></div>
-            </div>
-            <button class="cp-clear" id="cpClear" type="button" title="Clear selection" aria-label="Clear selection">×</button>
-          </div>
-          <button class="cp-copy" id="cpCopy" type="button" title="Copy this talk track to clipboard">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-            Copy talk track
-          </button>
-          <div class="cp-soundbite" id="cpSoundbite"></div>
-          <div class="cp-answer" id="cpAnswer"></div>
-          <div class="cp-row">
-            <div class="cp-block">
-              <h4>Questions to ask the customer</h4>
-              <ul id="cpPoints"></ul>
-            </div>
-            <div class="cp-block">
-              <h4>Point to in the architecture</h4>
-              <div class="cp-pointat" id="cpPointAt"></div>
-              <div class="cp-see" id="cpSeeItWork"></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Lens-specific objection handling cards -->
-      <section class="objections" id="objections" hidden aria-labelledby="objections-heading">
-        <div class="objections-head">
-          <h3 id="objections-heading">When the customer pushes back&hellip;</h3>
-          <span class="lens-pill" id="objectionsLensPill">Lens</span>
-          <p>Two-sentence responses for the objections you'll hear most in this kind of conversation &mdash; and where on the page to pivot.</p>
-        </div>
-        <div class="obj-grid" id="objGrid"></div>
-      </section>
+      <!-- Conversation toolkit (challenges + objections) lives on the homepage: index.html#conversation -->
 
       <!-- Architecture canvas -->
       <section class="scenarios" aria-label="Customer scenarios">
@@ -2365,37 +2276,7 @@
         </div>
       </section>
 
-      <!-- Pillars removed for simplicity -->
-
-      <details class="collapsible" id="tensions-details">
-        <summary>Honest tensions <span class="sum-meta">5 trade-offs worth naming up front</span></summary>
-        <section class="tensions" aria-labelledby="tensions-heading" style="margin: 0; padding: 0; background: transparent; border: none; border-left: none; border-radius: 0;">
-          <h2 id="tensions-heading" style="display: none;">Honest tensions</h2>
-          <p class="tensions-sub">A federated AI environment is the right direction, but it isn't free of trade-offs. Five contradictions worth naming up front.</p>
-          <div class="tensions-grid">
-            <div class="tension-card">
-              <div class="tension-title">Single control plane vs vendor reality</div>
-              <div class="tension-body">Every hyperscaler ships its own control surface. "One control plane" is an outcome — it requires integration glue, not just a logo.</div>
-            </div>
-            <div class="tension-card">
-              <div class="tension-title">Workload identity is harder than it sounds</div>
-              <div class="tension-body">Human SSO is solved. Federating identities for agents — across Entra, AWS IAM, GCP IAM, and SaaS — is still emerging and operationally fragile.</div>
-            </div>
-            <div class="tension-card">
-              <div class="tension-title">Citizen development vs governance load</div>
-              <div class="tension-body">Letting business users build agents accelerates value and multiplies what governance, security, and FinOps must inspect. Plan for the load.</div>
-            </div>
-            <div class="tension-card">
-              <div class="tension-title">Cost attribution at agent granularity</div>
-              <div class="tension-body">Token-level showback per agent, per user, per business unit isn't standard yet. Tags, model routing, and bill-back discipline are still bespoke.</div>
-            </div>
-            <div class="tension-card">
-              <div class="tension-title">MCP and A2A overlap at the edges</div>
-              <div class="tension-body">The protocols are complementary in theory (tool calls vs agent collaboration), but their boundaries blur in practice. Expect overlap and version churn.</div>
-            </div>
-          </div>
-        </section>
-      </details>
+      <!-- Honest tensions moved to tensions.html -->
 
       <details class="collapsible" id="references-details">
         <summary>References <span class="sum-meta">Specs and primary sources</span></summary>
@@ -2413,10 +2294,7 @@
       </details>
     </main>
 
-    <footer class="app">
-      Trusted Federated AI Operating Model · Interactive seller reference ·
-      <a href="https://github.com/chriswillia/federated-ai-architecture" target="_blank" rel="noopener noreferrer">View on GitHub</a>
-    </footer>
+    <div id="app-footer"></div>
 
     <!-- Drawer -->
     <div class="drawer-scrim" id="scrim" aria-hidden="true"></div>
@@ -2912,13 +2790,14 @@
         drawer.setAttribute("aria-hidden", "true");
       }
 
-      // ---------- Theme toggle ----------
-      document.getElementById("themeToggle").addEventListener("click", () => {
-        const cur = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
-        document.documentElement.setAttribute("data-theme", cur);
-        // Force a redraw of any active trace so colors update
-        if (activeSourceId) drawConnectorsFor(activeSourceId);
-      });
+      // Theme toggle is handled by Shell.mount() via shell.js.
+      // The architect canvas needs to redraw any active trace when the theme flips,
+      // so we listen for our own data-theme attribute mutations.
+      new MutationObserver(() => {
+        if (typeof activeSourceId !== "undefined" && activeSourceId && typeof drawConnectorsFor === "function") {
+          drawConnectorsFor(activeSourceId);
+        }
+      }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 
       // ---------- Relationships (which nodes touch which) ----------
       const LINKS = [
@@ -3299,10 +3178,16 @@
       };
 
       const lensButtons = document.querySelectorAll(".lens-btn");
-      const objectionsEl = document.getElementById("objections");
-      const objGridEl = document.getElementById("objGrid");
-      const objLensPillEl = document.getElementById("objectionsLensPill");
       const leaveBehindLinkEl = document.getElementById("leaveBehindLink");
+
+      function buildLeaveBehindHref(lensId) {
+        const params = new URLSearchParams();
+        if (lensId) params.set("lens", lensId);
+        const cust = (window.Shell && Shell.readInitialCustomer && Shell.readInitialCustomer()) || "";
+        if (cust) params.set("customer", cust);
+        const qs = params.toString();
+        return "leave-behind.html" + (qs ? "?" + qs : "");
+      }
 
       function applyLens(lensId) {
         const lens = LENSES[lensId];
@@ -3311,8 +3196,7 @@
           root.removeAttribute("data-lens");
           lensButtons.forEach((b) => b.classList.toggle("active", b.dataset.lens === "all"));
           document.querySelectorAll(".node").forEach((n) => n.classList.remove("lens-glow"));
-          objectionsEl.hidden = true;
-          if (leaveBehindLinkEl) leaveBehindLinkEl.href = "leave-behind.html";
+          if (leaveBehindLinkEl) leaveBehindLinkEl.href = buildLeaveBehindHref(null);
           return;
         }
         root.setAttribute("data-lens", lensId);
@@ -3320,31 +3204,7 @@
         document.querySelectorAll(".node").forEach((n) => {
           n.classList.toggle("lens-glow", lens.glowNodes.includes(n.dataset.node));
         });
-        // Objections
-        objLensPillEl.textContent = lens.label;
-        objGridEl.innerHTML = lens.objections.map((o) => `
-          <div class="obj-card">
-            <div class="obj-quote">${o.quote}</div>
-            <div class="obj-response">${o.response}</div>
-            ${o.pivotTo ? `<div class="obj-pivot">Pivot &rarr; <a href="#" data-pivot-target="${o.pivotTo.target}" data-pivot-scenario="${o.pivotTo.isScenario ? "1" : "0"}">${o.pivotTo.label}</a></div>` : ""}
-          </div>`).join("");
-        objectionsEl.hidden = false;
-        objGridEl.querySelectorAll("[data-pivot-target]").forEach((a) => {
-          a.addEventListener("click", (e) => {
-            e.preventDefault();
-            const target = a.dataset.pivotTarget;
-            const isScenario = a.dataset.pivotScenario === "1";
-            if (isScenario) {
-              const sbtn = document.querySelector(`.scenario-btn[data-scenario="${target}"]`);
-              if (sbtn) sbtn.click();
-              document.querySelector(".scenarios")?.scrollIntoView({ behavior: "smooth", block: "center" });
-            } else {
-              const plane = document.querySelector(`.plane[data-plane-id="${target}"]`);
-              if (plane) plane.scrollIntoView({ behavior: "smooth", block: "center" });
-            }
-          });
-        });
-        if (leaveBehindLinkEl) leaveBehindLinkEl.href = `leave-behind.html?lens=${lensId}`;
+        if (leaveBehindLinkEl) leaveBehindLinkEl.href = buildLeaveBehindHref(lensId);
       }
 
       lensButtons.forEach((b) => {
@@ -3379,8 +3239,8 @@
           if (target === "reality") {
             el = document.getElementById("reality");
           } else if (target === "risk") {
-            el = document.getElementById("tensions-details");
-            if (el) el.open = true;
+            window.location.href = "tensions.html";
+            return;
           } else if (target === "architecture") {
             el = document.getElementById("canvas");
           } else if (target === "trust") {
@@ -3395,294 +3255,6 @@
           if (el && el.scrollIntoView) el.scrollIntoView({ behavior: "smooth", block: "start" });
         });
       });
-
-      // ---------- Customer challenge selector (seller tool) ----------
-      let challengeActive = false;
-
-      const CHALLENGES = [
-        {
-          id: "platform",
-          accent: "--layer-model",
-          outcome: "adoption",
-          outcomeLabel: "Faster adoption",
-          soundbite: "Build agents in one governed place, and you compound time-to-value across every team — instead of paying the integration tax in every department.",
-          metaLayer: "Build plane",
-          personas: ["cio", "ai"],
-          customerQuote: "We want a singular Agent Development Platform.",
-          shortAnswer:
-            "One place to build agents. Foundry for pro developers, Copilot Studio for business users \u2014 with logic, prompts, skills, and evals stored centrally and reusable across surfaces.",
-          pointAt: ["dev-platform", "tools-sdks", "governance"],
-          points: [
-            "Are you trying to standardize <em>where</em> agents are built, or <em>how they\u2019re governed and secured once deployed?</em>",
-            "If teams build agents in different platforms today, how do you ensure <strong>consistent security and policy enforcement</strong> across them?",
-            "Do you have a way to <strong>observe and inventory all agents</strong>, regardless of where they are built?",
-            "What happens when an agent is created outside your &ldquo;preferred&rdquo; platform \u2014 how do you detect and govern it?",
-          ],
-          seeItWork: { label: "M365 HR Benefits Agent", href: "use-cases.html#m365-hr" },
-        },
-        {
-          id: "multi-cloud",
-          accent: "--layer-fabric",
-          outcome: "freedom",
-          outcomeLabel: "Cloud freedom",
-          soundbite: "Your data, apps, and people don’t live in one cloud — your agents shouldn’t either. A federated fabric lets agents work where the work is.",
-          metaLayer: "Fabric & runtime",
-          personas: ["cio", "ai"],
-          customerQuote: "We want to develop agents across clouds and SaaS apps.",
-          shortAnswer:
-            "Build once, deploy anywhere. The same agent runs on Azure, AWS, GCP, on-prem, or inside Salesforce, SAP, and ServiceNow \u2014 reaching data wherever it lives.",
-          pointAt: ["runtime", "mcp", "a2a", "apis", "vertical-copilots", "systems-of-record"],
-          points: [
-            "How are your agents currently <strong>connecting to enterprise data, APIs, and SaaS platforms</strong>?",
-            "Are you able to <strong>monitor agent interactions across environments</strong> in a unified way?",
-            "Do you have a consistent model to apply <strong>security, identity, and governance policies across clouds</strong>?",
-            "Are teams rebuilding similar capabilities because there\u2019s no shared <strong>governed interoperability model</strong>?",
-          ],
-          seeItWork: { label: "SAP Procurement Approval Agent", href: "use-cases.html#sap-po" },
-        },
-        {
-          id: "cost",
-          accent: "--layer-experience",
-          outcome: "cost",
-          outcomeLabel: "Predictable cost",
-          soundbite: "AI cost only feels unpredictable when nobody owns it. Token-level visibility plus showback turns agent spend into a managed budget line.",
-          metaLayer: "Cost & FinOps",
-          personas: ["cio", "lob"],
-          customerQuote: "We want control over token usage and cost/billing.",
-          shortAnswer:
-            "See every token, route to the right-sized model, and bill back to the business owner \u2014 so spend stays predictable even as agents proliferate.",
-          pointAt: ["cost", "models", "governance", "runtime"],
-          points: [
-            "Do you have visibility into <strong>which agents are driving cost and consumption</strong>?",
-            "Can you correlate <strong>agent activity (prompts, tool calls, outcomes)</strong> to cost drivers?",
-            "How do you <strong>govern usage policies</strong> to prevent runaway agent execution or overconsumption?",
-            "If an agent becomes inefficient or misconfigured, how quickly can you <strong>detect and act on it</strong>?",
-          ],
-          seeItWork: { label: "Cost-aware expense agent", href: "use-cases.html" },
-        },
-        {
-          id: "control",
-          accent: "--layer-control",
-          outcome: "risk",
-          outcomeLabel: "Lower risk",
-          soundbite: "One control plane is how ‘governed AI’ stops being a slide and becomes a daily operating posture — across every cloud, every agent.",
-          metaLayer: "Control plane",
-          personas: ["ciso", "cio"],
-          customerQuote: "We want a unified control plane for identity, governance, and security.",
-          shortAnswer:
-            "One identity, one set of policies, one trace per agent \u2014 across every cloud and SaaS app, aligned to NIST AI RMF.",
-          pointAt: ["identity", "governance", "security", "catalog-lineage"],
-          points: [
-            "Do your agents have <strong>identities with defined permissions and ownership</strong>, similar to users or apps?",
-            "Can you <strong>apply consistent policies (access, DLP, conditional access)</strong> across all agents?",
-            "How do you <strong>govern lifecycle</strong> \u2014 creation, approval, monitoring, and decommissioning of agents?",
-            "If an incident occurs, can you <strong>trace an agent\u2019s actions end-to-end</strong> and investigate it?",
-            "Do you have a <strong>single place to observe, govern, and secure all agents</strong>, including third-party ones?",
-          ],
-          seeItWork: { label: "ServiceNow IT Incident Triage Agent", href: "use-cases.html#servicenow-incident" },
-        },
-        {
-          id: "risk",
-          accent: "--layer-control",
-          outcome: "risk",
-          outcomeLabel: "Lower risk",
-          soundbite: "Prompt injection, leakage, and rogue agents are real — and solvable when every agent has identity, policy, and live monitoring from day one.",
-          metaLayer: "GenAI risk & security",
-          personas: ["ciso"],
-          customerQuote: "We need to manage GenAI risk — prompt injection, leakage, rogue agents.",
-          shortAnswer:
-            "Real-time monitoring, red-teaming, and runtime guardrails — from Foundry safety evals to Defender / Sentinel coverage for every agent action.",
-          pointAt: ["security", "governance", "identity"],
-          points: [
-            "How are you protecting against <strong>prompt injection, data leakage, or rogue agent behavior</strong>?",
-            "Do you have <strong>real-time monitoring and threat detection</strong> for agent activity?",
-          ],
-          seeItWork: { label: "ServiceNow IT Incident Triage Agent", href: "use-cases.html#servicenow-incident" },
-        },
-        {
-          id: "sensitive",
-          accent: "--layer-data",
-          outcome: "risk",
-          outcomeLabel: "Lower risk",
-          soundbite: "Sensitive data shouldn’t have to move for AI to be useful. Ground agents on data where it lives — with the labels, controls, and audit you already trust.",
-          metaLayer: "Sensitive data & on-prem",
-          personas: ["ciso", "cdo"],
-          customerQuote: "We can’t move sensitive data to the cloud just to use agents.",
-          shortAnswer:
-            "Ground agents in data that stays where it lives — Foundry Local + private MCP servers + Purview policies, with full lineage end to end.",
-          pointAt: ["knowledge-grounding", "catalog-lineage", "runtime", "mcp"],
-          points: [
-            "How are you ensuring agents respect <strong>data boundaries, labels, and compliance policies</strong>?",
-            "Can you track <strong>data flow from input → agent → output</strong> across systems?",
-          ],
-          seeItWork: { label: "Citizen-built HR Benefits Agent", href: "scenarios/citizen-hr.html" },
-        },
-        {
-          id: "scale",
-          accent: "--layer-model",
-          outcome: "adoption",
-          outcomeLabel: "Faster adoption",
-          soundbite: "Most AI programs don’t fail at the pilot — they fail at production. Central registries, evals, and consumption limits make the leap repeatable.",
-          metaLayer: "Pilot → production",
-          personas: ["cio", "ai"],
-          customerQuote: "Pilots work — production at scale is where it falls apart.",
-          shortAnswer:
-            "Central registry, signed releases, pre-prod evals, consumption limits, and approval workflows turn one-off pilots into a managed agent portfolio.",
-          pointAt: ["dev-platform", "governance", "cost"],
-          points: [
-            "What changes when you move from pilot to production in terms of <strong>governance and control</strong>?",
-            "How do you prevent <strong>agent sprawl and unmanaged growth</strong>?",
-          ],
-          seeItWork: { label: "Multi-source Customer 360", href: "scenarios/customer360.html" },
-        },
-        {
-          id: "modal",
-          accent: "--layer-experience",
-          outcome: "adoption",
-          outcomeLabel: "Faster adoption",
-          soundbite: "Voice and vision agents are coming fast. The cost of getting them wrong is letting them grow up outside your control plane.",
-          metaLayer: "Multi-modal & advanced",
-          personas: ["ai", "lob"],
-          customerQuote: "Voice, vision, and tool-using agents are next — not just chat.",
-          shortAnswer:
-            "Multi-modal agents inherit the same identity, policy, cost tagging, and trace fabric as text agents — no parallel control plane.",
-          pointAt: ["models", "runtime", "tools-sdks"],
-          points: [
-            "Do you have visibility into <strong>how different agent types behave and interact</strong>?",
-            "Can you enforce <strong>security and governance consistently across modalities</strong>?",
-          ],
-          seeItWork: { label: "Use cases (M365 / SAP / ServiceNow)", href: "use-cases.html" },
-        },
-        {
-          id: "citizen-dev",
-          accent: "--layer-model",
-          outcome: "adoption",
-          outcomeLabel: "Faster adoption",
-          soundbite: "Letting business users build is the speed lever. A signed tool catalog and central approval keep it from becoming the risk lever.",
-          metaLayer: "Citizen dev + guardrails",
-          personas: ["lob", "ai"],
-          customerQuote: "Citizen builders need to move fast — without breaking things.",
-          shortAnswer:
-            "Copilot Studio for builders, central registry + signed MCP catalog + admin approval policies — fast paths with guardrails built in.",
-          pointAt: ["dev-platform", "tools-sdks", "governance", "human-oversight"],
-          points: [
-            "How are you enabling builders while still enforcing <strong>enterprise guardrails and policies</strong>?",
-            "Can new agents be created without <strong>security review or central visibility</strong>?",
-          ],
-          seeItWork: { label: "Citizen-built HR Benefits Agent", href: "scenarios/citizen-hr.html" },
-        },
-        {
-          id: "observability",
-          accent: "--layer-control",
-          outcome: "risk",
-          outcomeLabel: "Lower risk",
-          soundbite: "If you can’t trace what your agents are doing, you can’t trust them — and you can’t improve them. Trace every step, every time.",
-          metaLayer: "Observability & quality",
-          personas: ["ciso", "cdo", "ai"],
-          customerQuote: "We can’t debug or measure what our agents actually do.",
-          shortAnswer:
-            "Foundry traces every step — prompt, reasoning, tool calls, results — and pairs it with evals for quality, safety, and cost across every runtime.",
-          pointAt: ["governance", "catalog-lineage", "cost"],
-          points: [
-            "Can you trace <strong>prompt → reasoning → tool → result → output</strong> for your agents?",
-            "Do you have a way to <strong>measure agent effectiveness, reliability, and risk</strong>?",
-            "How are you identifying <strong>which agents deliver value vs. introduce risk</strong>?",
-          ],
-          seeItWork: { label: "Cost-aware Expense Agent", href: "scenarios/expense.html" },
-        },
-      ];
-
-      const challengeGrid = document.getElementById("challengeGrid");
-      const challengePanel = document.getElementById("challengePanel");
-      const cpOutcome = document.getElementById("cpOutcome");
-      const cpQuote = document.getElementById("cpQuote");
-      const cpSoundbite = document.getElementById("cpSoundbite");
-      const cpAnswer = document.getElementById("cpAnswer");
-      const cpPoints = document.getElementById("cpPoints");
-      const cpPointAt = document.getElementById("cpPointAt");
-      const cpSeeItWork = document.getElementById("cpSeeItWork");
-      const cpClear = document.getElementById("cpClear");
-      const cpCopy = document.getElementById("cpCopy");
-      const outcomesBar = document.querySelector(".outcomes-bar");
-      const clearFiltersBtn = document.getElementById("clearFilters");
-      let activeOutcome = null;
-      let activePersona = null;
-
-      function nodeLabelById(id) {
-        for (const p of PLANES) {
-          for (const n of p.nodes) if (n.id === id) return n.title;
-        }
-        return id;
-      }
-
-      function renderChallenges() {
-        if (!challengeGrid) return;
-        const cards = CHALLENGES.map((c) => `
-          <button type="button" class="challenge-card" data-challenge="${c.id}" data-outcome="${c.outcome || ""}" style="--accent: var(${c.accent});">
-            <div class="challenge-meta"><span class="dot"></span>${c.metaLayer}</div>
-            <div class="challenge-quote">${c.customerQuote}</div>
-            <div class="challenge-outcome">${c.outcomeLabel || ""}</div>
-          </button>
-        `).join("");
-        challengeGrid.innerHTML = cards;
-        challengeGrid.querySelectorAll("button.challenge-card").forEach((btn) => {
-          btn.addEventListener("click", () => {
-            const id = btn.dataset.challenge;
-            if (btn.classList.contains("active")) applyChallenge(null);
-            else applyChallenge(id);
-          });
-        });
-      }
-
-      function setOutcomeFilter(outcome) {
-        activeOutcome = outcome || null;
-        applyFilters();
-      }
-      function setPersonaFilter(persona) {
-        activePersona = persona || null;
-        applyFilters();
-      }
-      function applyFilters() {
-        if (outcomesBar) {
-          outcomesBar.querySelectorAll(".outcome-chip").forEach((b) => {
-            b.classList.toggle("active", !!activeOutcome && b.dataset.outcome === activeOutcome);
-          });
-          outcomesBar.querySelectorAll(".persona-chip").forEach((b) => {
-            b.classList.toggle("active", !!activePersona && b.dataset.persona === activePersona);
-          });
-        }
-        challengeGrid.querySelectorAll(".challenge-card").forEach((b) => {
-          const id = b.dataset.challenge;
-          const c = CHALLENGES.find((x) => x.id === id);
-          const outcomeOk = !activeOutcome || (c && c.outcome === activeOutcome);
-          const personaOk = !activePersona || (c && Array.isArray(c.personas) && c.personas.includes(activePersona));
-          b.hidden = !(outcomeOk && personaOk);
-        });
-        const activeBtn = challengeGrid.querySelector(".challenge-card.active");
-        if (activeBtn && activeBtn.hidden) applyChallenge(null);
-      }
-
-      if (outcomesBar) {
-        outcomesBar.querySelectorAll(".outcome-chip").forEach((btn) => {
-          btn.addEventListener("click", () => {
-            const next = btn.dataset.outcome || "";
-            setOutcomeFilter(next && activeOutcome === next ? null : (next || null));
-          });
-        });
-        outcomesBar.querySelectorAll(".persona-chip").forEach((btn) => {
-          btn.addEventListener("click", () => {
-            const next = btn.dataset.persona || "";
-            setPersonaFilter(next && activePersona === next ? null : (next || null));
-          });
-        });
-      }
-      if (clearFiltersBtn) {
-        clearFiltersBtn.addEventListener("click", () => {
-          activeOutcome = null;
-          activePersona = null;
-          applyFilters();
-        });
-      }
 
       // ---------- WALK THE ARCHITECTURE ----------
       let walkTimer = null;
@@ -3700,7 +3272,6 @@
       function walkArchitecture() {
         if (walkPlaying) { stopWalk(); captionEl && (captionEl.innerHTML = defaultCaption); return; }
         stopScenario();
-        if (challengeActive) applyChallenge(null);
         clearTrace();
         document.querySelectorAll(".scenario-btn").forEach((b) => b.classList.remove("active"));
         if (walkArchBtn) walkArchBtn.classList.add("active");
@@ -3730,50 +3301,6 @@
       }
       if (walkArchBtn) walkArchBtn.addEventListener("click", walkArchitecture);
 
-      // ---------- COPY TALK TRACK ----------
-      function copyTalkTrack() {
-        const activeBtn = challengeGrid.querySelector(".challenge-card.active");
-        if (!activeBtn) return;
-        const id = activeBtn.dataset.challenge;
-        const c = CHALLENGES.find((x) => x.id === id);
-        if (!c) return;
-        const stripHtml = (s) => s.replace(/<[^>]+>/g, "");
-        const archHref = new URL(c.seeItWork.href, location.href).href;
-        const text = [
-          `Customer outcome: ${c.outcomeLabel || ""}`,
-          `Customer says: “${c.customerQuote}”`,
-          ``,
-          `Say this: ${c.soundbite || ""}`,
-          ``,
-          `The short answer: ${c.shortAnswer}`,
-          ``,
-          `Discovery questions:`,
-          ...c.points.map((p) => `  - ${stripHtml(p)}`),
-          ``,
-          `See it in action: ${c.seeItWork.label} — ${archHref}`,
-        ].join("\n");
-        const flash = () => {
-          if (!cpCopy) return;
-          const original = cpCopy.querySelector("svg") ? cpCopy.childNodes[cpCopy.childNodes.length - 1].textContent : cpCopy.textContent;
-          cpCopy.classList.add("copied");
-          const label = cpCopy.childNodes[cpCopy.childNodes.length - 1];
-          if (label && label.nodeType === 3) label.textContent = " Copied!";
-          setTimeout(() => {
-            cpCopy.classList.remove("copied");
-            if (label && label.nodeType === 3) label.textContent = original;
-          }, 1600);
-        };
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(text).then(flash).catch(() => {
-            // Fallback: textarea + execCommand
-            const ta = document.createElement("textarea");
-            ta.value = text; document.body.appendChild(ta); ta.select();
-            try { document.execCommand("copy"); flash(); } finally { document.body.removeChild(ta); }
-          });
-        }
-      }
-      if (cpCopy) cpCopy.addEventListener("click", copyTalkTrack);
-
       // ---------- PRESENTER MODE ----------
       const presenterToggle = document.getElementById("presenterToggle");
       if (presenterToggle) {
@@ -3785,46 +3312,8 @@
       }
 
 
-      function applyChallenge(id) {
-        const c = CHALLENGES.find((x) => x.id === id);
-        stopWalk();
-        challengeGrid.querySelectorAll(".challenge-card").forEach((b) =>
-          b.classList.toggle("active", b.dataset && b.dataset.challenge === id),
-        );
-        if (!c) {
-          challengeActive = false;
-          challengePanel.hidden = true;
-          document.querySelectorAll(".node").forEach((n) => {
-            n.classList.remove("cha-target", "cha-dim");
-          });
-          document.documentElement.style.removeProperty("--accent");
-          return;
-        }
-        challengeActive = true;
-        // Stop any scenario walkthrough or hover trace.
-        stopScenario();
-        clearTrace();
-        document.documentElement.style.setProperty("--accent", `var(${c.accent})`);
-        const targets = new Set(c.pointAt);
-        document.querySelectorAll(".node").forEach((n) => {
-          const nid = n.dataset.node;
-          n.classList.toggle("cha-target", targets.has(nid));
-          n.classList.toggle("cha-dim", !targets.has(nid));
-        });
-        cpOutcome.textContent = c.outcomeLabel || "";
-        cpOutcome.style.display = c.outcomeLabel ? "" : "none";
-        cpQuote.textContent = `\u201c${c.customerQuote}\u201d`;
-        cpSoundbite.textContent = c.soundbite || "";
-        cpSoundbite.style.display = c.soundbite ? "" : "none";
-        cpAnswer.innerHTML = `<strong>The short answer.</strong> ${c.shortAnswer}`;
-        cpPoints.innerHTML = c.points.map((p) => `<li>${p}</li>`).join("");
-        cpPointAt.innerHTML = c.pointAt.map((nid) => `<span class="pa-chip">${nodeLabelById(nid)}</span>`).join("");
-        cpSeeItWork.innerHTML = `<strong>See it in action:</strong> <a href="${c.seeItWork.href}">${c.seeItWork.label} \u2192</a>`;
-        challengePanel.hidden = false;
-      }
-
-      if (cpClear) cpClear.addEventListener("click", () => applyChallenge(null));
-      renderChallenges();
     </script>
+    <script src="assets/shell.js"></script>
+    <script>Shell.mount({ activePath: "architects" });</script>
   </body>
 </html>
