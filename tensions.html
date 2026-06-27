@@ -5,12 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Honest tensions &amp; references &mdash; Trusted Federated AI</title>
     <script>
-      (() => {
-        const param = new URLSearchParams(window.location.search).get("scoutTheme");
-        const theme = param || (localStorage.getItem("federated-ai-theme")) || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-        document.documentElement.setAttribute("data-theme", theme);
+      (function () {
+        try {
+          var saved = localStorage.getItem("federated-ai-theme");
+          var theme = saved || (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch (e) {}
       })();
     </script>
+    <link rel="stylesheet" href="assets/style.css" />
     <style>
       :root {
         color-scheme: light;
@@ -171,32 +174,7 @@
     </style>
   </head>
   <body>
-    <header class="app">
-      <div class="header-inner">
-        <div class="brand">
-          <div class="brand-mark">AI</div>
-          <div class="brand-text">
-            <h1>Trusted Federated AI</h1>
-            <p>Honest tensions &middot; Specs &amp; primary sources</p>
-          </div>
-        </div>
-        <div class="header-spacer"></div>
-        <a class="nav-link" href="index.html" title="Back to the executive overview">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H6M12 5l-7 7 7 7"/></svg>
-          Home
-        </a>
-        <a class="nav-link" href="architect.html" title="Open the architect reference">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-          Architect view
-        </a>
-        <button class="icon-btn" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="4"></circle>
-            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
-          </svg>
-        </button>
-      </div>
-    </header>
+    <div id="app-header"></div>
 
     <main>
       <section class="page-intro">
@@ -245,26 +223,9 @@
       </section>
     </main>
 
-    <footer class="app">
-      Trusted Federated AI Operating Model &middot; Honest tensions &middot;
-      <a href="index.html">Home</a> &middot;
-      <a href="architect.html">Architect view</a> &middot;
-      <a href="concepts.html">Concepts</a> &middot;
-      <a href="index.html#conversation">Talk to your customer</a> &middot;
-      <a href="use-cases.html">Use cases</a> &middot;
-      <a href="leave-behind.html">Leave-behind</a> &middot;
-      <a href="https://github.com/chriswillia/federated-ai-architecture" target="_blank" rel="noopener noreferrer">View on GitHub</a>
-    </footer>
+    <div id="app-footer"></div>
 
-    <script>
-      const themeBtn = document.getElementById("themeToggle");
-      if (themeBtn) {
-        themeBtn.addEventListener("click", () => {
-          const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
-          document.documentElement.setAttribute("data-theme", next);
-          try { localStorage.setItem("federated-ai-theme", next); } catch (e) {}
-        });
-      }
-    </script>
+    <script src="assets/shell.js"></script>
+    <script>Shell.mount({ activePath: "overview" });</script>
   </body>
 </html>

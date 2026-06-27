@@ -925,7 +925,7 @@ html[data-role] .pillar.role-match {
 @media print {
   @page { margin: 18mm 16mm; size: A4; }
   body { background: #fff; color: #000; font-size: 10.5pt; }
-  .app-shell, .icon-btn, .shell-nav, .shell-input,
+  .app-shell, .app-footer, .icon-btn, .shell-nav, .shell-input,
   .btn, .filter-bar, .chip, .cp-copy, .cp-clear { display: none !important; }
   .section { page-break-inside: avoid; }
   h2, h3 { page-break-after: avoid; }

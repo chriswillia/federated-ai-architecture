@@ -8,14 +8,13 @@
     <script>
       (function () {
         try {
-          var url = new URL(window.location.href);
-          var t = url.searchParams.get("scoutTheme");
-          if (t === "dark" || t === "light") {
-            document.documentElement.setAttribute("data-theme", t);
-          }
+          var saved = localStorage.getItem("federated-ai-theme");
+          var theme = saved || (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+          document.documentElement.setAttribute("data-theme", theme);
         } catch (e) {}
       })();
     </script>
+    <link rel="stylesheet" href="assets/style.css" />
     <style>
       :root {
         --cp-bg: #faf9f8;
@@ -300,6 +299,9 @@
         border-top: 1px solid var(--cp-border);
       }
 
+      /* Push page toolbar below sticky shell header */
+      .toolbar { top: 60px; }
+
       /* Print styles */
       @media print {
         .toolbar { display: none !important; }
@@ -313,6 +315,7 @@
     </style>
   </head>
   <body>
+    <div id="app-header"></div>
     <!-- Toolbar: lens + customer name + print -->
     <header class="toolbar" role="navigation">
       <span class="lbl">Lens</span>
@@ -543,5 +546,8 @@
       } catch (e) {}
       render();
     </script>
+    <div id="app-footer"></div>
+    <script src="assets/shell.js"></script>
+    <script>Shell.mount({ activePath: "executives", showCustomerInput: false });</script>
   </body>
 </html>

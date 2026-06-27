@@ -1,10 +1,20 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Concepts &mdash; Trusted Federated AI Operating Model</title>
     <meta name="description" content="Eight foundational concepts for a trusted federated AI operating model: AI System of Record, Agent Bill of Materials, Risk Tiers, Trust Contracts, FinOps by Outcome, Progressive Governance, Agent Portfolio Management, Federated AI Zones." />
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem("federated-ai-theme");
+          var theme = saved || (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch (e) {}
+      })();
+    </script>
+    <link rel="stylesheet" href="assets/style.css" />
     <style>
       :root {
         color-scheme: light dark;
@@ -311,20 +321,7 @@
     </style>
   </head>
   <body>
-    <header class="app">
-      <div class="header-inner">
-        <div class="brand">
-          <div class="brand-mark">AI</div>
-          <div class="brand-text">
-            <h1>Trusted Federated AI</h1>
-            <p>Concepts &middot; Eight ideas that hold the framework together</p>
-          </div>
-        </div>
-        <div class="header-spacer"></div>
-        <a class="nav-link" href="architect.html">&larr; Reference architecture</a>
-        <a class="nav-link" href="leave-behind.html">Leave-behind &rarr;</a>
-      </div>
-    </header>
+    <div id="app-header"></div>
 
     <main>
       <section class="page-hero">
@@ -572,22 +569,9 @@
       </section>
     </main>
 
-    <footer class="app">
-      Trusted Federated AI Operating Model &middot; Concepts &middot;
-      <a href="architect.html">Reference architecture</a> &middot;
-      <a href="leave-behind.html">Leave-behind</a> &middot;
-      <a href="https://github.com/chriswillia/federated-ai-architecture" target="_blank" rel="noopener noreferrer">View on GitHub</a>
-    </footer>
+    <div id="app-footer"></div>
 
-    <script>
-      // Theme: follow system + persist
-      try {
-        const saved = localStorage.getItem("theme");
-        if (saved) document.documentElement.setAttribute("data-theme", saved);
-        else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) {
-          document.documentElement.setAttribute("data-theme", "light");
-        }
-      } catch (e) {}
-    </script>
+    <script src="assets/shell.js"></script>
+    <script>Shell.mount({ activePath: "overview" });</script>
   </body>
 </html>

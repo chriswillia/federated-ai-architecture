@@ -5,20 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Use Cases · Federated AI Environment</title>
     <meta name="description" content="Real-world agent development flows on M365, SAP, and ServiceNow mapped to the Federated AI reference architecture." />
-    <style>
-      /* ---------- Theme detection (scoutTheme URL param) ---------- */
-    </style>
     <script>
       (function () {
         try {
-          var url = new URL(window.location.href);
-          var t = url.searchParams.get("scoutTheme");
-          if (t === "dark" || t === "light") {
-            document.documentElement.setAttribute("data-theme", t);
-          }
+          var saved = localStorage.getItem("federated-ai-theme");
+          var theme = saved || (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+          document.documentElement.setAttribute("data-theme", theme);
         } catch (e) {}
       })();
     </script>
+    <link rel="stylesheet" href="assets/style.css" />
     <style>
       :root {
         --cp-bg: #faf9f8;
@@ -431,28 +427,7 @@
     </style>
   </head>
   <body>
-    <header class="app">
-      <div class="header-inner">
-        <div class="brand">
-          <div class="brand-mark">AI</div>
-          <div class="brand-text">
-            <h1>Federated AI Environment</h1>
-            <p>Real-world use cases &amp; agent development flows</p>
-          </div>
-        </div>
-        <div class="header-spacer"></div>
-        <a class="nav-link" href="architect.html" title="Back to reference architecture">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-          Reference architecture
-        </a>
-        <button class="icon-btn" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="4"></circle>
-            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
-          </svg>
-        </button>
-      </div>
-    </header>
+    <div id="app-header"></div>
 
     <main>
       <section class="page-hero">
@@ -475,22 +450,10 @@
 
       <div id="use-cases"></div>
 
-      <footer class="app">
-        <span>Federated AI Environment &middot; <a href="architect.html">Back to reference architecture</a></span>
-        <span style="margin-left: auto;">Diagrams illustrate intended flow patterns &mdash; actual product capabilities evolve.</span>
-      </footer>
     </main>
+    <div id="app-footer"></div>
 
     <script>
-      // ---------- Theme toggle ----------
-      const root = document.documentElement;
-      const themeBtn = document.getElementById("themeToggle");
-      themeBtn.addEventListener("click", () => {
-        const cur = root.getAttribute("data-theme");
-        const next = cur === "dark" ? "light" : cur === "light" ? "dark" : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "light" : "dark");
-        root.setAttribute("data-theme", next);
-      });
-
       // ---------- Data ----------
       const VENDORS = {
         microsoft: "#0078d4",
@@ -742,5 +705,7 @@
         resizeTimer = setTimeout(redrawAll, 80);
       });
     </script>
+    <script src="assets/shell.js"></script>
+    <script>Shell.mount({ activePath: "overview" });</script>
   </body>
 </html>
