@@ -746,7 +746,7 @@ html[data-role] .pillar.role-match {
 .challenge-card {
   appearance: none; text-align: left; font-family: inherit; color: var(--text);
   background: var(--surface); border: 1px solid var(--border);
-  border-left: 3px solid var(--accent-c, var(--accent));
+  border-left: 3px solid var(--accent);
   border-radius: var(--r-4); padding: var(--sp-4);
   cursor: pointer; display: flex; flex-direction: column; gap: var(--sp-2);
   min-height: 110px;
@@ -756,8 +756,8 @@ html[data-role] .pillar.role-match {
 }
 .challenge-card:hover { transform: translateY(-1px); box-shadow: var(--shadow-1); }
 .challenge-card.active {
-  background: color-mix(in srgb, var(--accent-c, var(--accent)) 8%, var(--surface));
-  box-shadow: 0 0 0 1px var(--accent-c, var(--accent));
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+  box-shadow: 0 0 0 1px var(--accent);
 }
 .challenge-meta {
   font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.6px;
@@ -766,7 +766,7 @@ html[data-role] .pillar.role-match {
 }
 .challenge-meta .dot {
   width: 8px; height: 8px; border-radius: 50%;
-  background: var(--accent-c, var(--accent));
+  background: var(--accent);
 }
 .challenge-quote {
   font-size: var(--fs-13); font-weight: 500; font-style: italic;
@@ -774,7 +774,7 @@ html[data-role] .pillar.role-match {
 }
 .challenge-outcome {
   font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.5px;
-  font-weight: 700; color: var(--accent-c, var(--accent));
+  font-weight: 700; color: var(--accent);
   margin-top: auto;
 }
 .challenge-card[hidden] { display: none; }
@@ -782,7 +782,7 @@ html[data-role] .pillar.role-match {
 .challenge-panel {
   margin-top: var(--sp-4);
   background: var(--surface); border: 1px solid var(--border);
-  border-left: 3px solid var(--accent-c, var(--accent));
+  border-left: 3px solid var(--accent);
   border-radius: var(--r-6); padding: var(--sp-5);
 }
 .challenge-panel[hidden] { display: none; }
@@ -791,10 +791,10 @@ html[data-role] .pillar.role-match {
 .cp-outcome {
   align-self: flex-start; font-size: 10.5px;
   text-transform: uppercase; letter-spacing: 0.6px; font-weight: 700;
-  color: var(--accent-c, var(--accent));
+  color: var(--accent);
   padding: 3px 10px; border-radius: var(--r-pill);
-  background: color-mix(in srgb, var(--accent-c, var(--accent)) 12%, var(--surface));
-  border: 1px solid color-mix(in srgb, var(--accent-c, var(--accent)) 30%, var(--border));
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--border));
 }
 .cp-quote { flex: 1; font-size: var(--fs-18); font-weight: 600; line-height: var(--lh-snug); }
 .cp-clear {
@@ -807,8 +807,8 @@ html[data-role] .pillar.role-match {
 .cp-clear:hover { color: var(--text); border-color: var(--accent); }
 .cp-soundbite {
   margin-top: var(--sp-3); padding: var(--sp-3) var(--sp-4);
-  border-left: 2px solid var(--accent-c, var(--accent));
-  background: color-mix(in srgb, var(--accent-c, var(--accent)) 5%, var(--surface-2));
+  border-left: 2px solid var(--accent);
+  background: color-mix(in srgb, var(--accent) 5%, var(--surface-2));
   font-size: var(--fs-13); font-style: italic; line-height: var(--lh-base);
   color: var(--text); border-radius: 0 var(--r-4) var(--r-4) 0;
 }
@@ -819,7 +819,7 @@ html[data-role] .pillar.role-match {
 }
 .cp-answer {
   margin-top: var(--sp-2); padding: var(--sp-3);
-  background: color-mix(in srgb, var(--accent-c, var(--accent)) 6%, var(--surface-2));
+  background: color-mix(in srgb, var(--accent) 6%, var(--surface-2));
   border-radius: var(--r-4); font-size: var(--fs-13); line-height: var(--lh-base);
 }
 .cp-row {
@@ -844,7 +844,7 @@ html[data-role] .pillar.role-match {
 }
 .pa-chip:hover { border-color: var(--accent); color: var(--accent); text-decoration: none; }
 .cp-see { margin-top: var(--sp-3); font-size: var(--fs-13); color: var(--text-muted); }
-.cp-see a { color: var(--accent-c, var(--accent)); text-decoration: none; font-weight: 600; }
+.cp-see a { color: var(--accent); text-decoration: none; font-weight: 600; }
 .cp-see a:hover { text-decoration: underline; }
 
 .cp-copy {
@@ -858,8 +858,8 @@ html[data-role] .pillar.role-match {
 }
 .cp-copy:hover { color: var(--text); border-color: var(--accent); }
 .cp-copy.copied {
-  background: color-mix(in srgb, var(--accent-c, var(--accent)) 18%, var(--surface));
-  color: var(--text); border-color: var(--accent-c, var(--accent));
+  background: color-mix(in srgb, var(--accent) 18%, var(--surface));
+  color: var(--text); border-color: var(--accent);
 }
 
 .objections-wrap { margin-top: var(--sp-6); }

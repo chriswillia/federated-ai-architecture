@@ -1,821 +1,228 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Trusted Federated AI &mdash; Executive view</title>
-    <meta name="description" content="One-screen executive view of the Trusted Federated AI Operating Model: build, govern and secure, connect, and use AI agents at enterprise scale. For Microsoft AEs and customer executives." />
-    <style>
-      :root {
-        color-scheme: light dark;
-        --cp-accent: #464feb;
-        --cp-accent-fg: #ffffff;
-
-        --pillar-build:      #84cc16;
-        --pillar-govern:     #464feb;
-        --pillar-connect:    #06b6d4;
-        --pillar-experience: #f97316;
-
-        /* Aliases so the conversation section's data + styles
-           (which use --layer-*) align with the pillar palette. */
-        --layer-experience: var(--pillar-experience);
-        --layer-control:    var(--pillar-govern);
-        --layer-fabric:     var(--pillar-connect);
-        --layer-model:      var(--pillar-build);
-        --layer-data:       var(--pillar-govern);
-      }
-      html[data-theme="dark"] {
-        --cp-bg: #0b0c10;
-        --cp-bg-elevated: #14161c;
-        --cp-surface: #1a1d24;
-        --cp-surface-soft: #20242c;
-        --cp-panel-strong: #0e1015;
-        --cp-text: #e8eaee;
-        --cp-text-muted: #aab0bb;
-        --cp-text-soft: #7a8190;
-        --cp-border: #2a2f39;
-        --cp-border-strong: #3b414e;
-        --cp-link: #7c87ff;
-      }
-      html[data-theme="light"] {
-        --cp-bg: #f7f8fb;
-        --cp-bg-elevated: #ffffff;
-        --cp-surface: #ffffff;
-        --cp-surface-soft: #f0f2f7;
-        --cp-panel-strong: #ffffff;
-        --cp-text: #1f2229;
-        --cp-text-muted: #565b66;
-        --cp-text-soft: #767c89;
-        --cp-border: #e1e4eb;
-        --cp-border-strong: #c8cdd6;
-        --cp-link: #464feb;
-      }
-
-      * { box-sizing: border-box; }
-      html, body {
-        margin: 0;
-        background: var(--cp-bg);
-        color: var(--cp-text);
-        font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-        line-height: 1.45;
-      }
-      a { color: var(--cp-link); text-decoration: none; }
-      a:hover { text-decoration: underline; }
-
-      /* ---------- Header ---------- */
-      header.app {
-        background: var(--cp-panel-strong);
-        border-bottom: 1px solid var(--cp-border);
-      }
-      .header-inner {
-        max-width: 1280px;
-        margin: 0 auto;
-        padding: 12px 24px;
-        display: flex;
-        align-items: center;
-        gap: 14px;
-        flex-wrap: wrap;
-      }
-      .brand { display: flex; align-items: center; gap: 12px; }
-      .brand-mark {
-        width: 32px; height: 32px; border-radius: 8px;
-        background: var(--cp-accent); color: var(--cp-accent-fg);
-        display: grid; place-items: center;
-        font-weight: 700; letter-spacing: 0.5px;
-      }
-      .brand-text h1 { font-size: 15px; margin: 0; font-weight: 600; }
-      .brand-text p { font-size: 11.5px; margin: 0; color: var(--cp-text-muted); }
-      .header-spacer { flex: 1; }
-
-      .header-input {
-        font: inherit;
-        font-size: 13px;
-        padding: 7px 12px;
-        height: 34px;
-        background: var(--cp-surface);
-        color: var(--cp-text);
-        border: 1px solid var(--cp-border);
-        border-radius: 8px;
-        min-width: 200px;
-      }
-      .header-input:focus { outline: none; border-color: var(--cp-accent); }
-
-      .role-toggle {
-        display: inline-flex;
-        background: var(--cp-surface);
-        border: 1px solid var(--cp-border);
-        border-radius: 8px;
-        padding: 3px;
-        gap: 2px;
-      }
-      .role-btn {
-        font: inherit;
-        font-size: 12px;
-        font-weight: 500;
-        padding: 5px 10px;
-        background: transparent;
-        color: var(--cp-text-muted);
-        border: 0;
-        border-radius: 6px;
-        cursor: pointer;
-      }
-      .role-btn.active {
-        background: var(--cp-accent);
-        color: var(--cp-accent-fg);
-        font-weight: 600;
-      }
-      .role-btn[data-role="ciso"].active     { background: var(--pillar-govern); }
-      .role-btn[data-role="cio"].active      { background: var(--pillar-connect); }
-      .role-btn[data-role="business"].active { background: var(--pillar-experience); }
-
-      .nav-link {
-        display: inline-flex; align-items: center; gap: 6px;
-        padding: 7px 12px; font-size: 12.5px; font-weight: 500;
-        color: var(--cp-text); background: var(--cp-surface);
-        border: 1px solid var(--cp-border); border-radius: 8px;
-        text-decoration: none; height: 34px; line-height: 1;
-      }
-      .nav-link:hover { border-color: var(--cp-accent); color: var(--cp-accent); text-decoration: none; }
-
-      /* ---------- Main ---------- */
-      main {
-        max-width: 1280px;
-        margin: 0 auto;
-        padding: 24px;
-      }
-
-      .hero {
-        margin-bottom: 18px;
-      }
-      .hero .eyebrow {
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        font-weight: 700;
-        color: var(--cp-accent);
-        margin-bottom: 6px;
-      }
-      .hero h2 {
-        margin: 0 0 8px;
-        font-size: 28px;
-        font-weight: 600;
-        letter-spacing: -0.015em;
-        line-height: 1.2;
-      }
-      .hero .punchline {
-        margin: 0 0 6px;
-        font-size: 16px;
-        font-weight: 600;
-        color: var(--cp-text);
-      }
-      .hero .for-customer {
-        margin-top: 8px;
-        font-size: 13px;
-        color: var(--cp-text-muted);
-      }
-      .hero .for-customer strong { color: var(--cp-text); }
-
-      /* ---------- 4-pillar picture ---------- */
-      .pillars {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 14px;
-        margin-bottom: 18px;
-      }
-      @media (max-width: 1100px) { .pillars { grid-template-columns: repeat(2, 1fr); } }
-      @media (max-width: 620px)  { .pillars { grid-template-columns: 1fr; } }
-
-      .pillar {
-        --c: var(--cp-accent);
-        background: var(--cp-surface);
-        border: 1px solid var(--cp-border);
-        border-top: 4px solid var(--c);
-        border-radius: 12px;
-        padding: 18px 18px 16px;
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
-      }
-      .pillar .num {
-        font-size: 10.5px;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        font-weight: 700;
-        color: var(--c);
-      }
-      .pillar h3 {
-        margin: 0;
-        font-size: 19px;
-        font-weight: 600;
-        letter-spacing: -0.01em;
-      }
-      .pillar .promise {
-        margin: 0;
-        font-size: 13px;
-        color: var(--cp-text-muted);
-        line-height: 1.45;
-      }
-      .pillar .anchors {
-        margin-top: auto;
-        padding-top: 10px;
-        border-top: 1px dashed var(--cp-border);
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-      }
-      .pillar .anchors .lbl {
-        font-size: 10px;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        font-weight: 700;
-        color: var(--cp-text-soft);
-      }
-      .pillar .anchors ul {
-        margin: 0;
-        padding-left: 16px;
-        font-size: 12.5px;
-        color: var(--cp-text);
-      }
-      .pillar .anchors li { margin-bottom: 2px; }
-
-      .pillar[data-pillar="build"]      { --c: var(--pillar-build); }
-      .pillar[data-pillar="govern"]     { --c: var(--pillar-govern); }
-      .pillar[data-pillar="connect"]    { --c: var(--pillar-connect); }
-      .pillar[data-pillar="experience"] { --c: var(--pillar-experience); }
-
-      /* Role-based emphasis: dim others, glow the matching pillar */
-      html[data-role] .pillar { opacity: 0.55; }
-      html[data-role] .pillar.role-match {
-        opacity: 1;
-        box-shadow: 0 0 0 2px var(--c), 0 8px 20px color-mix(in srgb, var(--c) 25%, transparent);
-        transform: translateY(-2px);
-      }
-
-      /* ---------- Outcomes row ---------- */
-      .outcomes {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 14px;
-        margin-bottom: 18px;
-      }
-      @media (max-width: 760px) { .outcomes { grid-template-columns: 1fr; } }
-      .outcome {
-        background: var(--cp-bg-elevated);
-        border: 1px solid var(--cp-border);
-        border-left: 3px solid var(--cp-accent);
-        border-radius: 10px;
-        padding: 14px 16px;
-      }
-      .outcome[data-outcome="adoption"] { border-left-color: var(--pillar-experience); }
-      .outcome[data-outcome="risk"]     { border-left-color: var(--pillar-govern); }
-      .outcome[data-outcome="cost"]     { border-left-color: var(--pillar-build); }
-      .outcome .h {
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        font-weight: 700;
-        color: var(--cp-text-soft);
-        margin: 0 0 4px;
-      }
-      .outcome .t {
-        font-size: 16px;
-        font-weight: 600;
-        margin: 0 0 4px;
-        color: var(--cp-text);
-        letter-spacing: -0.01em;
-      }
-      .outcome .b {
-        margin: 0;
-        font-size: 12.5px;
-        color: var(--cp-text-muted);
-      }
-
-      /* ---------- CTA row ---------- */
-      .cta {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        align-items: center;
-        padding: 14px 16px;
-        background: var(--cp-surface);
-        border: 1px solid var(--cp-border);
-        border-radius: 12px;
-      }
-      .cta .lbl {
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        font-weight: 700;
-        color: var(--cp-text-soft);
-        margin-right: 4px;
-      }
-      .cta-btn {
-        appearance: none;
-        font: inherit;
-        font-size: 13px;
-        font-weight: 600;
-        padding: 9px 14px;
-        background: var(--cp-accent);
-        color: var(--cp-accent-fg);
-        border: 1px solid var(--cp-accent);
-        border-radius: 8px;
-        cursor: pointer;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-      }
-      .cta-btn.secondary {
-        background: var(--cp-surface);
-        color: var(--cp-text);
-        border-color: var(--cp-border);
-      }
-      .cta-btn.secondary:hover {
-        border-color: var(--cp-accent);
-        color: var(--cp-accent);
-        text-decoration: none;
-      }
-      .cta-flow {
-        flex: 1;
-        min-width: 220px;
-        font-size: 12px;
-        color: var(--cp-text-muted);
-        text-align: right;
-      }
-      @media (max-width: 760px) { .cta-flow { text-align: left; } }
-
-      /* ---------- Examples row ---------- */
-      .examples {
-        margin-top: 14px;
-        padding: 14px 16px;
-        background: var(--cp-surface);
-        border: 1px solid var(--cp-border);
-        border-radius: 12px;
-      }
-      .examples-head {
-        display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
-        margin-bottom: 10px;
-      }
-      .examples-head h3 {
-        margin: 0;
-        font-size: 13px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        color: var(--cp-text-soft);
-      }
-      .examples-head p {
-        margin: 0;
-        font-size: 12.5px;
-        color: var(--cp-text-muted);
-      }
-      .examples-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        gap: 10px;
-      }
-      .example {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-        padding: 10px 12px;
-        background: var(--cp-bg-elevated);
-        border: 1px solid var(--cp-border);
-        border-left: 3px solid var(--c, var(--cp-accent));
-        border-radius: 8px;
-        text-decoration: none;
-        color: var(--cp-text);
-        transition: border-color 120ms ease, transform 120ms ease;
-      }
-      .example:hover {
-        border-color: var(--c, var(--cp-accent));
-        text-decoration: none;
-        transform: translateY(-1px);
-      }
-      .example .ex-pillar {
-        font-size: 10px;
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
-        font-weight: 700;
-        color: var(--c, var(--cp-accent));
-      }
-      .example .ex-name {
-        font-size: 13px;
-        font-weight: 600;
-        color: var(--cp-text);
-        letter-spacing: -0.005em;
-      }
-      .example .ex-body {
-        font-size: 11.5px;
-        color: var(--cp-text-muted);
-        line-height: 1.4;
-      }
-
-      footer.app {
-        max-width: 1280px;
-        margin: 0 auto;
-        padding: 16px 24px 28px;
-        font-size: 11.5px;
-        color: var(--cp-text-soft);
-      }
-      footer.app a { color: var(--cp-link); text-decoration: none; }
-      footer.app a:hover { text-decoration: underline; }
-
-      /* ---------- Conversation toolkit (talk tracks + objections) ---------- */
-      .conversation { margin-top: 22px; }
-      .conversation-head { margin: 0 0 14px; padding: 0 4px; }
-      .conversation-head h2 {
-        margin: 0 0 4px; font-size: 22px; font-weight: 600; letter-spacing: -0.01em;
-      }
-      .conversation-head p {
-        margin: 0; font-size: 13px; color: var(--cp-text-muted); max-width: 820px;
-      }
-
-      .outcomes-bar {
-        display: flex; flex-direction: column; gap: 8px;
-        margin: 0 0 16px 0; padding: 10px 14px;
-        background: var(--cp-surface); border: 1px solid var(--cp-border);
-        border-radius: 12px;
-      }
-      .filter-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
-      .outcomes-label {
-        font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.6px;
-        color: var(--cp-text-soft); font-weight: 700;
-        margin-right: 4px; min-width: 60px;
-      }
-      .outcome-chip, .persona-chip, .filter-clear {
-        appearance: none; font-family: inherit;
-        font-size: 12.5px; font-weight: 600; cursor: pointer;
-        padding: 6px 12px; border-radius: 999px;
-        border: 1px solid var(--cp-border);
-        background: transparent; color: var(--cp-text);
-        display: inline-flex; align-items: center; gap: 6px;
-        transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
-      }
-      .outcome-chip::before, .persona-chip::before {
-        content: ""; width: 8px; height: 8px; border-radius: 50%;
-        background: var(--chip-accent, var(--cp-text-soft)); display: inline-block;
-      }
-      .outcome-chip[data-outcome="adoption"] { --chip-accent: var(--pillar-experience); }
-      .outcome-chip[data-outcome="cost"]     { --chip-accent: var(--pillar-build); }
-      .outcome-chip[data-outcome="risk"]     { --chip-accent: var(--pillar-govern); }
-      .outcome-chip[data-outcome="freedom"]  { --chip-accent: var(--pillar-connect); }
-      .persona-chip { --chip-accent: var(--cp-text-soft); }
-      .persona-chip[data-persona="cio"]  { --chip-accent: var(--pillar-build); }
-      .persona-chip[data-persona="ciso"] { --chip-accent: var(--pillar-govern); }
-      .persona-chip[data-persona="cdo"]  { --chip-accent: var(--pillar-connect); }
-      .persona-chip[data-persona="ai"]   { --chip-accent: var(--pillar-connect); }
-      .persona-chip[data-persona="lob"]  { --chip-accent: var(--pillar-experience); }
-      .outcome-chip:hover, .persona-chip:hover { border-color: var(--chip-accent, var(--cp-accent)); }
-      .outcome-chip.active, .persona-chip.active {
-        background: color-mix(in srgb, var(--chip-accent, var(--cp-accent)) 18%, var(--cp-surface));
-        border-color: var(--chip-accent, var(--cp-accent));
-      }
-      .filter-clear { color: var(--cp-text-muted); font-weight: 500; margin-left: auto; }
-      .filter-clear:hover { color: var(--cp-text); border-color: var(--cp-accent); }
-
-      .challenges { margin: 0 0 22px; }
-      .challenge-grid {
-        display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px;
-      }
-      .challenge-card {
-        appearance: none; text-align: left; font-family: inherit; color: var(--cp-text);
-        background: var(--cp-surface); border: 1px solid var(--cp-border);
-        border-left: 4px solid var(--accent, var(--cp-accent));
-        border-radius: 10px; padding: 14px 14px 12px 14px;
-        cursor: pointer; display: flex; flex-direction: column; gap: 10px; min-height: 110px;
-        transition: transform 80ms ease, box-shadow 120ms ease, border-color 120ms ease, background 120ms ease;
-      }
-      .challenge-card:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.18); }
-      .challenge-card.active {
-        background: color-mix(in srgb, var(--accent, var(--cp-accent)) 10%, var(--cp-surface));
-        box-shadow: 0 0 0 2px var(--accent, var(--cp-accent));
-      }
-      .challenge-quote {
-        font-size: 14.5px; font-weight: 500; font-style: italic; line-height: 1.45;
-        color: var(--cp-text); position: relative; padding-left: 18px;
-      }
-      .challenge-quote::before {
-        content: "\201C"; position: absolute; left: -3px; top: -8px;
-        font-size: 34px; line-height: 1;
-        color: var(--accent, var(--cp-accent));
-        font-style: normal; font-family: Georgia, "Times New Roman", serif; opacity: 0.55;
-      }
-      .challenge-meta {
-        font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.6px; font-weight: 700;
-        color: var(--cp-text-soft);
-        display: flex; align-items: center; gap: 6px; order: -1; margin-top: 0;
-      }
-      .challenge-meta .dot {
-        width: 8px; height: 8px; border-radius: 50%;
-        background: var(--accent, var(--cp-accent)); display: inline-block;
-      }
-      .challenge-outcome {
-        font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700;
-        color: var(--accent, var(--cp-accent)); margin-top: auto;
-      }
-      .challenge-card[hidden] { display: none; }
-
-      .challenge-panel {
-        margin-top: 14px;
-        background: var(--cp-surface); border: 1px solid var(--cp-border);
-        border-left: 4px solid var(--accent, var(--cp-accent));
-        border-radius: 12px; padding: 16px 18px 18px 18px;
-      }
-      .challenge-panel[hidden] { display: none; }
-      .cp-head { display: flex; align-items: flex-start; gap: 10px; }
-      .cp-headline { flex: 1; display: flex; flex-direction: column; gap: 8px; }
-      .cp-outcome {
-        align-self: flex-start; font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.6px;
-        font-weight: 700; color: var(--accent, var(--cp-accent));
-        padding: 3px 10px; border-radius: 999px;
-        background: color-mix(in srgb, var(--accent, var(--cp-accent)) 14%, var(--cp-surface));
-        border: 1px solid color-mix(in srgb, var(--accent, var(--cp-accent)) 35%, var(--cp-border));
-      }
-      .cp-quote { flex: 1; font-size: 15.5px; font-weight: 600; line-height: 1.35; }
-      .cp-clear {
-        appearance: none; background: transparent;
-        border: 1px solid var(--cp-border); border-radius: 999px;
-        width: 26px; height: 26px; cursor: pointer; color: var(--cp-text-soft);
-        font-size: 16px; line-height: 1;
-        display: inline-flex; align-items: center; justify-content: center;
-      }
-      .cp-clear:hover { color: var(--cp-text); border-color: var(--cp-accent); }
-      .cp-soundbite {
-        margin-top: 12px; padding: 12px 14px;
-        border-left: 3px solid var(--accent, var(--cp-accent));
-        background: color-mix(in srgb, var(--accent, var(--cp-accent)) 6%, var(--cp-surface-soft));
-        font-size: 14px; font-style: italic; line-height: 1.5;
-        color: var(--cp-text); border-radius: 0 8px 8px 0;
-      }
-      .cp-soundbite::before {
-        content: "Say this"; font-style: normal; font-weight: 700;
-        font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.6px;
-        color: var(--cp-text-soft); display: block; margin-bottom: 4px;
-      }
-      .cp-answer {
-        margin-top: 10px; padding: 10px 12px;
-        background: color-mix(in srgb, var(--accent, var(--cp-accent)) 7%, var(--cp-surface-soft));
-        border-radius: 8px; font-size: 13px; line-height: 1.5;
-      }
-      .cp-row {
-        display: grid; grid-template-columns: 1.4fr 1fr;
-        gap: 18px; margin-top: 14px;
-      }
-      @media (max-width: 800px) { .cp-row { grid-template-columns: 1fr; } }
-      .cp-block h4 {
-        margin: 0 0 6px; font-size: 10.5px;
-        text-transform: uppercase; letter-spacing: 0.6px;
-        color: var(--cp-text-soft); font-weight: 700;
-      }
-      .cp-block ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
-      .cp-block li { font-size: 12.5px; line-height: 1.45; color: var(--cp-text-muted); }
-      .cp-block li strong { color: var(--cp-text); font-weight: 600; }
-      .cp-block li em { font-style: italic; color: var(--cp-text); }
-      .cp-pointat { display: flex; flex-wrap: wrap; gap: 6px; }
-      .pa-chip {
-        font-size: 11.5px; padding: 3px 9px; border-radius: 999px;
-        background: var(--cp-surface-soft); border: 1px solid var(--cp-border);
-        color: var(--cp-text); text-decoration: none;
-      }
-      .pa-chip:hover { border-color: var(--cp-accent); color: var(--cp-accent); text-decoration: none; }
-      .cp-see { margin-top: 12px; font-size: 12.5px; color: var(--cp-text-muted); }
-      .cp-see a { color: var(--accent, var(--cp-link)); text-decoration: none; font-weight: 600; }
-      .cp-see a:hover { text-decoration: underline; }
-
-      .cp-copy {
-        appearance: none; font-family: inherit;
-        font-size: 11.5px; font-weight: 600; cursor: pointer;
-        padding: 5px 10px; border-radius: 6px;
-        border: 1px solid var(--cp-border);
-        background: var(--cp-surface); color: var(--cp-text-muted);
-        display: inline-flex; align-items: center; gap: 6px;
-        margin-top: 8px;
-        transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
-      }
-      .cp-copy:hover { color: var(--cp-text); border-color: var(--cp-accent); }
-      .cp-copy.copied {
-        background: color-mix(in srgb, var(--accent, var(--cp-accent)) 18%, var(--cp-surface));
-        color: var(--cp-text); border-color: var(--accent, var(--cp-accent));
-      }
-
-      .objections-wrap { margin-top: 24px; }
-      .objections-wrap > h3 {
-        margin: 0 0 6px; font-size: 18px; font-weight: 600; letter-spacing: -0.01em;
-      }
-      .objections-wrap > .sub {
-        margin: 0 0 14px; color: var(--cp-text-muted); font-size: 13px; max-width: 820px;
-      }
-      .obj-group {
-        margin-top: 14px; padding: 16px 18px;
-        background: var(--cp-surface); border: 1px solid var(--cp-border);
-        border-radius: 12px;
-      }
-      .obj-group.lens-security     { --lens-color: var(--pillar-govern); }
-      .obj-group.lens-architecture { --lens-color: var(--pillar-connect); }
-      .obj-group.lens-experience   { --lens-color: var(--pillar-experience); }
-      .obj-group-head {
-        display: flex; align-items: baseline; gap: 12px;
-        flex-wrap: wrap; margin-bottom: 10px;
-      }
-      .obj-group-head h4 { margin: 0; font-size: 15px; font-weight: 600; }
-      .obj-group-head .lens-pill {
-        display: inline-flex; align-items: center; gap: 6px;
-        font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em;
-        font-weight: 600; color: var(--lens-color, var(--cp-text-soft));
-        padding: 3px 10px;
-        background: color-mix(in srgb, var(--lens-color, var(--cp-accent)) 14%, var(--cp-surface));
-        border: 1px solid var(--lens-color, var(--cp-border));
-        border-radius: 999px;
-      }
-      .obj-group-head p {
-        margin: 0; font-size: 12.5px; color: var(--cp-text-muted); flex-basis: 100%;
-      }
-      .obj-grid {
-        display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 10px;
-      }
-      .obj-card {
-        padding: 12px 14px;
-        background: var(--cp-bg-elevated);
-        border: 1px solid var(--cp-border);
-        border-left: 3px solid var(--lens-color, var(--cp-accent));
-        border-radius: 10px;
-        display: flex; flex-direction: column; gap: 6px;
-      }
-      .obj-quote { font-size: 13px; font-weight: 600; color: var(--cp-text); line-height: 1.35; }
-      .obj-quote::before { content: "\201C"; }
-      .obj-quote::after  { content: "\201D"; }
-      .obj-response { font-size: 12px; color: var(--cp-text-muted); line-height: 1.45; }
-      .obj-pivot { font-size: 11.5px; margin-top: 2px; color: var(--lens-color, var(--cp-link)); }
-      .obj-pivot a {
-        color: inherit; text-decoration: none; font-weight: 500;
-        border-bottom: 1px dashed currentColor;
-      }
-      .obj-pivot a:hover { border-bottom-style: solid; text-decoration: none; }
-
-      @media (prefers-reduced-motion: reduce) {
-        * { transition: none !important; }
-      }
-    </style>
+    <title>Trusted Federated AI &mdash; Overview</title>
+    <meta name="description" content="Vendor-neutral architecture framework for using, building, connecting, and governing AI agents at enterprise scale. Works across Microsoft, AWS, Google Cloud, Salesforce, SAP, ServiceNow, and on-prem." />
+    <link rel="stylesheet" href="assets/style.css" />
+    <script>
+      (() => {
+        const saved = (() => { try { return localStorage.getItem("federated-ai-theme"); } catch (e) { return null; } })();
+        const theme = saved || (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
   </head>
   <body>
-    <header class="app">
-      <div class="header-inner">
-        <div class="brand">
-          <div class="brand-mark">AI</div>
-          <div class="brand-text">
-            <h1>Trusted Federated AI</h1>
-            <p>Executive view &middot; for AE + customer executives</p>
-          </div>
-        </div>
-        <div class="header-spacer"></div>
-        <input type="text" id="customerInput" class="header-input" placeholder="Customer name (optional)" aria-label="Customer name" />
-        <div class="role-toggle" role="group" aria-label="Highlight one pillar by role">
-          <button type="button" class="role-btn" data-role="ciso">CISO</button>
-          <button type="button" class="role-btn" data-role="cio">CIO</button>
-          <button type="button" class="role-btn" data-role="business">Business</button>
-          <button type="button" class="role-btn active" data-role="all">All</button>
-        </div>
-        <a class="nav-link" href="architect.html" title="Open the architect deep-dive view">Architect view &rarr;</a>
-      </div>
-    </header>
+    <div id="app-header"></div>
 
-    <main>
+    <main class="app-main" id="top">
+
+      <!-- HERO -->
       <section class="hero">
-        <div class="eyebrow">Trusted Federated AI Operating Model</div>
-        <h2 id="heroTitle">Use, build, connect, and govern AI agents at enterprise scale.</h2>
+        <span class="eyebrow">Trusted Federated AI Operating Model</span>
+        <h1>Use, build, connect, and govern AI agents at enterprise scale.</h1>
         <p class="punchline">AI development will be federated. AI control cannot be.</p>
-        <div class="for-customer" id="forCustomer" hidden>Prepared for <strong id="forCustomerName"></strong></div>
-      </section>
-
-      <section class="pillars" aria-label="Four pillars of the framework">
-        <article class="pillar" data-pillar="experience">
-          <span class="num">Pillar 1</span>
-          <h3>Experience</h3>
-          <p class="promise">AI in the daily work of every employee &mdash; one chat surface, every business app, every backend system &mdash; with citizen-built agents inheriting identity, DLP, and audit by default.</p>
-          <div class="anchors">
-            <span class="lbl">Microsoft anchors</span>
-            <ul>
-              <li>M365 Copilot</li>
-              <li>Business App Copilots (Sales / Service + partner)</li>
-              <li>Copilot Studio for citizen builders</li>
-            </ul>
-          </div>
-        </article>
-
-        <article class="pillar" data-pillar="build">
-          <span class="num">Pillar 2</span>
-          <h3>Build</h3>
-          <p class="promise">One unified place to build agents &mdash; pro-code for developers, low-code for business users &mdash; with logic, prompts, skills, and evals stored centrally and reusable across surfaces.</p>
-          <div class="anchors">
-            <span class="lbl">Microsoft anchors</span>
-            <ul>
-              <li>Copilot Studio</li>
-              <li>Azure AI Foundry</li>
-              <li>Microsoft Agents Framework</li>
-            </ul>
-          </div>
-        </article>
-
-        <article class="pillar" data-pillar="connect">
-          <span class="num">Pillar 3</span>
-          <h3>Connect</h3>
-          <p class="promise">A shared fabric that lets agents reach every data source, business app, and tool &mdash; on every cloud, on-premises, and inside SaaS &mdash; without rebuilding integrations per team or department.</p>
-          <div class="anchors">
-            <span class="lbl">Microsoft anchors</span>
-            <ul>
-              <li>MCP &middot; A2A &middot; Azure API Management</li>
-              <li>Foundry IQ + Azure AI Search</li>
-              <li>Microsoft Graph &middot; Microsoft Fabric / OneLake</li>
-            </ul>
-          </div>
-        </article>
-
-        <article class="pillar" data-pillar="govern">
-          <span class="num">Pillar 4</span>
-          <h3>Govern &amp; Secure</h3>
-          <p class="promise">One control plane for every agent &mdash; one identity model, one policy fabric, one set of traces &mdash; extending your existing security stack to AI, including the AI your employees use without telling you.</p>
-          <div class="anchors">
-            <span class="lbl">Microsoft anchors</span>
-            <ul>
-              <li>Microsoft Agent 365 + Foundry control plane</li>
-              <li>Microsoft Entra ID (users + workload)</li>
-              <li>Sentinel + Defender XDR &middot; Microsoft Purview</li>
-            </ul>
-          </div>
-        </article>
-      </section>
-
-      <section class="outcomes" aria-label="Customer outcomes">
-        <div class="outcome" data-outcome="adoption">
-          <p class="h">Outcome 1</p>
-          <p class="t">Faster adoption</p>
-          <p class="b">One surface employees already know, plus citizen-built agents grounded in your data.</p>
-        </div>
-        <div class="outcome" data-outcome="risk">
-          <p class="h">Outcome 2</p>
-          <p class="t">Lower risk</p>
-          <p class="b">Sentinel, Defender, Purview, and Entra extended to every agent &mdash; including shadow AI.</p>
-        </div>
-        <div class="outcome" data-outcome="cost">
-          <p class="h">Outcome 3</p>
-          <p class="t">Predictable cost</p>
-          <p class="b">Per-agent token tagging, model routing, and showback to the business owner.</p>
-        </div>
-      </section>
-
-      <section class="cta" aria-label="Next steps">
-        <span class="lbl">Next</span>
-        <a class="cta-btn" id="leaveBehindBtn" href="leave-behind.html">Open the leave-behind &rarr;</a>
-        <a class="cta-btn secondary" href="architect.html" id="architectBtn">Architect view &nearr;</a>
-        <span class="cta-flow">Conversation flow: Reality &rarr; Risk &rarr; Architecture &rarr; Trust &rarr; Economics &rarr; Outcome</span>
-      </section>
-
-      <section class="examples" aria-label="Examples in action">
-        <div class="examples-head">
-          <h3>Examples</h3>
-          <p>What this looks like in real customer workloads &mdash; each one a full reference architecture.</p>
-        </div>
-        <div class="examples-grid">
-          <a class="example" href="scenarios/citizen-hr.html" style="--c: var(--pillar-experience);">
-            <span class="ex-pillar">Experience &middot; Build</span>
-            <span class="ex-name">Citizen-built HR Benefits Agent</span>
-            <span class="ex-body">HR builds it in Copilot Studio; employees use it in Teams &mdash; identity, DLP, audit inherited.</span>
+        <span class="agnostic">
+          <span class="dot"></span>
+          Works across Microsoft, AWS, Google Cloud, Salesforce, SAP, ServiceNow, and on-prem
+        </span>
+        <p class="for-customer" id="forCustomer" hidden>Prepared for <strong id="forCustomerName"></strong></p>
+        <div class="hero-actions">
+          <a class="btn btn--primary" id="leaveBehindBtn" href="leave-behind.html">
+            Open the leave-behind
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
           </a>
-          <a class="example" href="scenarios/customer360.html" style="--c: var(--pillar-connect);">
-            <span class="ex-pillar">Connect</span>
-            <span class="ex-name">Multi-source Customer 360</span>
-            <span class="ex-body">Cross-vendor agent collaboration via A2A across Salesforce, SAP, and Foundry.</span>
-          </a>
-          <a class="example" href="scenarios/expense.html" style="--c: var(--pillar-build);">
-            <span class="ex-pillar">Build &middot; Govern</span>
-            <span class="ex-name">Cost-aware Expense Agent</span>
-            <span class="ex-body">Submit expenses in Teams; per-employee token tagging and model routing for Finance.</span>
-          </a>
-          <a class="example" href="scenarios/it-incident-triage.html" style="--c: var(--pillar-govern);">
-            <span class="ex-pillar">Govern &amp; Secure</span>
-            <span class="ex-name">Autonomous IT Incident Triage</span>
-            <span class="ex-body">Autonomous triage with security-A2A handoff and human-in-the-loop escalation.</span>
-          </a>
-          <a class="example" href="scenarios/engineering-copilot.html" style="--c: var(--pillar-build);">
-            <span class="ex-pillar">Build</span>
-            <span class="ex-name">Engineering Copilot (code &rarr; PR)</span>
-            <span class="ex-body">MCP-grounded dev loop with pre-merge Foundry evals.</span>
-          </a>
-          <a class="example" href="use-cases.html" style="--c: var(--cp-accent);">
-            <span class="ex-pillar">All</span>
-            <span class="ex-name">All use cases &rarr;</span>
-            <span class="ex-body">Real-world flows for M365, SAP, and ServiceNow.</span>
+          <a class="btn btn--secondary" id="architectBtn" href="architect.html">
+            Architect view
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
           </a>
         </div>
       </section>
 
+      <!-- AUDIENCE EMPHASIS (role strip) -->
+      <div class="filter-bar" role="group" aria-label="Emphasize a pillar by audience">
+        <div class="filter-row">
+          <span class="filter-label">Audience</span>
+          <button type="button" class="chip" data-role="ciso">CISO</button>
+          <button type="button" class="chip" data-role="cio">CIO</button>
+          <button type="button" class="chip" data-role="business">Business</button>
+          <button type="button" class="chip active" data-role="all">All</button>
+          <span class="sub" style="margin-left: auto;">Highlights the pillar most relevant to that audience.</span>
+        </div>
+      </div>
+
+      <!-- PILLARS -->
+      <section class="section">
+        <div class="section-head">
+          <span class="eyebrow">The four pillars</span>
+          <h2>One framework, every cloud.</h2>
+          <p class="lede">Each pillar lists open standards first, with Microsoft products as an example anchor stack. Substitute any vendor &mdash; the architecture holds.</p>
+        </div>
+
+        <div class="pillar-grid">
+          <article class="pillar" data-pillar="experience">
+            <span class="pillar-num">Pillar 01 &middot; Experience</span>
+            <h3>Where employees meet AI</h3>
+            <p>One chat surface, every business app, every backend system &mdash; with citizen-built agents inheriting identity, DLP, and audit by default.</p>
+            <div class="anchors">
+              <div class="anchors-label">Example anchors</div>
+              <ul>
+                <li>Chat surface in productivity suite <span class="vendor">M365 Copilot</span></li>
+                <li>In-app copilots <span class="vendor">SAP &middot; Salesforce &middot; ServiceNow</span></li>
+                <li>Citizen builder <span class="vendor">Copilot Studio</span></li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="pillar" data-pillar="build">
+            <span class="pillar-num">Pillar 02 &middot; Build</span>
+            <h3>One place to build agents</h3>
+            <p>Pro-code for developers, low-code for business users &mdash; with logic, prompts, skills, and evals stored centrally and reusable across surfaces.</p>
+            <div class="anchors">
+              <div class="anchors-label">Example anchors</div>
+              <ul>
+                <li>Pro-code platform <span class="vendor">Foundry / Bedrock / Vertex</span></li>
+                <li>Low-code builder <span class="vendor">Copilot Studio</span></li>
+                <li>Open frameworks <span class="vendor">MAF / LangGraph</span></li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="pillar" data-pillar="connect">
+            <span class="pillar-num">Pillar 03 &middot; Connect</span>
+            <h3>A shared fabric across clouds</h3>
+            <p>Agents reach every data source, business app, and tool &mdash; on every cloud, on-premises, and inside SaaS &mdash; without rebuilding integrations per team.</p>
+            <div class="anchors">
+              <div class="anchors-label">Example anchors</div>
+              <ul>
+                <li>Open standards <span class="vendor">MCP &middot; A2A</span></li>
+                <li>API gateway <span class="vendor">APIM / Kong / Apigee</span></li>
+                <li>Data fabric <span class="vendor">Fabric &middot; OneLake</span></li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="pillar" data-pillar="govern">
+            <span class="pillar-num">Pillar 04 &middot; Govern &amp; Secure</span>
+            <h3>One control plane for every agent</h3>
+            <p>One identity model, one policy fabric, one set of traces &mdash; extending your existing security stack to AI, including the AI your employees use without telling you.</p>
+            <div class="anchors">
+              <div class="anchors-label">Example anchors</div>
+              <ul>
+                <li>Identity <span class="vendor">Entra / Okta / Ping</span></li>
+                <li>Policy &amp; DLP <span class="vendor">Purview</span></li>
+                <li>SIEM &amp; XDR <span class="vendor">Sentinel &middot; Defender</span></li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- OUTCOMES -->
+      <section class="section">
+        <div class="section-head">
+          <span class="eyebrow">Three outcomes</span>
+          <h2>What customers get.</h2>
+          <p class="lede">Each outcome is measurable and ties back to specific pillars in the framework.</p>
+        </div>
+
+        <div class="outcome-grid">
+          <article class="outcome">
+            <div class="metric"><span>3&times;</span> faster</div>
+            <h4>Faster adoption</h4>
+            <p>One surface employees already know, plus citizen-built agents grounded in your data.</p>
+          </article>
+          <article class="outcome">
+            <div class="metric">One <span>plane</span></div>
+            <h4>Lower risk</h4>
+            <p>Your existing identity, DLP, SIEM, and XDR stack extended to every agent &mdash; including shadow AI.</p>
+          </article>
+          <article class="outcome">
+            <div class="metric">Per-<span>token</span></div>
+            <h4>Predictable cost</h4>
+            <p>Token tagging, model routing, and showback to the business owner who triggered the run.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- REFERENCE SCENARIOS -->
+      <section class="section">
+        <div class="section-head">
+          <span class="eyebrow">Reference scenarios</span>
+          <h2>What this looks like.</h2>
+          <p class="lede">Each scenario is a full reference architecture across multiple vendors &mdash; not a single-vendor demo.</p>
+        </div>
+
+        <div class="card-grid">
+          <a class="card" href="scenarios/citizen-hr.html">
+            <span class="card-tag" data-pillar="experience">Experience &middot; Build</span>
+            <h4>Citizen-built HR Benefits Agent</h4>
+            <p class="card-body">HR builds it in Copilot Studio; employees use it in Teams &mdash; identity, DLP, audit inherited.</p>
+            <div class="card-meta">
+              <span class="vendor-pill">M365</span>
+              <span class="vendor-pill">Workday</span>
+              <span class="vendor-pill">SharePoint</span>
+            </div>
+          </a>
+          <a class="card" href="scenarios/customer360.html">
+            <span class="card-tag" data-pillar="connect">Connect</span>
+            <h4>Multi-source Customer 360</h4>
+            <p class="card-body">Cross-vendor agent collaboration via A2A across Salesforce, SAP, and a foundation-model platform.</p>
+            <div class="card-meta">
+              <span class="vendor-pill">Salesforce</span>
+              <span class="vendor-pill">SAP</span>
+              <span class="vendor-pill">A2A</span>
+            </div>
+          </a>
+          <a class="card" href="scenarios/expense.html">
+            <span class="card-tag" data-pillar="build">Build &middot; Govern</span>
+            <h4>Cost-aware Expense Agent</h4>
+            <p class="card-body">Submit expenses in a chat surface; per-employee token tagging and model routing for Finance.</p>
+            <div class="card-meta">
+              <span class="vendor-pill">Concur</span>
+              <span class="vendor-pill">AMEX</span>
+              <span class="vendor-pill">Teams</span>
+            </div>
+          </a>
+          <a class="card" href="scenarios/it-incident-triage.html">
+            <span class="card-tag" data-pillar="govern">Govern &amp; Secure</span>
+            <h4>Autonomous IT Incident Triage</h4>
+            <p class="card-body">Autonomous triage with security-A2A handoff and human-in-the-loop escalation across an existing SIEM.</p>
+            <div class="card-meta">
+              <span class="vendor-pill">ServiceNow</span>
+              <span class="vendor-pill">Sentinel</span>
+              <span class="vendor-pill">PagerDuty</span>
+            </div>
+          </a>
+          <a class="card" href="scenarios/engineering-copilot.html">
+            <span class="card-tag" data-pillar="build">Build</span>
+            <h4>Engineering Copilot (code &rarr; PR)</h4>
+            <p class="card-body">MCP-grounded dev loop with pre-merge Foundry evals across multiple code hosts.</p>
+            <div class="card-meta">
+              <span class="vendor-pill">GitHub</span>
+              <span class="vendor-pill">Azure DevOps</span>
+              <span class="vendor-pill">MCP</span>
+            </div>
+          </a>
+          <a class="card" href="use-cases.html">
+            <span class="card-tag">All</span>
+            <h4>All use cases &rarr;</h4>
+            <p class="card-body">Real-world flows across M365, SAP, ServiceNow, AWS, and partner ecosystems.</p>
+            <div class="card-meta">
+              <span class="vendor-pill">Catalog</span>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <!-- CONVERSATION TOOLKIT -->
       <section class="conversation" id="conversation" aria-labelledby="conversation-heading">
-        <div class="conversation-head">
-          <h2 id="conversation-heading">Talk to your customer</h2>
-          <p>Pick the conversation your customer wants to have. Each card surfaces their own words, a sound-bite you can say out loud, the questions to ask, and where in the architecture to point &mdash; plus the objections you&rsquo;ll hear most and a two-sentence response for each.</p>
+        <div class="section-head">
+          <span class="eyebrow">For sellers</span>
+          <h2 id="conversation-heading">Talk to your customer.</h2>
+          <p class="lede">Pick the conversation your customer wants to have. Each card surfaces their own words, a sound-bite you can say out loud, the questions to ask, and where in the architecture to point &mdash; plus the objections you&rsquo;ll hear most and a two-sentence response for each.</p>
         </div>
 
         <div class="outcomes-bar" role="group" aria-label="Filter conversations">
@@ -873,60 +280,33 @@
           <div id="objectionsContainer"></div>
         </div>
       </section>
+
     </main>
 
-    <footer class="app">
-      Trusted Federated AI Operating Model &middot; Executive view &middot;
-      <a href="architect.html">Architect view</a> &middot;
-      <a href="#conversation">Talk to your customer</a> &middot;
-      <a href="concepts.html">Concepts</a> &middot;
-      <a href="use-cases.html">Use cases</a> &middot;
-      <a href="tensions.html">Honest tensions</a> &middot;
-      <a href="leave-behind.html">Leave-behind</a> &middot;
-      <a href="https://github.com/chriswillia/federated-ai-architecture" target="_blank" rel="noopener noreferrer">View on GitHub</a>
-    </footer>
+    <div id="app-footer"></div>
 
+    <script src="assets/shell.js"></script>
     <script>
-      // Theme: follow system + persist
-      try {
-        const saved = localStorage.getItem("theme");
-        if (saved) document.documentElement.setAttribute("data-theme", saved);
-        else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) {
-          document.documentElement.setAttribute("data-theme", "light");
-        }
-      } catch (e) {}
+      // ============================================================
+      // Page state: role + customer + CTA links
+      // ============================================================
+      const ROLE_TO_PILLAR = { ciso: "govern", cio: "connect", business: "experience" };
+      const ROLE_TO_LENS   = { ciso: "security", cio: "architecture", business: "experience" };
 
-      // Role -> pillar emphasis
-      const ROLE_TO_PILLAR = {
-        ciso: "govern",
-        cio: "connect",
-        business: "experience",
-      };
-      // Architect lens deep-link by role
-      const ROLE_TO_LENS = {
-        ciso: "security",
-        cio: "architecture",
-        business: "experience",
-      };
-
-      const customerInput = document.getElementById("customerInput");
-      const forCustomer = document.getElementById("forCustomer");
+      const forCustomer     = document.getElementById("forCustomer");
       const forCustomerName = document.getElementById("forCustomerName");
-      const roleButtons = document.querySelectorAll(".role-btn");
-      const pillars = document.querySelectorAll(".pillar");
-      const leaveBehindBtn = document.getElementById("leaveBehindBtn");
-      const architectBtn = document.getElementById("architectBtn");
+      const leaveBehindBtn  = document.getElementById("leaveBehindBtn");
+      const architectBtn    = document.getElementById("architectBtn");
+      const pillars         = document.querySelectorAll(".pillar");
+      const roleButtons     = document.querySelectorAll(".chip[data-role]");
 
       let currentRole = "all";
       let currentCustomer = "";
 
       function applyRole(role) {
         currentRole = role || "all";
-        if (currentRole === "all") {
-          document.documentElement.removeAttribute("data-role");
-        } else {
-          document.documentElement.setAttribute("data-role", currentRole);
-        }
+        if (currentRole === "all") document.documentElement.removeAttribute("data-role");
+        else document.documentElement.setAttribute("data-role", currentRole);
         const match = ROLE_TO_PILLAR[currentRole];
         pillars.forEach((p) => p.classList.toggle("role-match", p.dataset.pillar === match));
         roleButtons.forEach((b) => b.classList.toggle("active", b.dataset.role === currentRole));
@@ -943,7 +323,6 @@
           forCustomer.hidden = true;
         }
         updateCtaLinks();
-        updateUrl();
       }
 
       function updateCtaLinks() {
@@ -952,12 +331,11 @@
         if (lens) lbParams.set("lens", lens);
         if (currentCustomer) lbParams.set("customer", currentCustomer);
         const lbQs = lbParams.toString();
-        leaveBehindBtn.href = "leave-behind.html" + (lbQs ? "?" + lbQs : "");
-
+        if (leaveBehindBtn) leaveBehindBtn.href = "leave-behind.html" + (lbQs ? "?" + lbQs : "");
         const archParams = new URLSearchParams();
         if (lens) archParams.set("lens", lens);
         const archQs = archParams.toString();
-        architectBtn.href = "architect.html" + (archQs ? "?" + archQs : "");
+        if (architectBtn) architectBtn.href = "architect.html" + (archQs ? "?" + archQs : "");
       }
 
       function updateUrl() {
@@ -965,30 +343,30 @@
           const url = new URL(window.location.href);
           if (currentRole && currentRole !== "all") url.searchParams.set("role", currentRole);
           else url.searchParams.delete("role");
-          if (currentCustomer) url.searchParams.set("customer", currentCustomer);
-          else url.searchParams.delete("customer");
           window.history.replaceState({}, "", url.toString());
         } catch (e) {}
       }
 
-      roleButtons.forEach((b) => {
-        b.addEventListener("click", () => applyRole(b.dataset.role));
-      });
-      customerInput.addEventListener("input", (e) => setCustomer(e.target.value));
+      roleButtons.forEach((b) => b.addEventListener("click", () => applyRole(b.dataset.role)));
 
-      // Init from URL params
+      // Mount shared shell; customer state comes via onCustomerChange.
+      Shell.mount({
+        activePath: "overview",
+        onCustomerChange: setCustomer,
+      });
+
+      // Init from URL role + existing customer in shell
       try {
         const params = new URL(window.location.href).searchParams;
         const r = params.get("role");
-        const c = params.get("customer");
-        if (c) { customerInput.value = c; setCustomer(c); }
         if (r && (r in ROLE_TO_PILLAR || r === "all")) applyRole(r);
         else applyRole("all");
-      } catch (e) {
-        applyRole("all");
-      }
+      } catch (e) { applyRole("all"); }
+      setCustomer(Shell.readInitialCustomer());
 
-      // ---------- Conversation toolkit: talk tracks + objections ----------
+      // ============================================================
+      // Conversation toolkit: talk tracks + objections
+      // ============================================================
       const NODE_LABELS = {
         "dev-platform": "Agent development platform",
         "tools-sdks": "Tools & SDKs",
@@ -996,14 +374,14 @@
         "runtime": "Agent runtime",
         "mcp": "MCP (Model Context Protocol)",
         "a2a": "A2A (Agent-to-Agent)",
-        "apis": "APIs (APIM)",
+        "apis": "APIs (gateway)",
         "vertical-copilots": "Business-app copilots",
         "systems-of-record": "Systems of record",
         "cost": "Cost & FinOps",
         "models": "Models",
-        "identity": "Identity (Entra)",
-        "security": "Security & threat (Sentinel/Defender)",
-        "catalog-lineage": "Catalog & lineage (Purview)",
+        "identity": "Identity",
+        "security": "Security & threat",
+        "catalog-lineage": "Catalog & lineage",
         "knowledge-grounding": "Knowledge grounding",
         "human-oversight": "Human oversight",
         "m365-copilot": "M365 Copilot",
@@ -1018,10 +396,8 @@
         swe: "scenarios/engineering-copilot.html",
       };
       const PLANE_LENS = {
-        control: "security",
-        data: "security",
-        model: "architecture",
-        fabric: "architecture",
+        control: "security", data: "security",
+        model: "architecture", fabric: "architecture",
         experience: "experience",
       };
       function pivotHref(target, isScenario) {
@@ -1036,7 +412,7 @@
           soundbite: "Build agents in one governed place, and you compound time-to-value across every team \u2014 instead of paying the integration tax in every department.",
           metaLayer: "Build plane", personas: ["cio", "ai"],
           customerQuote: "We want a singular Agent Development Platform.",
-          shortAnswer: "One place to build agents. Foundry for pro developers, Copilot Studio for business users \u2014 with logic, prompts, skills, and evals stored centrally and reusable across surfaces.",
+          shortAnswer: "One place to build agents \u2014 Foundry / Bedrock / Vertex for pro developers, Copilot Studio for business users \u2014 with logic, prompts, skills, and evals stored centrally and reusable across surfaces.",
           pointAt: ["dev-platform", "tools-sdks", "governance"],
           points: [
             "Are you trying to standardize <em>where</em> agents are built, or <em>how they\u2019re governed and secured once deployed?</em>",
@@ -1044,7 +420,7 @@
             "Do you have a way to <strong>observe and inventory all agents</strong>, regardless of where they are built?",
             "What happens when an agent is created outside your &ldquo;preferred&rdquo; platform \u2014 how do you detect and govern it?",
           ],
-          seeItWork: { label: "M365 HR Benefits Agent", href: "use-cases.html#m365-hr" },
+          seeItWork: { label: "HR Benefits Agent", href: "scenarios/citizen-hr.html" },
         },
         {
           id: "multi-cloud", accent: "--pillar-connect", outcome: "freedom", outcomeLabel: "Cloud freedom",
@@ -1059,7 +435,7 @@
             "Do you have a consistent model to apply <strong>security, identity, and governance policies across clouds</strong>?",
             "Are teams rebuilding similar capabilities because there\u2019s no shared <strong>governed interoperability model</strong>?",
           ],
-          seeItWork: { label: "SAP Procurement Approval Agent", href: "use-cases.html#sap-po" },
+          seeItWork: { label: "Customer 360", href: "scenarios/customer360.html" },
         },
         {
           id: "cost", accent: "--pillar-experience", outcome: "cost", outcomeLabel: "Predictable cost",
@@ -1090,7 +466,7 @@
             "If an incident occurs, can you <strong>trace an agent\u2019s actions end-to-end</strong> and investigate it?",
             "Do you have a <strong>single place to observe, govern, and secure all agents</strong>, including third-party ones?",
           ],
-          seeItWork: { label: "ServiceNow IT Incident Triage Agent", href: "use-cases.html#servicenow-incident" },
+          seeItWork: { label: "IT Incident Triage", href: "scenarios/it-incident-triage.html" },
         },
         {
           id: "risk", accent: "--pillar-govern", outcome: "risk", outcomeLabel: "Lower risk",
@@ -1103,7 +479,7 @@
             "How are you protecting against <strong>prompt injection, data leakage, or rogue agent behavior</strong>?",
             "Do you have <strong>real-time monitoring and threat detection</strong> for agent activity?",
           ],
-          seeItWork: { label: "ServiceNow IT Incident Triage Agent", href: "scenarios/it-incident-triage.html" },
+          seeItWork: { label: "IT Incident Triage", href: "scenarios/it-incident-triage.html" },
         },
         {
           id: "sensitive", accent: "--pillar-govern", outcome: "risk", outcomeLabel: "Lower risk",
@@ -1116,7 +492,7 @@
             "How are you ensuring agents respect <strong>data boundaries, labels, and compliance policies</strong>?",
             "Can you track <strong>data flow from input \u2192 agent \u2192 output</strong> across systems?",
           ],
-          seeItWork: { label: "Citizen-built HR Benefits Agent", href: "scenarios/citizen-hr.html" },
+          seeItWork: { label: "HR Benefits Agent", href: "scenarios/citizen-hr.html" },
         },
         {
           id: "scale", accent: "--pillar-build", outcome: "adoption", outcomeLabel: "Faster adoption",
@@ -1129,7 +505,7 @@
             "What changes when you move from pilot to production in terms of <strong>governance and control</strong>?",
             "How do you prevent <strong>agent sprawl and unmanaged growth</strong>?",
           ],
-          seeItWork: { label: "Multi-source Customer 360", href: "scenarios/customer360.html" },
+          seeItWork: { label: "Customer 360", href: "scenarios/customer360.html" },
         },
         {
           id: "modal", accent: "--pillar-experience", outcome: "adoption", outcomeLabel: "Faster adoption",
@@ -1142,7 +518,7 @@
             "Do you have visibility into <strong>how different agent types behave and interact</strong>?",
             "Can you enforce <strong>security and governance consistently across modalities</strong>?",
           ],
-          seeItWork: { label: "Use cases (M365 / SAP / ServiceNow)", href: "use-cases.html" },
+          seeItWork: { label: "Use cases catalog", href: "use-cases.html" },
         },
         {
           id: "citizen-dev", accent: "--pillar-build", outcome: "adoption", outcomeLabel: "Faster adoption",
@@ -1155,7 +531,7 @@
             "How are you enabling builders while still enforcing <strong>enterprise guardrails and policies</strong>?",
             "Can new agents be created without <strong>security review or central visibility</strong>?",
           ],
-          seeItWork: { label: "Citizen-built HR Benefits Agent", href: "scenarios/citizen-hr.html" },
+          seeItWork: { label: "HR Benefits Agent", href: "scenarios/citizen-hr.html" },
         },
         {
           id: "observability", accent: "--pillar-govern", outcome: "risk", outcomeLabel: "Lower risk",
@@ -1259,8 +635,7 @@
         cpAnswer.innerHTML = `<strong>The short answer.</strong> ${c.shortAnswer}`;
         cpPoints.innerHTML = c.points.map((p) => `<li>${p}</li>`).join("");
         cpPointAt.innerHTML = c.pointAt.map((nid) => {
-          const lens = "architecture";
-          return `<a class="pa-chip" href="architect.html?lens=${lens}#canvas" title="Open this in the architect view">${nodeLabelById(nid)}</a>`;
+          return `<a class="pa-chip" href="architect.html?lens=architecture#canvas" title="Open this in the architect view">${nodeLabelById(nid)}</a>`;
         }).join("");
         cpSeeItWork.innerHTML = `<strong>See it in action:</strong> <a href="${c.seeItWork.href}">${c.seeItWork.label} \u2192</a>`;
         challengePanel.hidden = false;
@@ -1313,8 +688,7 @@
       function copyTalkTrack() {
         const activeBtn = challengeGrid.querySelector(".challenge-card.active");
         if (!activeBtn) return;
-        const id = activeBtn.dataset.challenge;
-        const ch = CHALLENGES.find((x) => x.id === id);
+        const ch = CHALLENGES.find((x) => x.id === activeBtn.dataset.challenge);
         if (!ch) return;
         const stripHtml = (s) => s.replace(/<[^>]+>/g, "");
         const seeHref = new URL(ch.seeItWork.href, location.href).href;
@@ -1376,7 +750,6 @@
         `).join("");
       }
 
-      // ?challenge=<id> deep-link support
       try {
         const ch = new URL(window.location.href).searchParams.get("challenge");
         if (ch && CHALLENGES.find((x) => x.id === ch)) applyChallenge(ch);
