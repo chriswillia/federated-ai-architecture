@@ -3013,16 +3013,16 @@
         activeSourceId = null;
       }
 
-      // Wire hover on each node (skip if scenario is playing or challenge is active)
+      // Wire hover on each node (skip if scenario is playing)
       function wireHover() {
         document.querySelectorAll(allNodesSel).forEach((btn) => {
           btn.addEventListener("mouseenter", () => {
-            if (scenarioPlaying || challengeActive) return;
+            if (scenarioPlaying) return;
             highlightTrace(btn.dataset.node);
           });
         });
         planesEl.addEventListener("mouseleave", () => {
-          if (scenarioPlaying || challengeActive) return;
+          if (scenarioPlaying) return;
           clearTrace();
         });
       }
@@ -3040,8 +3040,6 @@
       function playScenario(key) {
         stopScenario();
         stopWalk();
-        // A scenario walkthrough takes over the canvas — clear any active challenge.
-        if (challengeActive) applyChallenge(null);
         document.querySelectorAll(".scenario-btn").forEach((b) =>
           b.classList.toggle("active", b.dataset.scenario === key),
         );
