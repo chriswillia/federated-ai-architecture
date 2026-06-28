@@ -32,12 +32,11 @@
       .nav-link:hover { border-color: var(--cp-accent); color: var(--cp-accent); }
       .icon-btn { width: 32px; height: 32px; border-radius: 8px; background: var(--cp-surface-soft); border: 1px solid var(--cp-border); color: var(--cp-text); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
       .icon-btn:hover { background: var(--cp-surface); border-color: var(--cp-accent); }
-      main { max-width: 1400px; margin: 0 auto; padding: 0; }
       .page-hero { margin: 18px 22px 0 22px; background: color-mix(in srgb, var(--scenario-accent) 4%, var(--cp-bg)); border-left: 4px solid var(--scenario-accent); border-radius: 12px; padding: 18px 22px; }
       .crumbs { font-size: 12px; color: var(--cp-text-muted); margin-bottom: 6px; }
       .crumbs a { color: var(--cp-link); text-decoration: none; }
       .crumbs a:hover { text-decoration: underline; }
-      .page-hero h2 { margin: 0 0 6px 0; font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
+      .page-hero h1 { margin: 0 0 6px 0; font-size: 26px; font-weight: 600; letter-spacing: -0.01em; }
       .page-hero .subtitle { margin: 0 0 10px 0; font-size: 13.5px; color: var(--cp-text-muted); max-width: 920px; }
       .page-hero .lead { margin: 0; font-size: 13.5px; max-width: 920px; }
       .outcome-banner {
@@ -112,10 +111,10 @@
   <body>
     <div id="app-header"></div>
 
-    <main>
+    <main class="app-main app-main--wide">
       <section class="page-hero">
         <div class="crumbs"><a href="../architect.html">Reference architecture</a> &nbsp;/&nbsp; Scenarios &nbsp;/&nbsp; Cost-aware Expense Agent</div>
-        <h2>Cost-aware Expense Agent</h2>
+        <h1>Cost-aware Expense Agent</h1>
         <p class="subtitle">Per-token bill-back, model routing for cheap vs. complex paths, and showback dashboards in Teams.</p>
         <div class="outcome-banner">By the end of this flow, an employee submits a compliant expense in seconds — token cost stays capped per agent, every action is traceable, and Finance sees real-time showback by department.</div>
         <p class="lead">
@@ -126,11 +125,11 @@
         </p>
       </section>
 
-      <section class="addresses" aria-label="Customer challenges addressed">
+      <section class="addresses" aria-label="Concerns this scenario addresses">
         <span class="label">Addresses</span>
-        <a class="chip" href="../architect.html#challenges-heading">&ldquo;Control over token usage and cost/billing&rdquo;</a>
-        <a class="chip" href="../architect.html#challenges-heading">&ldquo;Unified Control Plane&rdquo;</a>
-        <a class="chip" href="../architect.html#challenges-heading">&ldquo;Sustainable agent operations&rdquo;</a>
+        <a class="chip" href="../index.html#conversation">&ldquo;Control over token usage and cost/billing&rdquo;</a>
+        <a class="chip" href="../index.html#conversation">&ldquo;Unified Control Plane&rdquo;</a>
+        <a class="chip" href="../index.html#conversation">&ldquo;Sustainable agent operations&rdquo;</a>
       </section>
 
       <section class="at-a-glance" aria-label="At a glance">

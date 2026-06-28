@@ -140,11 +140,7 @@
       }
 
       /* ---------- Main shell ---------- */
-      main {
-        max-width: 1320px;
-        margin: 0 auto;
-        padding: 20px 24px 28px;
-      }
+      /* Layout comes from the shared `.app-main--wide` rule in assets/style.css. */
       .hero {
         display: grid;
         grid-template-columns: 1.4fr 1fr;
@@ -2000,8 +1996,9 @@
   <body>
     <div id="app-header"></div>
 
-    <main>
-      <!-- Punchline: the big idea customers should walk away remembering -->
+    <main class="app-main app-main--wide">
+      <h1 class="sr-only">Reference architecture</h1>
+      <!-- Punchline: the big idea worth remembering -->
       <p class="hero-quote">
         <strong>AI development will be federated. AI control cannot be.</strong>
         <span class="hero-quote-sub">The next phase of AI adoption won't be won by forcing every team onto one platform. It will be won by creating a trusted operating model for federated AI &mdash; built across platforms, connected across systems, governed through a common control plane, secured through identity and data policy, observed through telemetry, and measured by business outcomes.</span>
@@ -2024,36 +2021,36 @@
       <section class="flow-strip" aria-label="Framework narrative">
         <div class="flow-strip-head">How to read this framework</div>
         <div class="flow-steps">
-          <button type="button" class="flow-step" data-flow-target="reality">
+          <div class="flow-step">
             <div class="flow-step-head"><span class="flow-step-num">1</span>Reality</div>
             <div class="flow-step-label">Your AI ecosystem will be federated.</div>
             <div class="flow-step-quote">Capabilities and data already span Azure, AWS, GCP, SaaS, and on-prem.</div>
-          </button>
-          <button type="button" class="flow-step" data-flow-target="risk">
+          </div>
+          <div class="flow-step">
             <div class="flow-step-head"><span class="flow-step-num">2</span>Risk</div>
             <div class="flow-step-label">Federation without control becomes sprawl.</div>
             <div class="flow-step-quote">Shadow AI, prompt injection, excessive agency &mdash; outside today&rsquo;s tooling.</div>
-          </button>
-          <button type="button" class="flow-step" data-flow-target="architecture">
+          </div>
+          <div class="flow-step">
             <div class="flow-step-head"><span class="flow-step-num">3</span>Architecture</div>
             <div class="flow-step-label">You need a control plane above the build layer.</div>
             <div class="flow-step-quote">Identity, governance, and observability unified across runtimes.</div>
-          </button>
-          <button type="button" class="flow-step" data-flow-target="trust">
+          </div>
+          <div class="flow-step">
             <div class="flow-step-head"><span class="flow-step-num">4</span>Trust</div>
             <div class="flow-step-label">Combine observability, governance, security, identity, data, lifecycle.</div>
             <div class="flow-step-quote">Microsoft Agent 365 + Entra + Sentinel + Defender + Purview extended to AI.</div>
-          </button>
-          <button type="button" class="flow-step" data-flow-target="economics">
+          </div>
+          <div class="flow-step">
             <div class="flow-step-head"><span class="flow-step-num">5</span>Economics</div>
             <div class="flow-step-label">Tie usage and cost back to business outcomes.</div>
             <div class="flow-step-quote">Cost per resolved case, per generated doc, per avoided manual hour.</div>
-          </button>
-          <button type="button" class="flow-step" data-flow-target="outcome">
+          </div>
+          <div class="flow-step">
             <div class="flow-step-head"><span class="flow-step-num">6</span>Outcome</div>
             <div class="flow-step-label">Trusted, measurable AI at enterprise scale.</div>
             <div class="flow-step-quote">Open the printable executive summary.</div>
-          </button>
+          </div>
         </div>
       </section>
 
