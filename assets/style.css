@@ -254,9 +254,9 @@ hr.section-divider {
   border-bottom: 1px solid var(--border);
 }
 .shell-inner {
-  max-width: 1200px; margin: 0 auto;
-  padding: var(--sp-3) var(--sp-6);
-  display: flex; align-items: center; gap: var(--sp-4); flex-wrap: wrap;
+  max-width: 1320px; margin: 0 auto;
+  padding: var(--sp-3) var(--sp-4);
+  display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap;
 }
 .brand {
   display: flex; align-items: center; gap: var(--sp-3);
@@ -278,22 +278,27 @@ hr.section-divider {
 .brand-text strong {
   font-family: var(--font-display);
   font-size: var(--fs-15); font-weight: 600; letter-spacing: -0.01em;
+  white-space: nowrap;
 }
 .brand-text span {
   font-size: 11px; color: var(--text-soft); margin-top: 1px;
+  white-space: nowrap;
+}
+@media (max-width: 1180px) {
+  .brand-text span { display: none; }
 }
 
 .shell-nav {
-  display: flex; gap: 2px; margin-left: var(--sp-4);
+  display: flex; gap: 2px;
   background: var(--surface-2);
   border: 1px solid var(--border);
-  border-radius: var(--r-4); padding: 3px;
+  border-radius: var(--r-4); padding: 2px;
 }
 .shell-nav a {
   font-size: var(--fs-13); font-weight: 500;
   color: var(--text-muted);
-  padding: 6px 12px; border-radius: 6px;
-  text-decoration: none;
+  padding: 6px 10px; border-radius: 6px;
+  text-decoration: none; white-space: nowrap;
   transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
 }
 .shell-nav a:hover {
@@ -312,12 +317,12 @@ hr.section-divider {
 
 .shell-input {
   font: inherit; font-size: var(--fs-13);
-  padding: 7px 12px; height: 34px;
+  padding: 6px 10px; height: 32px;
   background: var(--surface);
   color: var(--text);
   border: 1px solid var(--border);
   border-radius: var(--r-4);
-  min-width: 200px;
+  min-width: 160px; max-width: 200px;
   transition: border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
 }
 .shell-input::placeholder { color: var(--text-soft); }
@@ -329,7 +334,7 @@ hr.section-divider {
 
 .icon-btn {
   appearance: none;
-  width: 34px; height: 34px;
+  width: 32px; height: 32px;
   background: var(--surface);
   color: var(--text-muted);
   border: 1px solid var(--border);
@@ -337,6 +342,7 @@ hr.section-divider {
   cursor: pointer;
   display: grid; place-items: center;
   transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+  flex-shrink: 0;
 }
 .icon-btn:hover { color: var(--text); border-color: var(--border-strong); }
 
@@ -347,7 +353,7 @@ hr.section-divider {
   margin-top: var(--sp-14);
 }
 .app-footer-inner {
-  max-width: 1200px; margin: 0 auto;
+  max-width: 1320px; margin: 0 auto;
   padding: var(--sp-6);
   display: grid; gap: var(--sp-3);
   grid-template-columns: 1fr auto;
@@ -369,7 +375,7 @@ hr.section-divider {
 
 /* ---------- 4. LAYOUT ---------- */
 main.app-main {
-  max-width: 1200px;
+  max-width: 1320px;
   margin: 0 auto;
   padding: var(--sp-10) var(--sp-6) var(--sp-14);
 }

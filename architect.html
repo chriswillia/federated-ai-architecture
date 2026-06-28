@@ -141,9 +141,9 @@
 
       /* ---------- Main shell ---------- */
       main {
-        max-width: 1400px;
+        max-width: 1320px;
         margin: 0 auto;
-        padding: 28px;
+        padding: 20px 24px 28px;
       }
       .hero {
         display: grid;
@@ -1610,9 +1610,9 @@
         z-index: 19;
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 8px;
         flex-wrap: wrap;
-        padding: 10px 22px;
+        padding: 8px 14px;
         background: color-mix(in srgb, var(--cp-surface) 92%, transparent);
         backdrop-filter: blur(6px);
         border-bottom: 1px solid var(--cp-border);
@@ -1629,12 +1629,15 @@
         color: var(--cp-text-muted);
         margin-right: 4px;
       }
+      @media (max-width: 1240px) {
+        .lens-bar .lens-prompt { display: none; }
+      }
       .lens-btn {
         appearance: none;
         background: var(--cp-bg-elevated);
         border: 1px solid var(--cp-border);
         border-radius: 999px;
-        padding: 7px 16px;
+        padding: 6px 12px;
         font: inherit;
         font-size: 13px;
         font-weight: 500;
@@ -1666,7 +1669,6 @@
       .lens-btn[data-lens="experience"]    { --lens-color: var(--layer-experience); }
       .lens-btn[data-lens="all"]           { --lens-color: var(--cp-text-muted); }
       .lens-bar .leave-behind-link {
-        margin-left: auto;
         font-size: 12px;
         color: var(--cp-link);
         text-decoration: none;
@@ -1674,6 +1676,9 @@
         border-radius: 8px;
         border: 1px solid var(--cp-border);
         background: var(--cp-bg-elevated);
+      }
+      .lens-bar .leave-behind-link:first-of-type {
+        margin-left: auto;
       }
       .lens-bar .leave-behind-link:hover { border-color: var(--cp-accent); color: var(--cp-accent); }
 
@@ -1831,12 +1836,12 @@
 
       /* ---------- Hero punchline + 6-step conversation flow ---------- */
       .hero-quote {
-        margin: 18px 22px 6px;
-        padding: 18px 22px;
+        margin: 12px 14px 6px;
+        padding: 14px 18px;
         border-left: 4px solid var(--cp-accent);
         background: color-mix(in srgb, var(--cp-accent) 6%, var(--cp-surface));
         border-radius: 6px;
-        font-size: 18px;
+        font-size: 16px;
         line-height: 1.4;
         letter-spacing: -0.01em;
         font-weight: 500;
@@ -1854,7 +1859,7 @@
       @media (max-width: 720px) { .hero-quote { font-size: 15px; } }
 
       .flow-strip {
-        margin: 0 22px 18px;
+        margin: 0 14px 18px;
         padding: 12px 14px;
         background: var(--cp-surface);
         border: 1px solid var(--cp-border);
