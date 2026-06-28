@@ -24,42 +24,6 @@
         font-size: 15px; line-height: 1.5;
       }
 
-      header.app {
-        position: sticky; top: 0; z-index: 20;
-        background: var(--cp-panel-strong);
-        backdrop-filter: saturate(140%) blur(12px);
-        border-bottom: 1px solid var(--cp-border);
-      }
-      .header-inner {
-        max-width: 1400px; margin: 0 auto; padding: 14px 28px;
-        display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
-      }
-      .brand { display: flex; align-items: center; gap: 12px; min-width: 280px; }
-      .brand-mark {
-        width: 34px; height: 34px; border-radius: 8px;
-        background: var(--cp-accent); color: var(--cp-accent-fg);
-        display: grid; place-items: center;
-        font-weight: 700; letter-spacing: 0.5px;
-      }
-      .brand-text h1 { font-size: 16px; margin: 0; font-weight: 600; }
-      .brand-text p { font-size: 12px; margin: 0; color: var(--cp-text-muted); }
-      .header-spacer { flex: 1; }
-      .nav-link {
-        display: inline-flex; align-items: center; gap: 6px;
-        padding: 7px 12px; font-size: 12.5px; font-weight: 500;
-        color: var(--cp-text); background: var(--cp-surface);
-        border: 1px solid var(--cp-border); border-radius: 8px;
-        text-decoration: none; height: 36px; line-height: 1;
-      }
-      .nav-link:hover { border-color: var(--cp-accent); color: var(--cp-accent); }
-      .icon-btn {
-        appearance: none; background: var(--cp-surface);
-        color: var(--cp-text); border: 1px solid var(--cp-border);
-        border-radius: 8px; width: 36px; height: 36px; cursor: pointer;
-        display: grid; place-items: center;
-      }
-      .icon-btn:hover { border-color: var(--cp-border-strong); }
-
       .page-intro {
         margin: 0 0 22px;
         padding: 18px 22px;
@@ -123,15 +87,6 @@
       .references li .src {
         display: block; font-size: 11.5px; color: var(--cp-text-soft); margin-top: 2px;
       }
-
-      footer.app {
-        max-width: 1200px; margin: 32px auto 0;
-        padding: 16px 28px 36px;
-        color: var(--cp-text-soft); font-size: 12px;
-        border-top: 1px solid var(--cp-border);
-      }
-      footer.app a { color: var(--cp-link); text-decoration: none; }
-      footer.app a:hover { text-decoration: underline; }
     </style>
   </head>
   <body>

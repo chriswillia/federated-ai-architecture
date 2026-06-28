@@ -33,112 +33,6 @@
         font-size: 0.875em;
       }
 
-      /* ---------- Header ---------- */
-      header.app {
-        position: sticky;
-        top: 0;
-        z-index: 20;
-        background: var(--cp-panel-strong);
-        backdrop-filter: saturate(140%) blur(12px);
-        border-bottom: 1px solid var(--cp-border);
-      }
-      .header-inner {
-        max-width: 1400px;
-        margin: 0 auto;
-        padding: 14px 28px;
-        display: flex;
-        align-items: center;
-        gap: 18px;
-        flex-wrap: wrap;
-      }
-      .brand {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        min-width: 280px;
-      }
-      .brand-mark {
-        width: 34px;
-        height: 34px;
-        border-radius: 8px;
-        background: var(--cp-accent);
-        display: grid;
-        place-items: center;
-        color: var(--cp-accent-fg);
-        font-weight: 700;
-        letter-spacing: 0.5px;
-      }
-      .brand-text h1 {
-        font-size: 16px;
-        margin: 0;
-        font-weight: 600;
-      }
-      .brand-text p {
-        font-size: 12px;
-        margin: 0;
-        color: var(--cp-text-muted);
-      }
-      .header-spacer {
-        flex: 1;
-      }
-      .toggle-group {
-        display: inline-flex;
-        border: 1px solid var(--cp-border);
-        border-radius: 10px;
-        padding: 3px;
-        background: var(--cp-surface);
-      }
-      .toggle-group button {
-        appearance: none;
-        border: 0;
-        background: transparent;
-        color: var(--cp-text-muted);
-        padding: 6px 14px;
-        border-radius: 7px;
-        font: inherit;
-        cursor: pointer;
-        font-size: 13px;
-      }
-      .toggle-group button.active {
-        background: var(--cp-accent);
-        color: var(--cp-accent-fg);
-        font-weight: 600;
-      }
-      .icon-btn {
-        appearance: none;
-        background: var(--cp-surface);
-        color: var(--cp-text);
-        border: 1px solid var(--cp-border);
-        border-radius: 8px;
-        width: 36px;
-        height: 36px;
-        cursor: pointer;
-        display: grid;
-        place-items: center;
-      }
-      .icon-btn:hover {
-        border-color: var(--cp-border-strong);
-      }
-      .nav-link {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 7px 12px;
-        font-size: 12.5px;
-        font-weight: 500;
-        color: var(--cp-text);
-        background: var(--cp-surface);
-        border: 1px solid var(--cp-border);
-        border-radius: 8px;
-        text-decoration: none;
-        height: 36px;
-        line-height: 1;
-      }
-      .nav-link:hover {
-        border-color: var(--cp-accent);
-        color: var(--cp-accent);
-      }
-
       /* ---------- Main shell ---------- */
       /* Layout comes from the shared `.app-main--wide` rule in assets/style.css. */
       .hero {
@@ -723,15 +617,6 @@
         color: var(--cp-text-muted);
       }
 
-      footer.app {
-        max-width: 1400px;
-        margin: 32px auto 0;
-        padding: 16px 28px 36px;
-        color: var(--cp-text-soft);
-        font-size: 12px;
-        border-top: 1px solid var(--cp-border);
-      }
-
       /* ---------- Interactivity overlay ---------- */
       .canvas-wrap { position: relative; }
       .planes { position: relative; }
@@ -1162,7 +1047,7 @@
 
       /* Presenter mode — strip noise for screen-share */
       html.presenter .hero,
-      html.presenter footer.app,
+      html.presenter .app-footer,
       html.presenter details.collapsible {
         display: none !important;
       }
@@ -2028,9 +1913,9 @@
             },
             {
               id: "governance",
-              title: "Microsoft Agent 365 + Foundry Control Plane",
+              title: "Agent Control Plane",
               icon: "policy",
-              sub: "The Microsoft anchor for managing agents organization-wide — register, govern, trace, evaluate, and monitor every agent in one place.",
+              sub: "The anchor for managing agents organization-wide — register, govern, trace, evaluate, and monitor every agent in one place. Example: Microsoft Agent 365 + Foundry Control Plane; equivalents map the same way.",
               tech: ["Microsoft Agent 365", "Microsoft Foundry Control Plane", "Microsoft Purview", "Azure Policy"],
               msBadge: "Microsoft Agent 365",
             },
