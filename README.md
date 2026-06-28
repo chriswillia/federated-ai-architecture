@@ -1,24 +1,27 @@
-# Federated AI Architecture
+# Trusted Federated AI
 
-An interactive, single-file HTML reference for a **Federated AI Environment** — where AI agents are built in one place, run across many environments, access data in SaaS systems of record, and are governed by a single control plane for identity, governance, and security.
+A vendor-neutral **framework for the enterprise AI estate** — how to use, build, connect, and govern AI agents across many platforms and many clouds, without losing control.
+
+The site is a multi-page reference your teams can read together: an overview, an interactive architecture, the eight foundational concepts, applied use cases, the honest trade-offs, and a one-page executive summary.
 
 ## View it
 
 - **Live:** https://chriswillia.github.io/federated-ai-architecture/
 - **Local:** open [`index.html`](index.html) in any modern browser. No build step, no dependencies.
 
-## What's in it
+## Pages
 
-- **Hero** — the elevator pitch in plain language: *develop once, run anywhere, govern centrally*.
-- **Federated agent lifecycle flow** — a 5-step view (Build → Publish → Run → Access → Deliver) with a single control plane spanning all of them.
-- **Five layered planes**, each with named platform examples and clickable component drill-downs:
-  - Where users meet AI (M365 Copilot, SAP Joule, Salesforce Agentforce)
-  - One control plane (Azure AI Foundry / A365, Entra ID, Purview, Defender, Sentinel)
-  - How things connect (MCP, A2A, API Management, Event Grid)
-  - Where agents are built (Azure AI Foundry, Copilot Studio, AWS Bedrock, Vertex AI)
-  - Where the data lives (M365 Graph, SAP, Salesforce, Snowflake)
-- **Light / dark theme** toggle.
+- **Overview** ([index.html](index.html)) — the framework in plain language; common questions and concerns answered by role.
+- **Architecture** ([architect.html](architect.html)) — interactive reference architecture, layered planes, and end-to-end flows.
+- **Concepts** ([concepts.html](concepts.html)) — eight foundational ideas (AI System of Record, Agent BoM, risk tiers, control plane, identity, data boundary, lifecycle, economics).
+- **Use cases** ([use-cases.html](use-cases.html)) — applied scenarios for HR, Customer 360, engineering, expense, and IT incident triage.
+- **Trade-offs** ([tensions.html](tensions.html)) — five honest contradictions worth naming up front, plus primary sources.
+- **Executive summary** ([leave-behind.html](leave-behind.html)) — a printable single-page summary for executives.
+
+## Framing
+
+The framework is intentionally **vendor-neutral**. MCP, A2A, OAuth/OIDC, OpenTelemetry, and an API gateway are the open standards that hold it together. Microsoft products appear only as an example anchor stack — substitute the equivalents from your existing platforms (Google, AWS, Salesforce, SAP, Snowflake, Databricks, ServiceNow, OpenAI, Anthropic, etc.).
 
 ## Status
 
-Current-state reference. The federated future-state design is a separate, follow-on exercise.
+Current-state reference framework. The detailed implementation playbook is a separate exercise.

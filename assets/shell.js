@@ -25,7 +25,7 @@
        <script src="assets/shell.js"></script>
        <script>
          Shell.mount({
-           activePath: "overview",       // overview | executives | sellers | architects
+           activePath: "overview",       // overview | architecture | concepts | use-cases | tensions | summary
            showCustomerInput: true,      // optional, default true
            onCustomerChange: (name) => { ... },  // optional
          });
@@ -37,20 +37,22 @@
   "use strict";
 
   const NAV_ITEMS = [
-    { id: "overview",   label: "Overview",         href: "index.html" },
-    { id: "executives", label: "For executives",   href: "leave-behind.html" },
-    { id: "sellers",    label: "For sellers",      href: "index.html#conversation" },
-    { id: "architects", label: "For architects",   href: "architect.html" },
+    { id: "overview",     label: "Overview",         href: "index.html" },
+    { id: "architecture", label: "Architecture",     href: "architect.html" },
+    { id: "concepts",     label: "Concepts",         href: "concepts.html" },
+    { id: "use-cases",    label: "Use cases",        href: "use-cases.html" },
+    { id: "tensions",     label: "Trade-offs",       href: "tensions.html" },
+    { id: "summary",      label: "Executive summary", href: "leave-behind.html" },
   ];
 
   const FOOTER_LINKS = [
-    { label: "Overview",        href: "index.html" },
-    { label: "Architect view",  href: "architect.html" },
-    { label: "Concepts",        href: "concepts.html" },
-    { label: "Use cases",       href: "use-cases.html" },
-    { label: "Honest tensions", href: "tensions.html" },
-    { label: "Leave-behind",    href: "leave-behind.html" },
-    { label: "GitHub \u2197",   href: "https://github.com/chriswillia/federated-ai-architecture", external: true },
+    { label: "Overview",          href: "index.html" },
+    { label: "Architecture",      href: "architect.html" },
+    { label: "Concepts",          href: "concepts.html" },
+    { label: "Use cases",         href: "use-cases.html" },
+    { label: "Trade-offs",        href: "tensions.html" },
+    { label: "Executive summary", href: "leave-behind.html" },
+    { label: "GitHub \u2197",     href: "https://github.com/chriswillia/federated-ai-architecture", external: true },
   ];
 
   const THEME_KEY = "federated-ai-theme";
@@ -81,7 +83,7 @@
       el("div", { class: "brand-mark" }, "AI"),
       el("div", { class: "brand-text" },
         el("strong", null, "Trusted Federated AI"),
-        el("span", null, "Vendor-neutral architecture framework"),
+        el("span", null, "A framework for the enterprise AI estate"),
       ),
     );
 
@@ -96,7 +98,7 @@
     if (showCustomerInput !== false) {
       const input = el("input", {
         type: "text", class: "shell-input", id: "shellCustomerInput",
-        placeholder: "Customer name (optional)", "aria-label": "Customer name",
+        placeholder: "Your organization (optional)", "aria-label": "Your organization",
         value: customerValue || "",
       });
       inner.appendChild(input);
@@ -122,7 +124,7 @@
     );
     const brand = el("div", { class: "app-footer-brand" },
       el("strong", null, "Trusted Federated AI"),
-      " \u00b7 Vendor-neutral architecture framework",
+      " \u00b7 A framework for the enterprise AI estate",
     );
     return el("footer", { class: "app-footer" },
       el("div", { class: "app-footer-inner" }, brand, links),

@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Trusted Federated AI &mdash; Overview</title>
-    <meta name="description" content="Vendor-neutral architecture framework for using, building, connecting, and governing AI agents at enterprise scale. Works across Microsoft, AWS, Google Cloud, Salesforce, SAP, ServiceNow, and on-prem." />
+    <title>Trusted Federated AI &mdash; A framework for your AI estate</title>
+    <meta name="description" content="A vendor-neutral framework your enterprise can use to govern, build, connect, and operate AI agents across Microsoft, AWS, Google Cloud, Salesforce, SAP, ServiceNow, and on-prem." />
     <link rel="stylesheet" href="assets/style.css" />
     <script>
       (() => {
@@ -21,8 +21,8 @@
 
       <!-- HERO -->
       <section class="hero">
-        <span class="eyebrow">Trusted Federated AI Operating Model</span>
-        <h1>Use, build, connect, and govern AI agents at enterprise scale.</h1>
+        <span class="eyebrow">A framework for the enterprise AI estate</span>
+        <h1>Use, build, connect, and govern AI agents across your enterprise.</h1>
         <p class="punchline">AI development will be federated. AI control cannot be.</p>
         <span class="agnostic">
           <span class="dot"></span>
@@ -31,25 +31,25 @@
         <p class="for-customer" id="forCustomer" hidden>Prepared for <strong id="forCustomerName"></strong></p>
         <div class="hero-actions">
           <a class="btn btn--primary" id="leaveBehindBtn" href="leave-behind.html">
-            Open the leave-behind
+            Read the executive summary
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
           </a>
           <a class="btn btn--secondary" id="architectBtn" href="architect.html">
-            Architect view
+            See the architecture
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
           </a>
         </div>
       </section>
 
       <!-- AUDIENCE EMPHASIS (role strip) -->
-      <div class="filter-bar" role="group" aria-label="Emphasize a pillar by audience">
+      <div class="filter-bar" role="group" aria-label="Emphasize the pillar most relevant to your role">
         <div class="filter-row">
-          <span class="filter-label">Audience</span>
+          <span class="filter-label">Your role</span>
           <button type="button" class="chip" data-role="ciso">CISO</button>
           <button type="button" class="chip" data-role="cio">CIO</button>
-          <button type="button" class="chip" data-role="business">Business</button>
+          <button type="button" class="chip" data-role="business">Business leader</button>
           <button type="button" class="chip active" data-role="all">All</button>
-          <span class="sub" style="margin-left: auto;">Highlights the pillar most relevant to that audience.</span>
+          <span class="sub" style="margin-left: auto;">Highlights the pillar most relevant to your role.</span>
         </div>
       </div>
 
@@ -190,15 +190,15 @@
         </div>
       </section>
 
-      <!-- CONVERSATION TOOLKIT -->
+      <!-- COMMON QUESTIONS -->
       <section class="conversation" id="conversation" aria-labelledby="conversation-heading">
         <div class="section-head">
-          <span class="eyebrow">For sellers</span>
-          <h2 id="conversation-heading">Talk to your customer.</h2>
-          <p class="lede">Pick the conversation your customer wants to have. Each card surfaces their own words, a sound-bite you can say out loud, the questions to ask, and where in the architecture to point &mdash; plus the objections you&rsquo;ll hear most and a two-sentence response for each.</p>
+          <span class="eyebrow">Common questions</span>
+          <h2 id="conversation-heading">Questions worth asking your team.</h2>
+          <p class="lede">Pick the conversation that matters most in your enterprise right now. Each card surfaces the question you&rsquo;re likely already debating internally, a plain-English answer, the discovery questions worth running with your own team, and where in the reference architecture to look.</p>
         </div>
 
-        <div class="outcomes-bar" role="group" aria-label="Filter conversations">
+        <div class="outcomes-bar" role="group" aria-label="Filter questions">
           <div class="filter-row">
             <span class="outcomes-label">Outcome</span>
             <button type="button" class="outcome-chip" data-outcome="adoption">Faster adoption</button>
@@ -207,7 +207,7 @@
             <button type="button" class="outcome-chip" data-outcome="freedom">Cloud freedom</button>
           </div>
           <div class="filter-row">
-            <span class="outcomes-label">Persona</span>
+            <span class="outcomes-label">Owner</span>
             <button type="button" class="persona-chip" data-persona="cio">CIO</button>
             <button type="button" class="persona-chip" data-persona="ciso">CISO</button>
             <button type="button" class="persona-chip" data-persona="cdo">CDO</button>
@@ -227,19 +227,19 @@
               </div>
               <button class="cp-clear" id="cpClear" type="button" title="Clear selection" aria-label="Clear selection">&times;</button>
             </div>
-            <button class="cp-copy" id="cpCopy" type="button" title="Copy this talk track to clipboard">
+            <button class="cp-copy" id="cpCopy" type="button" title="Copy this answer to clipboard">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-              Copy talk track
+              Copy answer
             </button>
             <div class="cp-soundbite" id="cpSoundbite"></div>
             <div class="cp-answer" id="cpAnswer"></div>
             <div class="cp-row">
               <div class="cp-block">
-                <h4>Questions to ask the customer</h4>
+                <h4>Questions to ask your team</h4>
                 <ul id="cpPoints"></ul>
               </div>
               <div class="cp-block">
-                <h4>Point to in the architecture</h4>
+                <h4>Where in the architecture</h4>
                 <div class="cp-pointat" id="cpPointAt"></div>
                 <div class="cp-see" id="cpSeeItWork"></div>
               </div>
@@ -248,8 +248,8 @@
         </div>
 
         <div class="objections-wrap" aria-labelledby="objections-heading">
-          <h3 id="objections-heading">When the customer pushes back&hellip;</h3>
-          <p class="sub">Two-sentence responses for the objections you&rsquo;ll hear most, grouped by the kind of conversation you&rsquo;re in. Each pivot opens the relevant view of the reference architecture or a full scenario walkthrough.</p>
+          <h3 id="objections-heading">Common concerns &amp; how the framework answers them</h3>
+          <p class="sub">Two-sentence answers to the concerns that come up most often, grouped by the part of the organization that usually raises them. Each pivot opens the relevant view of the reference architecture or a full scenario walkthrough.</p>
           <div id="objectionsContainer"></div>
         </div>
       </section>
@@ -338,7 +338,7 @@
       setCustomer(Shell.readInitialCustomer());
 
       // ============================================================
-      // Conversation toolkit: talk tracks + objections
+      // Common questions: cards + concerns by team
       // ============================================================
       const NODE_LABELS = {
         "dev-platform": "Agent development platform",
@@ -525,32 +525,32 @@
       const LENS_OBJECTIONS = {
         security: {
           label: "Security & Trust",
-          intro: "Conversations led by the CISO, GRC, or SOC. Most pushback is about coverage, data, and operational load.",
+          intro: "Concerns raised most often by the CISO, GRC, or SOC. Coverage, sensitive data, and operational load are the recurring themes.",
           items: [
             { quote: "We already use ChatGPT \u2014 we don't need this.", response: "Then you already have an AI estate \u2014 you just can't see it. Extending Defender for Cloud Apps and Purview to that traffic turns shadow AI into a governed inventory in a week.", pivot: { label: "See the Control plane", target: "control", isScenario: false } },
             { quote: "We're an AWS shop. Microsoft Security doesn't fit us.", response: "Sentinel, Defender, and Purview were rebuilt as multi-cloud control planes years ago \u2014 they ingest AWS logs, AWS IAM, and Bedrock telemetry. The AI control plane sits above the runtime cloud.", pivot: { label: "See cross-cloud control", target: "control", isScenario: false } },
             { quote: "Our SOC is already overwhelmed.", response: "AI-aware Sentinel reduces noise, not adds to it \u2014 auto-triage on Tier-1 incidents plus prompt-injection detections that didn't exist in the SOC before. The IT incident triage scenario shows the pattern.", pivot: { label: "Walk the IT triage scenario", target: "itops", isScenario: true } },
-            { quote: "Agents will leak our data.", response: "Only if identity and DLP don't follow them. Entra workload identity for the agent, Purview labels on the data, Defender on the runtime \u2014 same controls you trust for users, applied to agents.", pivot: { label: "See the Data + Control planes", target: "data", isScenario: false } },
+            { quote: "Agents will leak our data.", response: "Only if identity and DLP don't follow them. Entra workload identity for the agent, Purview labels on the data, Defender on the runtime \u2014 the same controls you trust for users, applied to agents.", pivot: { label: "See the Data + Control planes", target: "data", isScenario: false } },
           ],
         },
         architecture: {
           label: "AI Architecture",
-          intro: "Conversations led by the CIO, CTO, or enterprise architect. Most pushback is about lock-in, framework choice, and build-vs-buy.",
+          intro: "Concerns raised most often by the CIO, CTO, or enterprise architect. Lock-in, framework choice, and build-vs-buy are the recurring themes.",
           items: [
-            { quote: "We've standardized on LangChain (or another framework).", response: "Keep it \u2014 LangChain agents speak MCP and A2A like everyone else. Foundry's value isn't replacing the framework, it's the central registry, evals, and identity that wrap whatever you build.", pivot: { label: "See the Build + Fabric planes", target: "model", isScenario: false } },
-            { quote: "We can build the control plane ourselves.", response: "You can, but every six months a new protocol (MCP, A2A, signed manifests, agent cards) ships and you'll re-build. Foundry tracks the standards; your team builds the agents that matter to the business.", pivot: { label: "See the Control plane", target: "control", isScenario: false } },
-            { quote: "We don't want vendor lock-in to one cloud.", response: "The federated model is the opposite of lock-in. MCP, A2A, and APIM are open or open-style protocols. Agents run on the cloud closest to the data \u2014 Foundry is the control plane above, not the runtime.", pivot: { label: "See cross-cloud runtime", target: "model", isScenario: false } },
-            { quote: "Our integrations are all custom APIs \u2014 MCP is overkill.", response: "Custom APIs are fine for one or two agents. By the tenth agent, every team is rebuilding auth, schemas, and rate-limits. MCP servers fronted by APIM let you do it once and govern at the gateway.", pivot: { label: "Walk the Customer 360 scenario", target: "customer360", isScenario: true } },
+            { quote: "We've standardized on LangChain (or another framework).", response: "Keep it \u2014 LangChain agents speak MCP and A2A like everyone else. The control plane's value isn't replacing the framework, it's the central registry, evals, and identity that wrap whatever you build.", pivot: { label: "See the Build + Fabric planes", target: "model", isScenario: false } },
+            { quote: "We can build the control plane ourselves.", response: "You can, but every six months a new protocol (MCP, A2A, signed manifests, agent cards) ships and you'll re-build. A managed control plane tracks the standards so your team can build the agents that matter to the business.", pivot: { label: "See the Control plane", target: "control", isScenario: false } },
+            { quote: "We don't want vendor lock-in to one cloud.", response: "The federated model is the opposite of lock-in. MCP, A2A, and gateways like APIM/Kong/Apigee are open or open-style protocols. Agents run on the cloud closest to the data \u2014 the control plane sits above the runtime, not inside it.", pivot: { label: "See cross-cloud runtime", target: "model", isScenario: false } },
+            { quote: "Our integrations are all custom APIs \u2014 MCP is overkill.", response: "Custom APIs are fine for one or two agents. By the tenth agent, every team is rebuilding auth, schemas, and rate-limits. MCP servers fronted by an API gateway let you do it once and govern at the edge.", pivot: { label: "Walk the Customer 360 scenario", target: "customer360", isScenario: true } },
           ],
         },
         experience: {
           label: "AI Experience",
-          intro: "Conversations led by the head of AI, employee experience, or a line-of-business leader. Most pushback is about adoption, surface choice, and citizen development risk.",
+          intro: "Concerns raised most often by the head of AI, employee experience, or a line-of-business leader. Adoption, surface choice, and citizen-development risk are the recurring themes.",
           items: [
             { quote: "We bought GitHub Copilot \u2014 isn't that enough?", response: "GitHub Copilot is one experience for developers. M365 Copilot, business-app copilots, and citizen-built agents are how the other 90% of employees see AI. Same control plane underneath, very different surfaces.", pivot: { label: "See the Experience plane", target: "experience", isScenario: false } },
             { quote: "Adoption is stuck \u2014 people don't know what to ask.", response: "Citizen-built agents fix this. A business owner builds an agent for their team's most-asked question; usage spikes because the agent answers the question, not the human. The HR scenario is the pattern.", pivot: { label: "Walk the Citizen HR scenario", target: "citizen", isScenario: true } },
             { quote: "We need agents inside our business apps, not just chat.", response: "Business-app copilots (SAP Joule, Salesforce Agentforce, ServiceNow Now Assist) live exactly there. With A2A, they collaborate; with one control plane, they're inventoried the same way. Same governance, different doorways.", pivot: { label: "See the Experience plane", target: "experience", isScenario: false } },
-            { quote: "Citizen developers will create a mess.", response: "Only if there's no platform. Copilot Studio + Foundry registers every citizen-built agent centrally \u2014 with identity, DLP, evals, and cost tags inherited automatically. Freedom for the builder, control for IT.", pivot: { label: "Walk the Citizen HR scenario", target: "citizen", isScenario: true } },
+            { quote: "Citizen developers will create a mess.", response: "Only if there's no platform. A central builder (e.g. Copilot Studio) plus the registry registers every citizen-built agent \u2014 with identity, DLP, evals, and cost tags inherited automatically. Freedom for the builder, control for IT.", pivot: { label: "Walk the Citizen HR scenario", target: "citizen", isScenario: true } },
           ],
         },
       };
@@ -666,14 +666,14 @@
         const stripHtml = (s) => s.replace(/<[^>]+>/g, "");
         const seeHref = new URL(ch.seeItWork.href, location.href).href;
         const text = [
-          `Customer outcome: ${ch.outcomeLabel || ""}`,
-          `Customer says: \u201c${ch.customerQuote}\u201d`,
+          `Outcome: ${ch.outcomeLabel || ""}`,
+          `The question: \u201c${ch.customerQuote}\u201d`,
           ``,
-          `Say this: ${ch.soundbite || ""}`,
+          `Why it matters: ${ch.soundbite || ""}`,
           ``,
           `The short answer: ${ch.shortAnswer}`,
           ``,
-          `Discovery questions:`,
+          `Questions to ask your team:`,
           ...ch.points.map((p) => `  - ${stripHtml(p)}`),
           ``,
           `See it in action: ${ch.seeItWork.label} \u2014 ${seeHref}`,

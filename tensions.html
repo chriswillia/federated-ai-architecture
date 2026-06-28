@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Honest tensions &amp; references &mdash; Trusted Federated AI</title>
+    <title>Trade-offs &amp; references &mdash; Trusted Federated AI</title>
     <script>
       (function () {
         try {
@@ -15,44 +15,7 @@
     </script>
     <link rel="stylesheet" href="assets/style.css" />
     <style>
-      :root {
-        color-scheme: light;
-        --cp-bg: #f7f4ef;
-        --cp-bg-elevated: #fcfbf8;
-        --cp-surface: #ffffff;
-        --cp-surface-soft: #f5f5f5;
-        --cp-border: #dedede;
-        --cp-border-strong: #919191;
-        --cp-text: #242424;
-        --cp-text-muted: #5c5c5c;
-        --cp-text-soft: #6f6f6f;
-        --cp-accent: #b11f4b;
-        --cp-accent-fg: #ffffff;
-        --cp-warning: #f59e0b;
-        --cp-link: #0078d4;
-        --cp-panel-strong: rgba(255, 255, 255, 0.96);
-
-        --layer-control: #2f6f8f;
-      }
-      html[data-theme="dark"] {
-        color-scheme: dark;
-        --cp-bg: #3d3b3a;
-        --cp-bg-elevated: #343231;
-        --cp-surface: #292929;
-        --cp-surface-soft: #2e2e2e;
-        --cp-border: #474747;
-        --cp-border-strong: #5f5f5f;
-        --cp-text: #dedede;
-        --cp-text-muted: #919191;
-        --cp-text-soft: #b0b0b0;
-        --cp-accent: #fd8ea1;
-        --cp-accent-fg: #1a1a1a;
-        --cp-warning: #fbbf24;
-        --cp-link: #4da6ff;
-        --cp-panel-strong: rgba(41, 41, 41, 0.96);
-
-        --layer-control: #6fb0c9;
-      }
+      /* Page-specific component styles only. Color tokens come from assets/style.css. */
       * { box-sizing: border-box; }
       html, body {
         margin: 0; padding: 0;
@@ -178,13 +141,13 @@
 
     <main>
       <section class="page-intro">
-        <h2>Honest tensions &amp; references</h2>
-        <p>A federated AI environment is the right direction, but it isn&rsquo;t free of trade-offs. Below: five contradictions worth naming up front before the customer raises them, and the primary sources behind the architecture.</p>
+        <h2>Trade-offs &amp; references</h2>
+        <p>A federated AI environment is the right direction, but it isn&rsquo;t free of trade-offs. Below: five contradictions worth naming up front before they surface in delivery, and the primary sources behind the architecture.</p>
       </section>
 
       <section class="tensions" id="tensions" aria-labelledby="tensions-heading">
-        <h3 id="tensions-heading">Honest tensions &mdash; 5 trade-offs worth naming up front</h3>
-        <p class="tensions-sub">Name these before the customer does. It buys credibility and shortens the architecture debate.</p>
+        <h3 id="tensions-heading">Five trade-offs worth naming up front</h3>
+        <p class="tensions-sub">Name these before delivery does. It builds credibility and shortens the architecture debate inside your own organization.</p>
         <div class="tensions-grid">
           <div class="tension-card">
             <div class="tension-title">Single control plane vs vendor reality</div>
@@ -226,6 +189,6 @@
     <div id="app-footer"></div>
 
     <script src="assets/shell.js"></script>
-    <script>Shell.mount({ activePath: "overview" });</script>
+    <script>Shell.mount({ activePath: "tensions" });</script>
   </body>
 </html>

@@ -81,9 +81,12 @@
 
 html[data-theme="light"] {
   --bg:            #fafaf8;
+  --bg-elevated:   #ffffff;
   --surface:       #ffffff;
   --surface-2:     #f3f4f6;
+  --surface-soft:  #f3f4f6;
   --panel:         rgba(255,255,255,0.92);
+  --panel-strong:  #ffffff;
   --text:          #1c1d22;
   --text-muted:    #5b6068;
   --text-soft:     #7d8290;
@@ -95,14 +98,40 @@ html[data-theme="light"] {
   --accent-hover:  #3640d0;
   --success:       #0e9384;
   --warning:       #b16500;
+  --danger:        #b42318;
   --link:          #464feb;
+  --highlight:     rgba(70,79,235,0.08);
+  --overlay:       rgba(255,255,255,0.80);
+  --sheen:         rgba(255,255,255,0.55);
+
+  /* Layer palette — shared across the architecture diagrams.
+     One vendor-neutral, indigo-anchored family. */
+  --layer-experience:      #e8743c;
+  --layer-experience-soft: rgba(232,116,60,0.10);
+  --layer-control:         #5060e8;
+  --layer-control-soft:    rgba(80,96,232,0.10);
+  --layer-fabric:          #1098ad;
+  --layer-fabric-soft:     rgba(16,152,173,0.10);
+  --layer-build:           #7fb73e;
+  --layer-build-soft:      rgba(127,183,62,0.10);
+  --layer-model:           #7fb73e;
+  --layer-model-soft:      rgba(127,183,62,0.10);
+  --layer-data:            #2f9e6b;
+  --layer-data-soft:       rgba(47,158,107,0.10);
+  --layer-business:        #b16500;
+  --layer-business-soft:   rgba(177,101,0,0.10);
+  --layer-infra:           #6f6f6f;
+  --layer-infra-soft:      rgba(111,111,111,0.10);
 }
 
 html[data-theme="dark"] {
   --bg:            #0c0d10;
+  --bg-elevated:   #14161c;
   --surface:       #15171c;
   --surface-2:     #1c1f25;
+  --surface-soft:  #1c1f25;
   --panel:         rgba(15,17,21,0.88);
+  --panel-strong:  #0e1015;
   --text:          #e8eaee;
   --text-muted:    #9aa0ac;
   --text-soft:     #6e7480;
@@ -114,7 +143,56 @@ html[data-theme="dark"] {
   --accent-hover:  #5d6aff;
   --success:       #26d4b8;
   --warning:       #f4b740;
+  --danger:        #f87171;
   --link:          #7c87ff;
+  --highlight:     rgba(124,135,255,0.16);
+  --overlay:       rgba(15,17,21,0.85);
+  --sheen:         rgba(255,255,255,0.04);
+
+  --layer-experience:      #f4a16d;
+  --layer-experience-soft: rgba(244,161,109,0.16);
+  --layer-control:         #9ba6ff;
+  --layer-control-soft:    rgba(155,166,255,0.16);
+  --layer-fabric:          #4fc1d2;
+  --layer-fabric-soft:     rgba(79,193,210,0.16);
+  --layer-build:           #b6d97e;
+  --layer-build-soft:      rgba(182,217,126,0.16);
+  --layer-model:           #b6d97e;
+  --layer-model-soft:      rgba(182,217,126,0.16);
+  --layer-data:            #5ed3a3;
+  --layer-data-soft:       rgba(94,211,163,0.16);
+  --layer-business:        #f4b740;
+  --layer-business-soft:   rgba(244,183,64,0.16);
+  --layer-infra:           #b0b0b0;
+  --layer-infra-soft:      rgba(176,176,176,0.16);
+}
+
+/* Legacy --cp-* aliases — older pages reference these names.
+   Both themes inherit from the unified tokens above. */
+:root {
+  --cp-bg:            var(--bg);
+  --cp-bg-elevated:   var(--bg-elevated);
+  --cp-surface:       var(--surface);
+  --cp-surface-soft:  var(--surface-soft);
+  --cp-panel:         var(--panel);
+  --cp-panel-strong:  var(--panel-strong);
+  --cp-text:          var(--text);
+  --cp-text-muted:    var(--text-muted);
+  --cp-text-soft:     var(--text-soft);
+  --cp-border:        var(--border);
+  --cp-border-strong: var(--border-strong);
+  --cp-accent:        var(--accent);
+  --cp-accent-fg:     var(--accent-fg);
+  --cp-accent-soft:   var(--accent-soft);
+  --cp-accent-hover:  var(--accent-hover);
+  --cp-success:       var(--success);
+  --cp-warning:       var(--warning);
+  --cp-danger:        var(--danger);
+  --cp-link:          var(--link);
+  --cp-highlight:     var(--highlight);
+  --cp-overlay:       var(--overlay);
+  --cp-sheen:         var(--sheen);
+  --cp-shadow:        var(--shadow-2);
 }
 
 /* ---------- 2. BASE ---------- */

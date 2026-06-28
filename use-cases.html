@@ -16,77 +16,7 @@
     </script>
     <link rel="stylesheet" href="assets/style.css" />
     <style>
-      :root {
-        --cp-bg: #faf9f8;
-        --cp-surface: #ffffff;
-        --cp-surface-soft: #f3f2f1;
-        --cp-text: #201f1e;
-        --cp-text-muted: #605e5c;
-        --cp-border: #e1dfdd;
-        --cp-accent: #0078d4;
-        --cp-success: #107c10;
-        --cp-warning: #ca5010;
-        --cp-danger: #a4262c;
-        --cp-link: #0078d4;
-
-        --layer-experience: #d97706;
-        --layer-experience-soft: #fef3c7;
-        --layer-control: #2563eb;
-        --layer-control-soft: #dbeafe;
-        --layer-fabric: #0891b2;
-        --layer-fabric-soft: #cffafe;
-        --layer-data: #16a34a;
-        --layer-data-soft: #dcfce7;
-        --layer-model: #65a30d;
-        --layer-model-soft: #ecfccb;
-      }
-      [data-theme="dark"] {
-        --cp-bg: #1b1a19;
-        --cp-surface: #252423;
-        --cp-surface-soft: #2d2c2b;
-        --cp-text: #f3f2f1;
-        --cp-text-muted: #c8c6c4;
-        --cp-border: #3b3a39;
-        --cp-accent: #4cc2ff;
-        --cp-success: #6ccb5f;
-        --cp-warning: #f7894a;
-        --cp-danger: #ef6f6c;
-        --cp-link: #4cc2ff;
-
-        --layer-experience: #fbbf24;
-        --layer-experience-soft: #423016;
-        --layer-control: #60a5fa;
-        --layer-control-soft: #1e2a4a;
-        --layer-fabric: #22d3ee;
-        --layer-fabric-soft: #103442;
-        --layer-data: #4ade80;
-        --layer-data-soft: #133b22;
-        --layer-model: #a3e635;
-        --layer-model-soft: #1e3010;
-      }
-      @media (prefers-color-scheme: dark) {
-        :root:not([data-theme]) {
-          --cp-bg: #1b1a19;
-          --cp-surface: #252423;
-          --cp-surface-soft: #2d2c2b;
-          --cp-text: #f3f2f1;
-          --cp-text-muted: #c8c6c4;
-          --cp-border: #3b3a39;
-          --cp-accent: #4cc2ff;
-          --cp-link: #4cc2ff;
-          --layer-experience: #fbbf24;
-          --layer-experience-soft: #423016;
-          --layer-control: #60a5fa;
-          --layer-control-soft: #1e2a4a;
-          --layer-fabric: #22d3ee;
-          --layer-fabric-soft: #103442;
-          --layer-data: #4ade80;
-          --layer-data-soft: #133b22;
-          --layer-model: #a3e635;
-          --layer-model-soft: #1e3010;
-        }
-      }
-
+      /* Page-specific component styles only. Color tokens come from assets/style.css. */
       * { box-sizing: border-box; }
       html, body {
         margin: 0;
@@ -706,6 +636,6 @@
       });
     </script>
     <script src="assets/shell.js"></script>
-    <script>Shell.mount({ activePath: "overview" });</script>
+    <script>Shell.mount({ activePath: "use-cases" });</script>
   </body>
 </html>

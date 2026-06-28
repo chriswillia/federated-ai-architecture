@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Trusted Federated AI Operating Model &mdash; one-page leave-behind</title>
-    <meta name="description" content="Single-page printable leave-behind for a customer meeting on federated AI. Pick a lens (Security & Trust, AI Architecture, AI Experience) and a customer name." />
+    <title>Trusted Federated AI &mdash; Executive summary</title>
+    <meta name="description" content="Single-page printable executive summary of the Trusted Federated AI framework. Pick the lens that matters to your organization (Security & Trust, AI Architecture, or AI Experience)." />
     <script>
       (function () {
         try {
@@ -16,34 +16,9 @@
     </script>
     <link rel="stylesheet" href="assets/style.css" />
     <style>
-      :root {
-        --cp-bg: #faf9f8;
-        --cp-surface: #ffffff;
-        --cp-surface-soft: #f3f2f1;
-        --cp-text: #201f1e;
-        --cp-text-muted: #605e5c;
-        --cp-text-soft: #797775;
-        --cp-border: #e1dfdd;
-        --cp-accent: #0078d4;
-        --cp-link: #0078d4;
-        --layer-experience: #d97706;
-        --layer-control: #2563eb;
-        --layer-fabric: #0891b2;
-        --layer-data: #16a34a;
-        --layer-model: #65a30d;
-        --lens-color: var(--cp-accent);
-      }
-      [data-theme="dark"] {
-        --cp-bg: #1b1a19; --cp-surface: #252423; --cp-surface-soft: #2d2c2b;
-        --cp-text: #f3f2f1; --cp-text-muted: #c8c6c4; --cp-text-soft: #a19f9d;
-        --cp-border: #3b3a39;
-        --cp-accent: #4cc2ff; --cp-link: #4cc2ff;
-        --layer-experience: #fbbf24;
-        --layer-control: #60a5fa;
-        --layer-fabric: #22d3ee;
-        --layer-data: #4ade80;
-        --layer-model: #a3e635;
-      }
+      /* Page-specific component styles only. Color tokens come from assets/style.css.
+         The --lens-color is a page-local accent that switches with the lens toggle. */
+      :root { --lens-color: var(--cp-accent); }
       html[data-lens="security"]     { --lens-color: var(--layer-control); }
       html[data-lens="architecture"] { --lens-color: var(--layer-fabric); }
       html[data-lens="experience"]   { --lens-color: var(--layer-experience); }
@@ -323,8 +298,8 @@
       <button type="button" class="lens-btn" data-lens="architecture">AI Architecture</button>
       <button type="button" class="lens-btn" data-lens="experience">AI Experience</button>
       <button type="button" class="lens-btn" data-lens="all">All</button>
-      <span class="lbl" style="margin-left: 8px;">Customer</span>
-      <input type="text" id="customerInput" placeholder="Customer name (optional)" />
+      <span class="lbl" style="margin-left: 8px;">Organization</span>
+      <input type="text" id="customerInput" placeholder="Your organization (optional)" />
       <a class="back-link" href="architect.html">&larr; Reference architecture</a>
       <button type="button" class="print-btn" id="printBtn">Print &middot; Save as PDF</button>
     </header>
@@ -334,9 +309,9 @@
     <script>
       const LENSES = {
         security: {
-          eyebrow: "For the CISO conversation",
+          eyebrow: "For your security & trust leaders",
           title: "Trust your AI estate.",
-          subtitle: "See every agent. Govern every prompt. Catch every misuse. A federated AI architecture extends your existing Microsoft Sentinel, Defender, Purview, and Entra controls to AI \u2014 including the AI your employees use without telling you.",
+          subtitle: "See every agent. Govern every prompt. Catch every misuse. A federated AI architecture extends the security, identity, and compliance controls you already trust to AI \u2014 including the AI your employees use without telling you.",
           outcomes: [
             { name: "Inventory every agent", body: "Microsoft Agent 365 + Foundry register every agent &mdash; including citizen-built and shadow." },
             { name: "Extend Defender to AI", body: "Defender for Cloud Apps detects shadow AI usage; Defender XDR responds to prompt-injection and data-exfil attempts." },
@@ -361,9 +336,9 @@
           ],
         },
         architecture: {
-          eyebrow: "For the CIO & CTO conversation",
+          eyebrow: "For your CIO & enterprise architects",
           title: "One platform. Many clouds. Zero rewrites.",
-          subtitle: "A federated AI architecture lets you build once and deploy anywhere \u2014 Azure, AWS, GCP, on-prem, or inside SAP and Salesforce \u2014 using MCP, A2A, and APIM as the shared wiring, with Foundry as the central control plane.",
+          subtitle: "A federated AI architecture lets your teams build once and deploy anywhere \u2014 Azure, AWS, GCP, on-prem, or inside SAP and Salesforce \u2014 with open standards (MCP, A2A) and an API gateway as the shared wiring, and one control plane above the runtime cloud.",
           outcomes: [
             { name: "Build once, deploy anywhere", body: "Same agent runs on Azure, AWS, GCP, on-prem, or inside SaaS \u2014 governed by Foundry." },
             { name: "Standard wiring", body: "MCP for tools, A2A for agent collaboration, APIM for APIs &mdash; no per-integration glue." },
@@ -389,9 +364,9 @@
           ],
         },
         experience: {
-          eyebrow: "For the AI & business leader conversation",
+          eyebrow: "For your head of AI & business leaders",
           title: "AI in your daily work, governed by default.",
-          subtitle: "Employees use M365 Copilot, business-app copilots, and citizen-built agents in Copilot Studio \u2014 one chat surface, every business app, every backend system \u2014 without IT chasing shadow tools or rebuilding integrations per department.",
+          subtitle: "Your employees use M365 Copilot, business-app copilots, and citizen-built agents \u2014 one chat surface, every business app, every backend system \u2014 without IT chasing shadow tools or rebuilding integrations per department.",
           outcomes: [
             { name: "One surface employees know", body: "M365 Copilot in Teams + Outlook + Office &mdash; not another tool to learn." },
             { name: "Agents inside business apps", body: "SAP Joule, Salesforce Agentforce, ServiceNow Now Assist &mdash; AI where the work happens." },
@@ -464,8 +439,8 @@
             <p class="subtitle">${lens.subtitle}</p>
             ${forLine}
           </section>
-          <section class="lb-flow" aria-label="Run the meeting">
-            <h2>Run the meeting</h2>
+          <section class="lb-flow" aria-label="Read the summary">
+            <h2>How to read this summary</h2>
             <ol>
               <li><span class="name">Reality</span><span class="said">Your AI ecosystem will be federated.</span></li>
               <li><span class="name">Risk</span><span class="said">Federation without control becomes sprawl.</span></li>
@@ -477,7 +452,7 @@
           </section>
           <div class="lb-grid">
             <section class="lb-card lb-outcomes">
-              <h2>Customer outcomes</h2>
+              <h2>Outcomes for your enterprise</h2>
               <ul>
                 ${lens.outcomes.map((o) => `<li><strong>${o.name}.</strong> ${o.body}</li>`).join("")}
               </ul>
@@ -490,10 +465,11 @@
             </section>
           </div>
           <section class="lb-card" style="margin-top: 14px;">
-            <h2>Microsoft products that deliver this</h2>
+            <h2>Example anchor stack (Microsoft)</h2>
+            <p style="margin: 0 0 8px; font-size: 12px; color: var(--cp-text-muted);">Illustrative only. The framework is vendor-neutral; substitute your equivalent in each row.</p>
             <table class="lb-sku-table">
               <thead>
-                <tr><th style="width: 38%;">Capability</th><th>Microsoft product</th></tr>
+                <tr><th style="width: 38%;">Capability</th><th>Example product</th></tr>
               </thead>
               <tbody>
                 ${lens.skus.map((s) => `<tr class="${s.glow ? "lb-sku-row-glow" : ""}"><td>${s.node}</td><td>${s.product}</td></tr>`).join("")}
@@ -501,7 +477,7 @@
             </table>
           </section>
           <div class="lb-footer">
-            <span>Trusted Federated AI Operating Model &middot; illustrative reference &mdash; product capabilities evolve.</span>
+            <span>Trusted Federated AI &middot; vendor-neutral reference &mdash; product capabilities evolve.</span>
             <span><a href="architect.html">aka.ms/federated-ai &rarr;</a></span>
           </div>
         `;
@@ -548,6 +524,6 @@
     </script>
     <div id="app-footer"></div>
     <script src="assets/shell.js"></script>
-    <script>Shell.mount({ activePath: "executives", showCustomerInput: false });</script>
+    <script>Shell.mount({ activePath: "summary", showCustomerInput: false });</script>
   </body>
 </html>

@@ -16,38 +16,7 @@
     </script>
     <link rel="stylesheet" href="assets/style.css" />
     <style>
-      :root {
-        color-scheme: light dark;
-        --cp-accent: #464feb;
-        --cp-accent-fg: #ffffff;
-      }
-      html[data-theme="dark"] {
-        --cp-bg: #0b0c10;
-        --cp-bg-elevated: #14161c;
-        --cp-surface: #1a1d24;
-        --cp-surface-soft: #20242c;
-        --cp-panel-strong: #0e1015;
-        --cp-text: #e8eaee;
-        --cp-text-muted: #aab0bb;
-        --cp-text-soft: #7a8190;
-        --cp-border: #2a2f39;
-        --cp-border-strong: #3b414e;
-        --cp-link: #7c87ff;
-      }
-      html[data-theme="light"] {
-        --cp-bg: #f7f8fb;
-        --cp-bg-elevated: #ffffff;
-        --cp-surface: #ffffff;
-        --cp-surface-soft: #f0f2f7;
-        --cp-panel-strong: #ffffff;
-        --cp-text: #1f2229;
-        --cp-text-muted: #565b66;
-        --cp-text-soft: #767c89;
-        --cp-border: #e1e4eb;
-        --cp-border-strong: #c8cdd6;
-        --cp-link: #464feb;
-      }
-
+      /* Page-specific component styles only. Color tokens come from assets/style.css. */
       * { box-sizing: border-box; }
       html, body {
         margin: 0;
@@ -328,9 +297,9 @@
         <div class="eyebrow">Concepts</div>
         <h2>Eight ideas that make a federated AI operating model real.</h2>
         <p>
-          The reference architecture shows the <em>what</em>. These concepts give sellers and architects
-          the language to make it <em>operational</em> &mdash; inventory, controls, economics, and lifecycle
-          for an estate of agents that will be built across many platforms and run in many clouds.
+          The reference architecture shows the <em>what</em>. These concepts give your enterprise the
+          shared language to make federated AI <em>operational</em> &mdash; inventory, controls, economics,
+          and lifecycle for an estate of agents that will be built across many platforms and run in many clouds.
         </p>
       </section>
 
@@ -572,6 +541,6 @@
     <div id="app-footer"></div>
 
     <script src="assets/shell.js"></script>
-    <script>Shell.mount({ activePath: "overview" });</script>
+    <script>Shell.mount({ activePath: "concepts" });</script>
   </body>
 </html>
