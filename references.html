@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Standards and reference frameworks that reinforce the Trusted Federated AI operating model." />
+    <title>Standards &amp; references — Trusted Federated AI</title>
+    <script>
+      (() => {
+        try {
+          const saved = localStorage.getItem("federated-ai-theme");
+          const theme = saved || (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch (e) {}
+      })();
+    </script>
+    <link rel="stylesheet" href="assets/style.css" />
+    <style>
+      .references-hero { padding: 22px; margin-bottom: 20px; background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: 12px; }
+      .references-hero h1 { margin: 5px 0 8px; font-size: 28px; }
+      .references-hero p { max-width: 840px; margin: 0; color: var(--text-muted); }
+      .reference-section { margin: 0 0 20px; padding: 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
+      .reference-section h2 { font-size: 19px; margin: 0 0 4px; }
+      .reference-section > p { margin: 0 0 14px; color: var(--text-muted); font-size: 13px; }
+      .reference-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(255px, 1fr)); gap: 12px; }
+      .reference-card { padding: 14px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; }
+      .reference-card h3 { margin: 0 0 5px; font-size: 14px; }
+      .reference-card p { margin: 0 0 8px; color: var(--text-muted); font-size: 12.5px; }
+      .reference-card .enhances { display: block; font-size: 11.5px; color: var(--text-soft); }
+      .reference-card a { font-size: 12px; font-weight: 600; }
+      .crosswalk { width: 100%; border-collapse: collapse; font-size: 13px; }
+      .crosswalk th, .crosswalk td { padding: 9px 10px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border); }
+      .crosswalk th { font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-soft); }
+      .crosswalk td:first-child { font-weight: 600; color: var(--text); width: 30%; }
+      .note { margin-top: 14px; padding: 12px 14px; background: var(--accent-soft); border-left: 3px solid var(--accent); border-radius: 6px; color: var(--text-muted); font-size: 13px; }
+      @media print { .app-shell, .app-footer, .seller-meeting-guide, .seller-toggle { display: none !important; } main.app-main { max-width: none; padding: 0; } .reference-section { break-inside: avoid; } }
+    </style>
+  </head>
+  <body>
+    <div id="app-header"></div>
+    <main class="app-main">
+      <section class="references-hero">
+        <div class="eyebrow">Standards &amp; references</div>
+        <h1>Open frameworks that make federated AI defensible.</h1>
+        <p>This is a practical crosswalk, not a compliance claim. It connects the operating model to recognized governance, security, transparency, operations, and interoperability frameworks. Microsoft material is explicitly an illustrative anchor implementation, not the architecture&rsquo;s neutral foundation.</p>
+      </section>
+      <section class="reference-section"><h2>01 · Governance &amp; management</h2><p>Management-system, risk, and regulatory guidance for accountable AI operations.</p><div class="reference-grid">
+        <article class="reference-card"><h3>ISO/IEC 42001</h3><p>AI management-system standard for policy, accountability, lifecycle, and continual improvement.</p><span class="enhances">Enhances: System of Record · Trust Contracts · Progressive Governance</span><a href="https://www.iso.org/standard/81230.html" target="_blank" rel="noopener">Source ↗</a></article>
+        <article class="reference-card"><h3>NIST AI RMF + GenAI Profile</h3><p>Risk-management functions and Generative AI risk considerations for mapping, measuring, managing, and governing.</p><span class="enhances">Enhances: Risk Tiers · Trust Contracts · Federated Zones</span><a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noopener">Source ↗</a></article>
+        <article class="reference-card"><h3>Gartner AI TRiSM</h3><p>Market framework for AI trust, risk, and security management. Proprietary: use as validation, not a normative control standard.</p><span class="enhances">Enhances: System of Record · Progressive Governance · Portfolio Management</span></article>
+        <article class="reference-card"><h3>EU AI Act</h3><p>Risk-based legal requirements, including technical documentation expectations for relevant systems.</p><span class="enhances">Enhances: Risk Tiers · ABOM · Trust Contracts</span><a href="https://artificialintelligenceact.eu/" target="_blank" rel="noopener">Reference guide ↗</a></article>
+      </div></section>
+      <section class="reference-section"><h2>02 · Security &amp; agentic threat</h2><p>Cross-cutting security patterns, especially for Tier 2–4 agents that can use tools or take consequential action.</p><div class="reference-grid">
+        <article class="reference-card"><h3>OWASP Top 10 for LLM Applications</h3><p>Common GenAI application vulnerabilities, including prompt injection and sensitive information disclosure.</p><span class="enhances">Enhances: Risk Tiers · Trust Contracts · Govern &amp; Secure</span><a href="https://genai.owasp.org/llm-top-10/" target="_blank" rel="noopener">Source ↗</a></article>
+        <article class="reference-card"><h3>CSA MAESTRO</h3><p>Cloud Security Alliance framework for managing agentic AI security threats and controls.</p><span class="enhances">Enhances: Trust Contracts · Federated Zones · Govern &amp; Secure</span><a href="https://cloudsecurityalliance.org/artifacts/maestro" target="_blank" rel="noopener">Source ↗</a></article>
+        <article class="reference-card"><h3>Google SAIF / CoSAI</h3><p>Secure AI framework and collaborative security guidance for AI systems and shared responsibility.</p><span class="enhances">Enhances: Federated Zones · Trust Contracts · Secure runtime</span><a href="https://saif.google/" target="_blank" rel="noopener">SAIF ↗</a></article>
+      </div></section>
+      <section class="reference-section"><h2>03 · Transparency &amp; supply chain</h2><p>Structured evidence for the components, data connections, and runtime dependencies of AI systems.</p><div class="reference-grid">
+        <article class="reference-card"><h3>CycloneDX ML-BOM</h3><p>Machine-readable bill-of-materials support for ML and AI components.</p><span class="enhances">Enhances: Agent Bill of Materials · System of Record</span><a href="https://cyclonedx.org/capabilities/mlbom/" target="_blank" rel="noopener">Source ↗</a></article>
+        <article class="reference-card"><h3>SPDX 3.0 AI Profile</h3><p>Software supply-chain data model that can describe AI-related artifacts and relationships.</p><span class="enhances">Enhances: Agent Bill of Materials · Trust Contracts</span><a href="https://spdx.dev/learn/ai/" target="_blank" rel="noopener">Source ↗</a></article>
+      </div></section>
+      <section class="reference-section"><h2>04 · Cost &amp; operations</h2><div class="reference-grid"><article class="reference-card"><h3>FinOps for AI</h3><p>FinOps Foundation guidance for managing AI cost, usage, value, and accountability.</p><span class="enhances">Enhances: AI FinOps by Outcome · Portfolio Management</span><a href="https://www.finops.org/framework/capabilities/workload-optimization/finops-for-ai/" target="_blank" rel="noopener">Source ↗</a></article></div></section>
+      <section class="reference-section"><h2>05 · Interoperability</h2><p>Portable protocols that allow decentralized development while preserving common control points.</p><div class="reference-grid">
+        <article class="reference-card"><h3>Model Context Protocol (MCP)</h3><p>Open protocol for connecting AI applications to tools and context.</p><span class="enhances">Enhances: Connect · Trust Contracts · ABOM</span><a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener">Source ↗</a></article>
+        <article class="reference-card"><h3>Agent2Agent (A2A)</h3><p>Open protocol for agent discovery and collaboration.</p><span class="enhances">Enhances: Connect · Federated Zones</span><a href="https://a2aproject.github.io/A2A/" target="_blank" rel="noopener">Source ↗</a></article>
+        <article class="reference-card"><h3>OAuth/OIDC</h3><p>Industry standards for delegated authorization and identity federation.</p><span class="enhances">Enhances: Trust Contracts · Identity controls</span><a href="https://openid.net/developers/how-connect-works/" target="_blank" rel="noopener">Source ↗</a></article>
+        <article class="reference-card"><h3>OpenTelemetry</h3><p>Open observability standard for traces, metrics, and logs.</p><span class="enhances">Enhances: Observability · AI FinOps · Incident investigation</span><a href="https://opentelemetry.io/" target="_blank" rel="noopener">Source ↗</a></article>
+      </div></section>
+      <section class="reference-section"><h2>06 · Example anchor: Microsoft</h2><p>Illustrative implementation guidance. These are not the vendor-neutral control points; use them to map the framework to a Microsoft anchor stack.</p><div class="reference-grid">
+        <article class="reference-card"><h3>Cloud Adoption Framework</h3><p>Enterprise cloud strategy, governance, and operating-model guidance.</p><span class="enhances">Enhances: Progressive Governance · Portfolio Management</span><a href="https://learn.microsoft.com/azure/cloud-adoption-framework/" target="_blank" rel="noopener">Source ↗</a></article>
+        <article class="reference-card"><h3>Well-Architected Framework for AI</h3><p>Design guidance for reliable, secure, performant, and cost-effective AI workloads.</p><span class="enhances">Enhances: Federated Zones · Risk Tiers · FinOps</span><a href="https://learn.microsoft.com/azure/well-architected/ai/" target="_blank" rel="noopener">Source ↗</a></article>
+        <article class="reference-card"><h3>AI Landing Zones</h3><p>Reference approach for an enterprise-ready AI platform foundation.</p><span class="enhances">Enhances: Federated Zones · Govern &amp; Secure</span><a href="https://learn.microsoft.com/azure/cloud-adoption-framework/scenarios/ai/" target="_blank" rel="noopener">Source ↗</a></article>
+      </div></section>
+      <section class="reference-section"><h2>07 · Concept crosswalk</h2><table class="crosswalk"><thead><tr><th>Framework concept</th><th>Reinforcing external frameworks</th></tr></thead><tbody>
+        <tr><td>AI System of Record</td><td>ISO/IEC 42001 · Gartner AI TRiSM · NIST AI RMF</td></tr><tr><td>Agent Bill of Materials</td><td>CycloneDX ML-BOM · SPDX 3.0 AI Profile · EU AI Act technical documentation</td></tr><tr><td>Agent Risk Tiers</td><td>EU AI Act risk categories · NIST AI 600-1 · OWASP LLM Top 10</td></tr><tr><td>Trust Contracts</td><td>ISO/IEC 42001 · CoSAI shared responsibility · NIST Govern</td></tr><tr><td>AI FinOps by Outcome</td><td>FinOps Foundation — FinOps for AI</td></tr><tr><td>Progressive Governance</td><td>Gartner AI TRiSM · ISO/IEC 42001 · Microsoft CAF</td></tr><tr><td>Agent Portfolio Management</td><td>Gartner AI TRiSM · Microsoft CAF</td></tr><tr><td>Federated AI Zones</td><td>Google SAIF / CoSAI · Microsoft WAF for AI + AI Landing Zones · NIST AI RMF</td></tr>
+      </tbody></table><div class="note"><strong>Neutrality resolution:</strong> use open standards and external frameworks as the architecture&rsquo;s neutral reference points. Use Microsoft CAF, Well-Architected guidance, and AI Landing Zones only as the example-anchor implementation.</div></section>
+    </main>
+    <div id="app-footer"></div>
+    <script src="assets/shell.js"></script>
+    <script>Shell.mount({ activePath: "references" });</script>
+  </body>
+</html>

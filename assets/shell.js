@@ -42,6 +42,7 @@
     { id: "concepts",     label: "Concepts",         href: "concepts.html" },
     { id: "use-cases",    label: "Use cases",        href: "use-cases.html" },
     { id: "tensions",     label: "Trade-offs",       href: "tensions.html" },
+    { id: "references",   label: "Standards",         href: "references.html" },
     { id: "summary",      label: "Executive summary", href: "leave-behind.html" },
   ];
 
@@ -51,6 +52,7 @@
     { label: "Concepts",          href: "concepts.html" },
     { label: "Use cases",         href: "use-cases.html" },
     { label: "Trade-offs",        href: "tensions.html" },
+    { label: "Standards",         href: "references.html" },
     { label: "Executive summary", href: "leave-behind.html" },
     { label: "GitHub \u2197",     href: "https://github.com/chriswillia/federated-ai-architecture", external: true },
   ];

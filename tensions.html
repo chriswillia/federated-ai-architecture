@@ -100,11 +100,11 @@
     <main class="app-main">
       <section class="page-intro">
         <h1>Trade-offs &amp; references</h1>
-        <p>A federated AI environment is the right direction, but it isn&rsquo;t free of trade-offs. Below: five contradictions worth naming up front before they surface in delivery, and the primary sources behind the architecture.</p>
+        <p>A federated AI environment is the right direction, but it isn&rsquo;t free of trade-offs. Below: six contradictions worth naming up front before they surface in delivery.</p>
       </section>
 
       <section class="tensions" id="tensions" aria-labelledby="tensions-heading">
-        <h3 id="tensions-heading">Five trade-offs worth naming up front</h3>
+        <h3 id="tensions-heading">Six trade-offs worth naming up front</h3>
         <p class="tensions-sub">Name these before delivery does. It builds credibility and shortens the architecture debate inside your own organization.</p>
         <div class="tensions-grid">
           <div class="tension-card">
@@ -127,6 +127,10 @@
             <div class="tension-title">MCP and A2A overlap at the edges</div>
             <div class="tension-body">The protocols are complementary in theory (tool calls vs agent collaboration), but their boundaries blur in practice. Expect overlap and version churn.</div>
           </div>
+          <div class="tension-card">
+            <div class="tension-title">Vendor-neutral framework, Microsoft-anchored control plane</div>
+            <div class="tension-body">The open standards make the architecture portable, while the example control-plane stack is consistently Microsoft. Name it plainly: use external frameworks as neutral references and Microsoft CAF, Well-Architected guidance, and AI Landing Zones as the illustrative implementation.</div>
+          </div>
         </div>
       </section>
 
@@ -144,16 +148,9 @@
       </section>
 
       <section class="references" id="references" aria-labelledby="references-heading">
-        <h3 id="references-heading">References &mdash; specs and primary sources</h3>
-        <p class="sub">Every claim in the reference architecture maps back to one of these.</p>
-        <ul>
-          <li><a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener noreferrer">Model Context Protocol (MCP)</a><span class="src">Open specification &middot; Anthropic</span></li>
-          <li><a href="https://a2aproject.github.io/A2A/" target="_blank" rel="noopener noreferrer">Agent2Agent (A2A) Protocol</a><span class="src">Open specification &middot; Google</span></li>
-          <li><a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noopener noreferrer">NIST AI Risk Management Framework (AI RMF 1.0)</a><span class="src">NIST</span></li>
-          <li><a href="https://genai.owasp.org/llm-top-10/" target="_blank" rel="noopener noreferrer">OWASP Top 10 for LLM Applications (2025)</a><span class="src">OWASP</span></li>
-          <li><a href="https://learn.microsoft.com/en-us/azure/ai-foundry/" target="_blank" rel="noopener noreferrer">Microsoft Foundry documentation</a><span class="src">Microsoft Learn</span></li>
-          <li><a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/" target="_blank" rel="noopener noreferrer">Microsoft Copilot Studio documentation</a><span class="src">Microsoft Learn</span></li>
-        </ul>
+        <h3 id="references-heading">Standards &amp; references</h3>
+        <p class="sub">See the full standards crosswalk: governance, security, supply chain, FinOps, interoperability, and the Microsoft example-anchor guidance.</p>
+        <a href="references.html">Open Standards &amp; references →</a>
       </section>
     </main>
 

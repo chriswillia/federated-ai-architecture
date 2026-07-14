@@ -611,6 +611,7 @@ main.app-main.app-main--wide {
   font-size: 11px; color: var(--text-soft);
   margin-left: auto; font-style: italic;
 }
+.standards-line { font-size: 11px; color: var(--text-soft); line-height: var(--lh-snug); }
 .pillar-cta {
   display: inline-flex; align-items: center; gap: 4px;
   font-size: var(--fs-13); font-weight: 600;

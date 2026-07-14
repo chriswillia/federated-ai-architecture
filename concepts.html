@@ -250,6 +250,10 @@
       .decision-block p { margin: 0 0 6px; color: var(--cp-text); }
       .decision-block ul { margin: 0 0 6px; }
       .decision-block .criteria { color: var(--cp-text-muted); }
+      .backed-by { margin-top: 12px; display: flex; align-items: center; flex-wrap: wrap; gap: 5px; font-size: 11px; color: var(--cp-text-soft); }
+      .backed-by strong { margin-right: 2px; }
+      .standard-tag { padding: 3px 7px; border-radius: 999px; border: 1px solid var(--cp-border); background: var(--cp-bg-elevated); color: var(--cp-text-muted); }
+      .backed-by a { margin-left: 4px; font-weight: 600; }
       .assessment-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
       .assessment-actions button { appearance: none; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--cp-border); background: var(--cp-surface); color: var(--cp-text); }
       .assessment-actions button:hover { border-color: var(--cp-accent); }
@@ -532,6 +536,16 @@
         "portfolio-management": ["Which agents should scale, consolidate, or retire?", ["Let teams manage independently", "Run a central portfolio review", "Use a federated review with shared measures"], "Measured value, duplication, risk concentration, and long-term ownership."],
         "federated-zones": ["Where should the control plane close its next gap?", ["Standardize one zone first", "Prioritize one control dimension across zones", "Fund the highest-risk gaps first"], "Business criticality, regulatory exposure, integration effort, and the maturity evidence below."],
       };
+      const STANDARDS = {
+        "ai-system-of-record": ["ISO/IEC 42001", "Gartner AI TRiSM", "NIST AI RMF"],
+        "agent-bom": ["CycloneDX ML-BOM", "SPDX 3.0 AI Profile", "EU AI Act Annex IV"],
+        "risk-tiers": ["EU AI Act", "NIST AI 600-1", "OWASP LLM Top 10"],
+        "trust-contracts": ["ISO/IEC 42001", "CoSAI shared responsibility", "NIST Govern"],
+        "finops-by-outcome": ["FinOps for AI"],
+        "progressive-governance": ["Gartner AI TRiSM", "ISO/IEC 42001", "Microsoft CAF"],
+        "portfolio-management": ["Gartner AI TRiSM", "Microsoft CAF"],
+        "federated-zones": ["Google SAIF / CoSAI", "Microsoft WAF for AI", "NIST AI RMF"],
+      };
 
       Object.entries(DECISIONS).forEach(([id, [question, options, criteria]]) => {
         const concept = document.getElementById(id);
@@ -540,6 +554,10 @@
         block.className = "decision-block";
         block.innerHTML = `<h4>Decision</h4><p><strong>${question}</strong></p><ul>${options.map((option) => `<li>${option}</li>`).join("")}</ul><p class="criteria"><strong>Criteria:</strong> ${criteria}</p>`;
         concept.appendChild(block);
+        const standards = document.createElement("div");
+        standards.className = "backed-by";
+        standards.innerHTML = `<strong>Backed by</strong>${(STANDARDS[id] || []).map((standard) => `<span class="standard-tag">${standard}</span>`).join("")}<a href="references.html">Full crosswalk →</a>`;
+        concept.appendChild(standards);
       });
 
       const MATURITY = ["native", "federated", "emerging", "manual"];
