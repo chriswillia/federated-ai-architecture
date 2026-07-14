@@ -35,7 +35,7 @@
         <p class="lead">
           An HR business analyst builds a benefits Q&amp;A agent in <strong>Copilot Studio</strong>. Employees ask it in
           <strong>M365 Copilot</strong> (Teams). The agent grounds answers in HR knowledge through <strong>Foundry IQ</strong>,
-          and only reaches into <strong>Microsoft Graph</strong> or the <strong>on-prem HRIS</strong> when it needs personal
+          and only reaches into <strong>Microsoft Graph</strong> or <strong>Workday</strong> when it needs personal
           data — under one identity, one cost owner, and full lineage.
         </p>
       </section>
@@ -51,7 +51,7 @@
         <div class="aag-card"><div class="aag-label">Built by</div><div class="aag-value">HR business analyst</div><div class="aag-detail">No-code in Copilot Studio</div></div>
         <div class="aag-card"><div class="aag-label">Used by</div><div class="aag-value">All employees</div><div class="aag-detail">M365 Copilot in Teams</div></div>
         <div class="aag-card"><div class="aag-label">Runs on</div><div class="aag-value">Foundry Agent Service</div><div class="aag-detail">Azure (M365 tenant)</div></div>
-        <div class="aag-card"><div class="aag-label">Touches data in</div><div class="aag-value">M365 Graph + HRIS</div><div class="aag-detail">Foundry IQ grounding · on-prem HRIS</div></div>
+        <div class="aag-card"><div class="aag-label">Touches data in</div><div class="aag-value">M365 Graph + Workday</div><div class="aag-detail">Foundry IQ grounding · Workday</div></div>
         <div class="aag-card"><div class="aag-label">Cost owner</div><div class="aag-value">HR cost center</div><div class="aag-detail">Token tags · monthly showback</div></div>
       </section>
 
@@ -82,8 +82,8 @@
         <div class="card-grid">
           <div class="cons-card"><div class="out-title">Citizen-developer enablement</div><div class="out-body">A make-vs-buy decision sits next to a help-vs-supervise one. Plan templates, guardrails, and an approval workflow before publishing.</div></div>
           <div class="cons-card"><div class="out-title">Curated MCP server catalog</div><div class="out-body">Citizen developers should not be picking arbitrary MCP servers. Curate an approved set with signed manifests.</div></div>
-          <div class="cons-card"><div class="out-title">PII handling discipline</div><div class="out-body">Reads from HRIS and Graph mean personal data is in scope. Set classification, retention, and DLP policy in Purview up front.</div></div>
-          <div class="cons-card"><div class="out-title">HRIS connector security</div><div class="out-body">On-prem HRIS access usually means a service principal or a private endpoint. Decide who rotates secrets and who can connect.</div></div>
+          <div class="cons-card"><div class="out-title">PII handling discipline</div><div class="out-body">Reads from Workday and Graph mean personal data is in scope. Set classification, retention, and DLP policy in Purview up front.</div></div>
+          <div class="cons-card"><div class="out-title">Workday connector security</div><div class="out-body">Workday access needs tightly scoped OAuth credentials and clear ownership for credential rotation and connection approvals.</div></div>
         </div>
       </section>
 
@@ -129,7 +129,7 @@
         ],
         fab: [
           { name: "HR knowledge MCP server", vendor: "oss", role: "Exposes HR policy documents and FAQ tools to the agent." },
-          { name: "Azure API Management", vendor: "microsoft", role: "Gateway to the on-prem HRIS with consistent auth + policy." },
+          { name: "Azure API Management", vendor: "microsoft", role: "Gateway to Workday with consistent auth + policy." },
         ],
         bld: [
           { name: "Copilot Studio (HR-owned)", vendor: "microsoft", role: "No-code authoring of the agent, prompts, and skills." },
@@ -139,7 +139,7 @@
         dat: [
           { name: "Foundry IQ", vendor: "microsoft", role: "Vector index + RAG over HR policy documents for grounding." },
           { name: "Microsoft Graph", vendor: "microsoft", role: "Reads employee profile, manager, calendar where personal answers need it." },
-          { name: "On-prem HRIS", vendor: "oss", role: "Authoritative source for benefits, PTO balance, and personal data." },
+          { name: "Workday", vendor: "oss", role: "Authoritative source for benefits, PTO balance, and personal data." },
         ],
       };
 
@@ -149,7 +149,7 @@
         { lane: "bld", title: "Route to agent", detail: "The HR-built Copilot Studio agent picks up the request in Foundry Agent Service." },
         { lane: "fab", title: "Call tools (MCP)", detail: "Agent invokes the curated HR knowledge MCP server through Model Context Protocol." },
         { lane: "dat", title: "Ground answer", detail: "Foundry IQ retrieves the relevant policy chunks from a vector index." },
-        { lane: "dat", title: "Read records", detail: "For personal queries, reads Microsoft Graph or the on-prem HRIS through governed connectors." },
+        { lane: "dat", title: "Read records", detail: "For personal queries, reads Microsoft Graph or Workday through governed connectors." },
         { lane: "ctl", title: "Govern & log", detail: "Foundry Control Plane traces the conversation; Purview records data lineage and classification." },
         { lane: "ctl", title: "Charge back", detail: "Token spend is tagged to the HR cost center for monthly showback." },
         { lane: "exp", title: "Answer in Teams", detail: "Employee receives a grounded answer with citations back to the policy source." },

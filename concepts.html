@@ -240,6 +240,30 @@
         line-height: 1.55;
       }
       .zones-takeaway strong { color: var(--cp-text); }
+
+      .decision-block {
+        margin-top: 14px; padding: 12px 14px;
+        background: var(--cp-bg-elevated); border: 1px solid var(--cp-border);
+        border-radius: 8px; font-size: 12.5px;
+      }
+      .decision-block h4 { margin: 0 0 6px; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--accent, var(--cp-accent)); }
+      .decision-block p { margin: 0 0 6px; color: var(--cp-text); }
+      .decision-block ul { margin: 0 0 6px; }
+      .decision-block .criteria { color: var(--cp-text-muted); }
+      .assessment-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+      .assessment-actions button { appearance: none; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--cp-border); background: var(--cp-surface); color: var(--cp-text); }
+      .assessment-actions button:hover { border-color: var(--cp-accent); }
+      .zones-grid > .zc.zc-interactive { cursor: pointer; }
+      .zones-grid > .zc.zc-interactive:hover { background: var(--cp-bg-elevated); }
+      .assessment-summary { margin-top: 14px; padding: 14px; background: var(--cp-bg-elevated); border: 1px solid var(--cp-border); border-radius: 8px; }
+      .assessment-summary h4 { margin: 0 0 8px; font-size: 14px; }
+      .assessment-summary p { margin: 0 0 8px; font-size: 12.5px; color: var(--cp-text-muted); }
+      .assessment-summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; }
+      .assessment-summary-card { padding: 8px 10px; border: 1px solid var(--cp-border); border-radius: 6px; background: var(--cp-surface); font-size: 12px; }
+      .assessment-summary-card strong { display: block; color: var(--cp-text); }
+      .assessment-summary-card span { color: var(--cp-text-muted); }
+      .assessment-summary .gap-list { margin: 10px 0 0; padding-left: 18px; font-size: 12px; color: var(--cp-text-muted); }
+      @media print { .assessment-actions, .seller-toggle, .seller-only { display: none !important; } .assessment-summary { break-inside: avoid; } }
     </style>
   </head>
   <body>
@@ -495,6 +519,94 @@
     <div id="app-footer"></div>
 
     <script src="assets/shell.js"></script>
-    <script>Shell.mount({ activePath: "concepts" });</script>
+    <script>
+      Shell.mount({ activePath: "concepts" });
+
+      const DECISIONS = {
+        "ai-system-of-record": ["Which inventory is authoritative for production AI?", ["Extend an existing CMDB or catalog", "Create a dedicated AI registry", "Use federated registries with a common identifier"], "Current inventory quality, ownership accountability, and integration with change management."],
+        "agent-bom": ["What minimum evidence must travel with every production agent?", ["A lightweight declaration", "A signed, versioned ABOM", "ABOM fields based on risk tier"], "Regulatory obligations, software-supply-chain practice, and whether tools or data can change at runtime."],
+        "risk-tiers": ["How should controls scale with agent impact?", ["One baseline for all agents", "Five risk tiers", "Use-case-specific review boards"], "Autonomy, data sensitivity, reversibility of actions, and customer or employee impact."],
+        "trust-contracts": ["Which permissions and boundaries must be machine-enforceable?", ["Document expectations only", "Use policy-as-code contracts", "Require contracts for higher tiers first"], "Tool access, approval paths, audit requirements, and how often access changes."],
+        "finops-by-outcome": ["What business outcome owns each agent's spend?", ["Track platform cost only", "Show back by team", "Measure cost per successful business outcome"], "Availability of outcome telemetry, chargeback maturity, and model-routing choices."],
+        "progressive-governance": ["When does an experiment earn stronger controls?", ["Gate all work before testing", "Add controls by lifecycle stage", "Add controls only by risk tier"], "Speed to learning, exposure level, and the capacity of security and platform teams."],
+        "portfolio-management": ["Which agents should scale, consolidate, or retire?", ["Let teams manage independently", "Run a central portfolio review", "Use a federated review with shared measures"], "Measured value, duplication, risk concentration, and long-term ownership."],
+        "federated-zones": ["Where should the control plane close its next gap?", ["Standardize one zone first", "Prioritize one control dimension across zones", "Fund the highest-risk gaps first"], "Business criticality, regulatory exposure, integration effort, and the maturity evidence below."],
+      };
+
+      Object.entries(DECISIONS).forEach(([id, [question, options, criteria]]) => {
+        const concept = document.getElementById(id);
+        if (!concept) return;
+        const block = document.createElement("section");
+        block.className = "decision-block";
+        block.innerHTML = `<h4>Decision</h4><p><strong>${question}</strong></p><ul>${options.map((option) => `<li>${option}</li>`).join("")}</ul><p class="criteria"><strong>Criteria:</strong> ${criteria}</p>`;
+        concept.appendChild(block);
+      });
+
+      const MATURITY = ["native", "federated", "emerging", "manual"];
+      const SCORES = { native: 4, federated: 3, emerging: 2, manual: 1 };
+      const assessmentKey = "federated-ai-zones-assessment";
+      const cells = Array.from(document.querySelectorAll(".zones-grid > .zc:not(.zlabel)"));
+      const zoneLabels = Array.from(document.querySelectorAll(".zones-grid > .zlabel"));
+      let assessment = {};
+      try { assessment = JSON.parse(localStorage.getItem(assessmentKey) || "{}"); } catch (e) {}
+
+      function maturityCell(cell, state) {
+        const badge = cell.querySelector(".zmat");
+        if (!badge) return;
+        MATURITY.forEach((value) => badge.classList.remove(`zmat-${value}`));
+        badge.classList.add(`zmat-${state}`);
+        badge.textContent = state.charAt(0).toUpperCase() + state.slice(1);
+        cell.dataset.maturity = state;
+        cell.setAttribute("aria-label", `${cell.dataset.zone}, ${cell.dataset.dim}: ${state}. Activate to change.`);
+      }
+
+      cells.forEach((cell, index) => {
+        const label = zoneLabels[Math.floor(index / 5)];
+        cell.dataset.zone = label ? label.querySelector(".zname").textContent.trim() : "Zone";
+        cell.classList.add("zc-interactive");
+        cell.tabIndex = 0;
+        cell.setAttribute("role", "button");
+        const initial = assessment[index] || MATURITY.find((state) => cell.querySelector(`.zmat-${state}`)) || "manual";
+        maturityCell(cell, initial);
+        const advance = () => {
+          const next = MATURITY[(MATURITY.indexOf(cell.dataset.maturity) + 1) % MATURITY.length];
+          assessment[index] = next;
+          maturityCell(cell, next);
+          try { localStorage.setItem(assessmentKey, JSON.stringify(assessment)); } catch (e) {}
+          renderAssessment();
+        };
+        cell.addEventListener("click", advance);
+        cell.addEventListener("keydown", (event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); advance(); } });
+      });
+
+      const actionBar = document.createElement("div");
+      actionBar.className = "assessment-actions";
+      actionBar.innerHTML = '<button type="button" id="resetAssessment">Reset to reference view</button><button type="button" id="printAssessment">Print takeaway</button><span class="sub">Select a cell to cycle: Native → Federated → Emerging → Manual.</span>';
+      document.querySelector(".zones-grid").after(actionBar);
+      const summary = document.createElement("section");
+      summary.className = "assessment-summary";
+      summary.id = "assessmentSummary";
+      actionBar.after(summary);
+
+      function averageLabel(items) {
+        const average = items.reduce((total, item) => total + SCORES[item.dataset.maturity], 0) / items.length;
+        return average >= 3.5 ? "Native" : average >= 2.5 ? "Federated" : average >= 1.5 ? "Emerging" : "Manual";
+      }
+      function renderAssessment() {
+        const zoneCards = Array.from({ length: 5 }, (_, zone) => {
+          const zoneCells = cells.slice(zone * 5, zone * 5 + 5);
+          return `<div class="assessment-summary-card"><strong>${zoneCells[0].dataset.zone}</strong><span>Current state: ${averageLabel(zoneCells)}</span></div>`;
+        }).join("");
+        const dimensionCards = ["Identity", "Governance & Inventory", "Observability", "Data & DLP", "Cost & FinOps"].map((dimension, position) => {
+          const dimensionCells = cells.filter((cell, index) => index % 5 === position);
+          return `<div class="assessment-summary-card"><strong>${dimension}</strong><span>Current state: ${averageLabel(dimensionCells)}</span></div>`;
+        }).join("");
+        const gaps = cells.filter((cell) => SCORES[cell.dataset.maturity] <= 2).map((cell) => `${cell.dataset.zone} — ${cell.dataset.dim}: ${cell.dataset.maturity}`);
+        summary.innerHTML = `<h4>Current state → Target state → Prioritized gaps</h4><p><strong>Current state:</strong> based on your selections. <strong>Target state:</strong> federated or native coverage where risk and business value justify it. <strong>Prioritize:</strong> manual and emerging controls in critical zones first.</p><div class="assessment-summary-grid">${zoneCards}${dimensionCards}</div><ul class="gap-list">${gaps.length ? gaps.slice(0, 8).map((gap) => `<li>${gap}</li>`).join("") : "<li>No emerging or manual gaps selected.</li>"}</ul>`;
+      }
+      document.getElementById("resetAssessment").addEventListener("click", () => { assessment = {}; try { localStorage.removeItem(assessmentKey); } catch (e) {} window.location.reload(); });
+      document.getElementById("printAssessment").addEventListener("click", () => window.print());
+      renderAssessment();
+    </script>
   </body>
 </html>

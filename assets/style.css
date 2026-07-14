@@ -347,6 +347,31 @@ hr.section-divider {
 }
 .icon-btn:hover { color: var(--text); border-color: var(--border-strong); }
 
+.seller-toggle {
+  appearance: none; font: inherit; font-size: var(--fs-12); font-weight: 600;
+  height: 32px; padding: 0 10px; border-radius: var(--r-pill); cursor: pointer;
+  color: var(--text-muted); background: transparent; border: 1px dashed var(--border-strong);
+}
+.seller-toggle:hover, .seller-toggle[aria-pressed="true"] {
+  color: var(--text); border-color: var(--accent); background: var(--accent-soft);
+}
+
+/* Seller material is intentionally not visible in the customer experience. */
+.seller-only { display: none !important; }
+html[data-seller-mode] .seller-only { display: block !important; }
+html[data-seller-mode] .seller-nav-link { display: inline !important; }
+.seller-callout {
+  margin: 0 0 var(--sp-6); padding: var(--sp-4) var(--sp-5);
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+  border: 1px dashed color-mix(in srgb, var(--accent) 55%, var(--border));
+  border-left: 3px solid var(--accent); border-radius: var(--r-4);
+}
+.seller-kicker { font-size: 10.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-bottom: var(--sp-1); }
+.seller-callout-body { font-size: var(--fs-13); color: var(--text-muted); }
+.seller-callout-body strong { display: block; color: var(--text); }
+.seller-callout-body p { margin: var(--sp-1) 0 var(--sp-2); }
+.seller-callout-body a { font-weight: 600; }
+
 /* App shell footer */
 .app-footer {
   border-top: 1px solid var(--border);

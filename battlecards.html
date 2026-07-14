@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Seller battlecards — Trusted Federated AI</title>
+    <script>
+      (() => {
+        try {
+          const saved = localStorage.getItem("federated-ai-theme");
+          const theme = saved || (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+          document.documentElement.setAttribute("data-theme", theme);
+          if (localStorage.getItem("federated-ai-seller-mode") === "true") document.documentElement.setAttribute("data-seller-mode", "");
+        } catch (e) {}
+      })();
+    </script>
+    <link rel="stylesheet" href="assets/style.css" />
+    <style>
+      .battlecards-hero { margin-bottom: 24px; padding: 20px 22px; background: var(--surface); border: 1px dashed var(--accent); border-radius: 12px; }
+      .battlecards-hero h1 { margin: 4px 0 8px; font-size: 26px; }
+      .battlecards-hero p { margin: 0; max-width: 780px; color: var(--text-muted); }
+      .battlecard-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+      .battlecard { break-inside: avoid; padding: 20px; background: var(--surface); border: 1px solid var(--border); border-top: 4px solid var(--accent); border-radius: 12px; }
+      .battlecard h2, .choreography h2 { margin: 0 0 8px; font-size: 20px; }
+      .battlecard .opening { margin: 0 0 16px; font-size: 15px; font-weight: 500; color: var(--text); }
+      .battlecard section { padding-top: 12px; margin-top: 12px; border-top: 1px solid var(--border); }
+      .battlecard h3, .choreography h3 { margin: 0 0 6px; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--text-soft); }
+      .battlecard p { margin: 0; font-size: 13px; color: var(--text-muted); }
+      .battlecard ul { margin: 0; padding-left: 18px; font-size: 13px; color: var(--text-muted); }
+      .battlecard li { margin: 4px 0; }
+      .choreography { margin-top: 16px; padding: 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; break-inside: avoid; }
+      .choreography-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+      .choreography-grid div { padding: 12px; border-radius: 8px; background: var(--surface-2); border: 1px solid var(--border); font-size: 13px; color: var(--text-muted); }
+      .choreography-grid strong { display: block; color: var(--text); margin-bottom: 3px; }
+      .access-note { margin: 24px auto; max-width: 650px; padding: 18px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--text-muted); }
+      html[data-seller-mode] .access-note { display: none; }
+      @media (max-width: 780px) { .battlecard-grid, .choreography-grid { grid-template-columns: 1fr; } }
+      @media print { .app-shell, .app-footer, .seller-toggle, .seller-page-prompt { display: none !important; } main.app-main { padding: 0; } .battlecard-grid { grid-template-columns: 1fr 1fr; } @page { margin: .5in; } }
+    </style>
+  </head>
+  <body>
+    <div id="app-header"></div>
+    <main class="app-main">
+      <p class="access-note">Seller material is available only when Seller mode is on. Use the Seller mode control in the site header to reveal these battlecards.</p>
+      <div class="seller-only">
+        <section class="battlecards-hero">
+          <div class="eyebrow">Seller-only conversation guide</div>
+          <h1>Trusted Federated AI battlecards</h1>
+          <p>Use these as a shared field guide. Lead with the customer decision and open standards; use Microsoft products only as an illustrative anchor stack. Print for a meeting or co-sell planning session.</p>
+        </section>
+        <div class="battlecard-grid">
+          <article class="battlecard">
+            <h2>AI &amp; apps seller</h2>
+            <p class="opening">“Your teams will build agents wherever work happens. The decision is how to make that freedom reusable, measurable, and governed from day one.”</p>
+            <section><h3>Discovery questions</h3><ul><li>Which teams are already building or buying agents, and where do they run?</li><li>Where are agents rebuilding the same integrations or knowledge sources?</li><li>Can you observe and inventory agents regardless of their build platform?</li><li>Which business outcome should own each agent’s cost and success measure?</li></ul></section>
+            <section><h3>Pillars owned</h3><p><strong>Experience and Build.</strong> Help teams choose the employee surface, builder experience, reusable prompts, tools, evaluations, and human approval points.</p></section>
+            <section><h3>Example anchor stack</h3><p>Copilot Studio, Microsoft Foundry, M365 Copilot, Foundry IQ, Microsoft Agents Framework — interchangeable with the customer’s chosen equivalent where the standards and controls remain intact.</p></section>
+            <section><h3>Top objection</h3><p><strong>“We have already standardized on another framework.”</strong> Keep it. The value is the shared contracts around MCP, A2A, evaluation, inventory, and identity — not replacing a productive team’s framework.</p></section>
+            <section><h3>CTA / next-step ladder</h3><p>1. Map five active agents and their outcomes. 2. Choose one reusable MCP or API-gateway pattern. 3. Run a governed pilot. 4. Establish a portfolio review and scaling path.</p></section>
+          </article>
+          <article class="battlecard">
+            <h2>Security seller</h2>
+            <p class="opening">“You already govern people, apps, endpoints, and data. The next question is whether agents inherit that operating model or create an unobserved exception.”</p>
+            <section><h3>Discovery questions</h3><ul><li>Do agents have named owners, workload identities, and defined permissions?</li><li>Can you apply access, DLP, and retention policy across clouds and SaaS?</li><li>Can an investigator trace prompt, tool call, data access, action, and output end to end?</li><li>What is your escalation model when an agent takes a high-impact action?</li><li>Where is unmanaged or shadow AI already visible?</li></ul></section>
+            <section><h3>Pillars owned</h3><p><strong>Govern and Secure.</strong> Lead identity, policy, observability, incident response, risk tiers, and lifecycle. <strong>Connect</strong> is a shared responsibility with the AI seller.</p></section>
+            <section><h3>Example anchor stack</h3><p>Entra, Purview, Sentinel, Defender, Agent 365, Foundry control-plane services — replaceable with equivalent identity, policy, SIEM/XDR, catalog, and runtime controls.</p></section>
+            <section><h3>Top objection</h3><p><strong>“One control plane is just a Microsoft pitch.”</strong> Agree that a single console is not the goal. The goal is consistent identity, evidence, policy, and telemetry across vendor runtimes; Microsoft is one possible native anchor where it fits.</p></section>
+            <section><h3>CTA / next-step ladder</h3><p>1. Inventory one high-risk agent path. 2. Validate OAuth/OIDC scopes, DLP, and OpenTelemetry evidence. 3. Define tiered controls and an incident playbook. 4. Extend the pattern to the next zone.</p></section>
+          </article>
+        </div>
+        <section class="choreography">
+          <h2>Co-sell choreography</h2>
+          <div class="choreography-grid">
+            <div><strong>AI seller owns: Experience + Build</strong>Customer outcome, builder choices, agent lifecycle, evals, adoption, and outcome economics.</div>
+            <div><strong>Security seller owns: Govern + Secure</strong>Identity, policy, DLP, investigation, risk tiers, lifecycle controls, and incident response.</div>
+            <div><strong>Shared: Connect</strong>MCP, A2A, OAuth/OIDC, OpenTelemetry, and API-gateway design. Agree the portable contracts before proposing the anchor products.</div>
+          </div>
+        </section>
+      </div>
+    </main>
+    <div id="app-footer"></div>
+    <script src="assets/shell.js"></script>
+    <script>Shell.mount({ activePath: "" });</script>
+  </body>
+</html>

@@ -63,6 +63,12 @@
       .tension-body {
         font-size: 12.5px; color: var(--cp-text-muted); line-height: 1.5;
       }
+      .objection-layer { margin: 0 0 28px; padding: 20px 22px; border-radius: 14px; background: var(--cp-surface); border: 1px dashed var(--cp-accent); }
+      .objection-layer h3 { margin: 0 0 4px; font-size: 18px; }
+      .objection-layer > p { margin: 0 0 14px; font-size: 13px; color: var(--cp-text-muted); }
+      .objection-card { padding: 14px 16px; border: 1px solid var(--cp-border); border-left: 3px solid var(--cp-accent); border-radius: 10px; background: var(--cp-surface-soft); }
+      .objection-card strong { display: block; margin-bottom: 5px; font-size: 13px; color: var(--cp-text); }
+      .objection-card p { margin: 0; font-size: 12.5px; color: var(--cp-text-muted); }
 
       .references {
         margin: 0;
@@ -121,6 +127,19 @@
             <div class="tension-title">MCP and A2A overlap at the edges</div>
             <div class="tension-body">The protocols are complementary in theory (tool calls vs agent collaboration), but their boundaries blur in practice. Expect overlap and version churn.</div>
           </div>
+        </div>
+      </section>
+
+      <section class="objection-layer seller-only" aria-labelledby="objections-heading">
+        <h3 id="objections-heading">Seller objection handling</h3>
+        <p>Lead with the trade-off. Do not deny it; clarify the decision and anchor the response in portable standards first.</p>
+        <div class="tensions-grid">
+          <article class="objection-card"><strong>When the customer says: “One control plane is unrealistic.”</strong><p>You say: “A control plane is a consistent operating outcome, not a single vendor console. Use common inventory, identity, policy, and telemetry contracts; integrations do the work across platforms. MCP, A2A, OAuth/OIDC, OpenTelemetry, and an API gateway make the architecture portable.”</p></article>
+          <article class="objection-card"><strong>When the customer says: “Workload identity is too fragile.”</strong><p>You say: “It is a real implementation challenge. Start with the highest-impact agent paths, use least-privilege workload identity and short-lived credentials, and measure federation failures before expanding. Do not claim that human SSO alone solves agent identity.”</p></article>
+          <article class="objection-card"><strong>When the customer says: “Citizen development will overwhelm governance.”</strong><p>You say: “It can, unless the fast path inherits registration, approved tools, DLP, and tiered review. The goal is not to stop builders; it is to make safe defaults cheaper than workarounds.”</p></article>
+          <article class="objection-card"><strong>When the customer says: “We cannot attribute AI cost accurately.”</strong><p>You say: “Perfect per-agent bill-back is still immature. Begin with accountable owners, tags, outcome telemetry, and showback. Improve precision as usage and model routing mature rather than waiting for a perfect billing schema.”</p></article>
+          <article class="objection-card"><strong>When the customer says: “MCP and A2A overlap, so standards are not ready.”</strong><p>You say: “The boundaries are evolving. Treat MCP as a tool-context pattern and A2A as an agent-collaboration pattern, isolate both behind an API gateway, and version contracts so changing protocols do not reshape every agent.”</p></article>
+          <article class="objection-card"><strong>When the customer says: “You call this vendor-neutral, but the control plane is always Microsoft.”</strong><p>You say: “The framework is vendor-neutral when its control points are standards-based and its products are substitutable. Microsoft is an example anchor stack, not a prerequisite: retain the architecture with another identity provider, policy engine, SIEM, catalog, and API gateway. Be explicit where a chosen product has stronger native coverage.”</p></article>
         </div>
       </section>
 

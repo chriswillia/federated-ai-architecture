@@ -57,6 +57,7 @@
 
   const THEME_KEY = "federated-ai-theme";
   const CUSTOMER_KEY = "federated-ai-customer";
+  const SELLER_MODE_KEY = "federated-ai-seller-mode";
 
   function el(tag, attrs, ...children) {
     const node = document.createElement(tag);
@@ -111,6 +112,12 @@
     });
     inner.appendChild(themeBtn);
 
+    const sellerBtn = el("button", {
+      type: "button", class: "seller-toggle", id: "shellSellerToggle",
+      "aria-pressed": "false", title: "Show seller guidance", "aria-label": "Show seller guidance",
+    }, "Seller mode");
+    inner.appendChild(sellerBtn);
+
     return el("header", { class: "app-shell" }, inner);
   }
 
@@ -121,6 +128,7 @@
           ? el("a", { href: link.href, target: "_blank", rel: "noopener noreferrer" }, link.label)
           : el("a", { href: link.href }, link.label),
       ),
+      el("a", { href: "battlecards.html", class: "seller-nav-link seller-only" }, "Seller battlecards"),
     );
     const brand = el("div", { class: "app-footer-brand" },
       el("strong", null, "Trusted Federated AI"),
@@ -140,6 +148,42 @@
       document.documentElement.setAttribute("data-theme", next);
       try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
     });
+  }
+
+  function sellerModeEnabled() {
+    try { return localStorage.getItem(SELLER_MODE_KEY) === "true"; } catch (e) { return false; }
+  }
+
+  function setSellerMode(enabled) {
+    document.documentElement.toggleAttribute("data-seller-mode", !!enabled);
+    const btn = document.getElementById("shellSellerToggle");
+    if (btn) {
+      btn.setAttribute("aria-pressed", String(!!enabled));
+      btn.textContent = enabled ? "Seller mode: on" : "Seller mode";
+      btn.title = enabled ? "Hide seller guidance" : "Show seller guidance";
+      btn.setAttribute("aria-label", btn.title);
+    }
+    try { localStorage.setItem(SELLER_MODE_KEY, String(!!enabled)); } catch (e) {}
+  }
+
+  function wireSellerMode() {
+    setSellerMode(sellerModeEnabled());
+    const btn = document.getElementById("shellSellerToggle");
+    if (btn) btn.addEventListener("click", () => setSellerMode(!document.documentElement.hasAttribute("data-seller-mode")));
+  }
+
+  function addSellerPrompt() {
+    const main = document.querySelector("main");
+    if (!main || main.querySelector(".seller-page-prompt")) return;
+    const prompt = el("aside", { class: "seller-callout seller-page-prompt seller-only", "aria-label": "Seller guidance" },
+      el("div", { class: "seller-kicker" }, "Seller guidance"),
+      el("div", { class: "seller-callout-body" },
+        el("strong", null, "Use the customer page to lead with a decision, not a product."),
+        el("p", null, "Ask which AI estates, data boundaries, and control gaps matter first. Name MCP, A2A, OAuth/OIDC, OpenTelemetry, and API gateways as the portable control points; position products only as an example anchor stack."),
+        el("a", { href: "battlecards.html" }, "Open seller battlecards \u2192"),
+      ),
+    );
+    main.prepend(prompt);
   }
 
   function wireCustomer(onChange) {
@@ -197,10 +241,12 @@
     }
 
     wireTheme();
+    wireSellerMode();
     wireCustomer(options.onCustomerChange);
+    addSellerPrompt();
 
-    return { customer: readInitialCustomer() };
+    return { customer: readInitialCustomer(), sellerMode: sellerModeEnabled() };
   }
 
-  window.Shell = { mount, readInitialCustomer, THEME_KEY, CUSTOMER_KEY };
+  window.Shell = { mount, readInitialCustomer, sellerModeEnabled, setSellerMode, THEME_KEY, CUSTOMER_KEY, SELLER_MODE_KEY };
 })();

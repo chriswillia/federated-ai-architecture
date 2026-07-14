@@ -263,8 +263,8 @@
         <div class="crumbs"><a href="architect.html">Reference architecture</a> &nbsp;/&nbsp; Use cases</div>
         <h1>Reference architecture in action</h1>
         <p>
-          Three real-world agent scenarios &mdash; <strong>productivity suite</strong>, <strong>ERP</strong>,
-          and <strong>ITSM</strong> &mdash; mapped to the federated reference architecture. Each diagram
+          Five reference scenarios &mdash; <strong>HR</strong>, <strong>Customer 360</strong>, <strong>expense</strong>,
+          <strong>IT triage</strong>, and <strong>engineering</strong> &mdash; mapped to the federated reference architecture. Each diagram
           traces how a request flows through the experience, control, fabric, build, and data planes
           using open protocols (<strong>MCP</strong>, <strong>A2A</strong>) and the agent platform of your
           choice. The walkthroughs below use Microsoft Agent 365, Foundry, and Foundry IQ as the worked
@@ -274,9 +274,11 @@
 
       <nav class="use-case-jumps" aria-label="Jump to use case">
         <span class="label">Jump to</span>
-        <a href="#m365-hr">1 · M365 HR Benefits Agent</a>
-        <a href="#sap-po">2 · SAP Procurement Approval Agent</a>
-        <a href="#servicenow-incident">3 · ServiceNow IT Incident Triage Agent</a>
+        <a href="#m365-hr">1 · HR Benefits</a>
+        <a href="#customer-360">2 · Customer 360</a>
+        <a href="#expense">3 · Expense</a>
+        <a href="#servicenow-incident">4 · IT Triage</a>
+        <a href="#engineering">5 · Engineering Copilot</a>
       </nav>
 
       <div id="use-cases"></div>
@@ -309,14 +311,14 @@
         {
           id: "m365-hr",
           title: "1 · M365 — HR Benefits Agent in Teams",
-          summary: "An HR business analyst builds a benefits Q&A agent in Copilot Studio. Employees ask it inside Teams. The agent grounds answers in HR policy and only reaches into Microsoft Graph or the on-prem HRIS when it needs personal data — under one identity, one cost owner, and full lineage.",
+          summary: "An HR business analyst builds a benefits Q&A agent in Copilot Studio. Employees ask it inside Teams. The agent grounds answers in HR policy and only reaches into Microsoft Graph or Workday when it needs personal data — under one identity, one cost owner, and full lineage.",
           products: [
             { name: "M365 Copilot",          vendor: "microsoft" },
             { name: "Copilot Studio",        vendor: "microsoft" },
             { name: "Foundry Control Plane", vendor: "microsoft" },
             { name: "Foundry IQ",            vendor: "microsoft" },
             { name: "Microsoft Graph",       vendor: "microsoft" },
-            { name: "On-prem HRIS",          vendor: "oss"       },
+            { name: "Workday",               vendor: "oss"       },
             { name: "Entra ID",              vendor: "microsoft" },
             { name: "Microsoft Purview",     vendor: "microsoft" },
           ],
@@ -326,42 +328,64 @@
             { lane: "bld", title: "Route to agent",     detail: "The HR-built Copilot Studio agent picks up the request." },
             { lane: "fab", title: "Call tools (MCP)",   detail: "Agent invokes the HR knowledge MCP server through Model Context Protocol." },
             { lane: "dat", title: "Ground answer",      detail: "Foundry IQ retrieves policy chunks from a vector index." },
-            { lane: "dat", title: "Read records",       detail: "For personal queries, reads Microsoft Graph and the on-prem HRIS via governed connectors." },
+            { lane: "dat", title: "Read records",       detail: "For personal queries, reads Microsoft Graph and Workday via governed connectors." },
             { lane: "ctl", title: "Govern &amp; log",   detail: "Foundry Control Plane traces the conversation; Purview records data lineage." },
             { lane: "ctl", title: "Charge back",        detail: "Token spend is tagged to the HR cost center for monthly showback." },
             { lane: "exp", title: "Answer in Teams",    detail: "Employee receives a grounded answer with citations to the policy source." },
           ],
         },
         {
-          id: "sap-po",
-          title: "2 · SAP — Procurement Approval Agent (Joule + Foundry)",
-          summary: "A buyer in SAP asks Joule whether a purchase order is OK to approve. Joule discovers the central Procurement Approval Agent via Agent2Agent. The agent grounds in policy, checks vendor risk through MCP, evaluates against thresholds, and recommends sign-off — with Sentinel and Defender watching for fraud signals.",
+          id: "customer-360",
+          title: "2 · Multi-source Customer 360",
+          summary: "A seller asks for a complete customer view. A customer agent collaborates with Salesforce and SAP agents through A2A, then uses MCP-governed tools to retrieve orders, support cases, and account signals without centralizing every source system.",
           products: [
+            { name: "Salesforce Agentforce", vendor: "salesforce" },
             { name: "SAP Joule",             vendor: "sap"       },
-            { name: "SAP S/4HANA",           vendor: "sap"       },
             { name: "Foundry Agent Service", vendor: "microsoft" },
             { name: "Foundry IQ",            vendor: "microsoft" },
             { name: "Entra ID / SAP IAS",    vendor: "microsoft" },
-            { name: "Vendor Risk (MCP)",     vendor: "oss"       },
+            { name: "Customer data tools (MCP)", vendor: "oss"   },
             { name: "Sentinel + Defender",   vendor: "microsoft" },
-            { name: "On-prem ERP",           vendor: "oss"       },
+            { name: "Order data",            vendor: "oss"       },
           ],
           steps: [
-            { lane: "exp", title: "Ask Joule",           detail: "Buyer opens a PO in SAP and asks Joule, \u201cis this OK to approve?\u201d" },
-            { lane: "fab", title: "Discover via A2A",    detail: "Joule's Agent Card directory finds the central Procurement Approval Agent." },
-            { lane: "ctl", title: "Federate identity",   detail: "Entra ID and SAP IAS federate so the agent acts on the buyer's behalf." },
-            { lane: "bld", title: "Agent runs",          detail: "Procurement Approval Agent executes in Foundry Agent Service." },
-            { lane: "dat", title: "Ground in policy",    detail: "Foundry IQ retrieves procurement policy, supplier rules, and recent decisions." },
-            { lane: "fab", title: "Vendor risk (MCP)",   detail: "Agent calls a third-party vendor-risk MCP tool for live supplier health." },
-            { lane: "dat", title: "Read SAP + ERP",      detail: "Reads the PO from S/4HANA and committed spend from the on-prem ERP." },
-            { lane: "ctl", title: "Policy evaluation",   detail: "Foundry Control Plane evaluates dollar thresholds and required approval level." },
-            { lane: "ctl", title: "Security check",      detail: "Sentinel and Defender review for fraud patterns and unusual supplier behavior." },
-            { lane: "exp", title: "Recommend + sign-off",detail: "Joule presents a recommendation with rationale; the buyer signs off (or escalates)." },
+            { lane: "exp", title: "Ask for account view", detail: "Seller asks for a complete picture of a customer from their work surface." },
+            { lane: "fab", title: "Discover via A2A",    detail: "The customer agent discovers Salesforce and SAP agents through Agent Cards." },
+            { lane: "ctl", title: "Federate identity",   detail: "OAuth/OIDC scopes establish the seller and each agent's allowed access." },
+            { lane: "bld", title: "Agent orchestrates",  detail: "A pro-code agent coordinates the request and preserves source attribution." },
+            { lane: "dat", title: "Ground context",      detail: "Knowledge retrieval brings in approved account plans and prior interactions." },
+            { lane: "fab", title: "Call tools (MCP)",    detail: "The agent invokes governed customer-data tools through MCP." },
+            { lane: "dat", title: "Read source systems", detail: "Salesforce, SAP, and order data remain authoritative in their own systems." },
+            { lane: "ctl", title: "Apply policy",        detail: "The control plane evaluates entitlements, logging, and data handling." },
+            { lane: "ctl", title: "Trace activity",      detail: "OpenTelemetry traces support audit, quality review, and incident response." },
+            { lane: "exp", title: "Present view",        detail: "The seller receives a cited, current customer view with links to source systems." },
+          ],
+        },
+        {
+          id: "expense",
+          title: "3 · Cost-aware Expense Agent",
+          summary: "An employee submits an expense in a chat surface. The agent extracts the receipt, checks policy, proposes a coding, and routes the action for approval while attributing model and tool cost to the finance owner.",
+          products: [
+            { name: "Chat surface", vendor: "microsoft" },
+            { name: "Expense system", vendor: "sap" },
+            { name: "Receipt extraction (MCP)", vendor: "oss" },
+            { name: "Policy service", vendor: "microsoft" },
+            { name: "Entra ID", vendor: "microsoft" },
+          ],
+          steps: [
+            { lane: "exp", title: "Submit expense", detail: "Employee submits a receipt and expense request in their chosen chat surface." },
+            { lane: "ctl", title: "Set identity + owner", detail: "OAuth/OIDC establishes the employee context and finance cost owner." },
+            { lane: "bld", title: "Expense agent runs", detail: "The agent applies the approved expense workflow and model-routing policy." },
+            { lane: "fab", title: "Extract receipt (MCP)", detail: "A governed MCP tool extracts merchant, amount, and tax fields." },
+            { lane: "dat", title: "Check policy", detail: "The agent retrieves the relevant travel and expense policy." },
+            { lane: "ctl", title: "Approve or escalate", detail: "Thresholds determine whether the employee, manager, or finance reviewer must act." },
+            { lane: "ctl", title: "Show back cost", detail: "Token and tool usage are tagged to the expense process for FinOps review." },
+            { lane: "exp", title: "Confirm outcome", detail: "The employee receives a clear status, rationale, and next action." },
           ],
         },
         {
           id: "servicenow-incident",
-          title: "3 · ServiceNow — IT Incident Triage Agent",
+          title: "4 · ServiceNow — IT Incident Triage Agent",
           summary: "A user reports an incident in ServiceNow Now Assist. A Foundry-built triage agent classifies the incident, delegates to an internal ITOps agent over A2A for diagnostics, and proposes a remediation action — auto-applied or human-gated depending on policy.",
           products: [
             { name: "ServiceNow Now Assist", vendor: "servicenow" },
@@ -384,6 +408,27 @@
             { lane: "ctl", title: "Safe-action policy",  detail: "Foundry Control Plane decides whether the agent auto-remediates or routes to a human." },
             { lane: "ctl", title: "Cost + security",     detail: "Token spend is charged to ITOps; Defender flags risky or anomalous remediation actions." },
             { lane: "exp", title: "Update ticket",       detail: "Incident is updated with classification, hypothesis, and recommended fix." },
+          ],
+        },
+        {
+          id: "engineering",
+          title: "5 · Engineering Copilot (code → PR)",
+          summary: "A developer asks an engineering copilot to implement a change. It uses a repository-aware MCP server, runs evaluations and security checks, and proposes a pull request with human review retained for merge.",
+          products: [
+            { name: "GitHub / Azure DevOps", vendor: "oss" },
+            { name: "Repository tools (MCP)", vendor: "oss" },
+            { name: "Foundry evaluations", vendor: "microsoft" },
+            { name: "Defender for DevOps", vendor: "microsoft" },
+            { name: "OpenTelemetry", vendor: "oss" },
+          ],
+          steps: [
+            { lane: "exp", title: "Describe change", detail: "Developer describes the intended code change in their engineering surface." },
+            { lane: "ctl", title: "Authorize access", detail: "The copilot receives least-privilege repository and tool scopes." },
+            { lane: "bld", title: "Plan implementation", detail: "The coding agent selects an approved model and creates an implementation plan." },
+            { lane: "fab", title: "Read repo (MCP)", detail: "A repository MCP server exposes source, tests, and engineering guidance." },
+            { lane: "dat", title: "Ground in standards", detail: "The agent retrieves architecture decisions and secure coding conventions." },
+            { lane: "ctl", title: "Evaluate + scan", detail: "Evals, tests, and security checks run before a change is proposed." },
+            { lane: "exp", title: "Open PR", detail: "The developer reviews a cited pull request; human approval remains the merge gate." },
           ],
         },
       ];
