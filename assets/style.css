@@ -377,7 +377,29 @@ html[data-seller-mode] .seller-nav-link { display: inline !important; }
 .seller-guide-field { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text-soft); }
 .seller-guide-field select { font: inherit; font-size: var(--fs-12); color: var(--text); background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-2); padding: 3px 5px; }
 .seller-next-action { margin-left: auto; font-size: var(--fs-12); color: var(--text-muted); }
+.seller-practice-btn { appearance: none; font: inherit; font-size: var(--fs-12); font-weight: 600; cursor: pointer; padding: 5px 10px; border-radius: var(--r-4); color: var(--accent-fg); background: var(--accent); border: 1px solid var(--accent); }
+.seller-practice-btn:hover { background: var(--accent-hover); }
 @media (max-width: 760px) { .seller-next-action { margin-left: 0; width: 100%; } }
+
+.seller-practice-open { overflow: hidden; }
+.seller-practice-overlay { position: fixed; z-index: 100; inset: 0; padding: var(--sp-6); display: none !important; place-items: center; background: rgba(0, 0, 0, .54); }
+.seller-practice-open .seller-practice-overlay { display: grid !important; }
+.seller-practice-panel { width: min(760px, 100%); max-height: calc(100vh - 48px); overflow: auto; padding: var(--sp-6); background: var(--bg-elevated); border: 1px solid var(--border-strong); border-radius: var(--r-6); box-shadow: var(--shadow-2); }
+.seller-practice-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--sp-4); }
+.seller-practice-head h2 { font-size: var(--fs-24); }
+.seller-practice-close { appearance: none; width: 32px; height: 32px; font: inherit; font-size: 24px; line-height: 1; cursor: pointer; color: var(--text-muted); background: transparent; border: 1px solid var(--border); border-radius: var(--r-4); }
+.seller-practice-context { margin: var(--sp-3) 0; font-size: var(--fs-12); font-weight: 600; color: var(--accent); }
+.seller-practice-steps { display: flex; flex-wrap: wrap; gap: 6px; padding: var(--sp-2); background: var(--surface-2); border-radius: var(--r-4); }
+.seller-practice-steps button { appearance: none; font: inherit; font-size: var(--fs-12); cursor: pointer; padding: 5px 8px; color: var(--text-muted); background: transparent; border: 1px solid transparent; border-radius: var(--r-2); }
+.seller-practice-steps button.active { color: var(--text); background: var(--surface); border-color: var(--accent); font-weight: 600; }
+.seller-practice-content { min-height: 250px; padding: var(--sp-6) 0; }
+.seller-practice-number { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-soft); }
+.seller-practice-content h3 { margin: var(--sp-2) 0 var(--sp-3); font-size: var(--fs-24); }
+.seller-practice-prompt { padding: var(--sp-4); font-size: var(--fs-18); line-height: var(--lh-snug); color: var(--text); background: var(--surface-2); border-left: 3px solid var(--accent); border-radius: var(--r-2); }
+.seller-practice-coaching { margin-top: var(--sp-4); padding: var(--sp-4); color: var(--text-muted); background: color-mix(in srgb, var(--accent) 9%, var(--surface)); border: 1px dashed var(--accent); border-radius: var(--r-4); }
+.seller-practice-actions { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); border-top: 1px solid var(--border); padding-top: var(--sp-4); }
+.seller-practice-actions button:disabled { opacity: .45; cursor: not-allowed; }
+@media (max-width: 600px) { .seller-practice-overlay { padding: var(--sp-3); } .seller-practice-panel { padding: var(--sp-4); } .seller-practice-actions { flex-wrap: wrap; } }
 
 /* App shell footer */
 .app-footer {

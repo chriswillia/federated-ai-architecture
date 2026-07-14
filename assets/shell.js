@@ -202,6 +202,7 @@
         sellerSelect("audience", "Audience", ["CIO", "CISO", "Head of AI", "Business sponsor"], audience),
         sellerSelect("priority", "Priority", ["Security", "Adoption", "Multi-cloud", "Cost", "Data protection"], priority),
         el("span", { class: "seller-next-action", id: "sellerNextAction" }),
+        el("button", { type: "button", class: "seller-practice-btn", id: "sellerPracticeBtn" }, "Practice this pitch"),
       ),
     );
     header.after(container);
@@ -223,7 +224,92 @@
       if (action) action.textContent = messages[state.stage];
     };
     container.querySelectorAll("select").forEach((select) => select.addEventListener("change", update));
+    container.querySelector("#sellerPracticeBtn").addEventListener("click", openPracticeCoach);
     update();
+  }
+
+  const PRACTICE_STEPS = ["Open", "Discover", "Frame", "Handle objection", "Close"];
+  function practiceState() {
+    const guide = document.querySelector(".seller-meeting-guide");
+    return {
+      stage: guide && guide.querySelector("[data-seller-field='stage']").value || "Discover",
+      audience: guide && guide.querySelector("[data-seller-field='audience']").value || "CIO",
+      priority: guide && guide.querySelector("[data-seller-field='priority']").value || "Security",
+    };
+  }
+
+  function openPracticeCoach() {
+    let coach = document.getElementById("sellerPracticeCoach");
+    if (!coach) {
+      coach = el("div", { class: "seller-practice-overlay", id: "sellerPracticeCoach", role: "dialog", "aria-modal": "true", "aria-labelledby": "practiceTitle" },
+        el("div", { class: "seller-practice-panel" },
+          el("div", { class: "seller-practice-head" },
+            el("div", null, el("div", { class: "seller-kicker" }, "Seller practice coach"), el("h2", { id: "practiceTitle" }, "Rehearse the customer conversation")),
+            el("button", { type: "button", class: "seller-practice-close", "aria-label": "Close practice coach", onClick: () => closePracticeCoach() }, "×"),
+          ),
+          el("div", { class: "seller-practice-context", id: "practiceContext" }),
+          el("div", { class: "seller-practice-steps", id: "practiceSteps" }, ...PRACTICE_STEPS.map((name, index) => el("button", { type: "button", "data-practice-step": index, onClick: () => renderPracticeStep(index) }, `${index + 1}. ${name}`))),
+          el("section", { class: "seller-practice-content", id: "practiceContent" }),
+          el("div", { class: "seller-practice-actions" },
+            el("button", { type: "button", class: "btn btn--secondary", id: "practicePrev", onClick: () => shiftPractice(-1) }, "← Back"),
+            el("button", { type: "button", class: "btn btn--secondary", id: "practiceReveal", onClick: () => togglePracticeCoaching() }, "Reveal coaching"),
+            el("button", { type: "button", class: "btn btn--primary", id: "practiceNext" }, "Next →"),
+          ),
+        ),
+      );
+      document.body.appendChild(coach);
+      coach.addEventListener("click", (event) => { if (event.target === coach) closePracticeCoach(); });
+    }
+    coach.dataset.step = "0";
+    coach.dataset.coaching = "false";
+    document.body.classList.add("seller-practice-open");
+    renderPracticeStep(0);
+    coach.querySelector(".seller-practice-close").focus();
+  }
+
+  function closePracticeCoach() { document.body.classList.remove("seller-practice-open"); }
+  function shiftPractice(delta) {
+    const coach = document.getElementById("sellerPracticeCoach");
+    if (!coach) return;
+    renderPracticeStep(Math.max(0, Math.min(PRACTICE_STEPS.length - 1, Number(coach.dataset.step || 0) + delta)));
+  }
+  function togglePracticeCoaching() {
+    const coach = document.getElementById("sellerPracticeCoach");
+    if (!coach) return;
+    coach.dataset.coaching = coach.dataset.coaching === "true" ? "false" : "true";
+    renderPracticeStep(Number(coach.dataset.step || 0));
+  }
+  function renderPracticeStep(step) {
+    const coach = document.getElementById("sellerPracticeCoach");
+    if (!coach) return;
+    const state = practiceState();
+    const audienceOpeners = {
+      "CIO": "Your AI estate will be federated by design. The leadership decision is whether identity, policy, evidence, and economics will be equally federated — or consistently controlled.",
+      "CISO": "You already govern people, apps, endpoints, and data. The question is whether agent actions inherit that control model or become an unobserved exception.",
+      "Head of AI": "Your teams need freedom to build useful agents quickly. The question is how every new agent inherits reusable controls instead of creating a new exception.",
+      "Business sponsor": "Which workflow should be materially faster, safer, or less expensive next quarter — and what will let us scale the result without adding risk?",
+    };
+    const objection = state.priority === "Security" || state.priority === "Data protection"
+      ? ["Agents will leak our data.", "Only if identity and policy do not follow them. Use workload identity, data labels and DLP, governed tools, and end-to-end traces — then validate those controls in a real scenario."]
+      : state.priority === "Multi-cloud"
+        ? ["We do not want to be locked into one cloud.", "That is why the control pattern is standards-led: MCP for tools, A2A for collaboration, OAuth/OIDC for identity, OpenTelemetry for evidence, and an API gateway at the boundary. Microsoft is an anchor stack, not a prerequisite for every runtime."]
+        : ["We already have AI tools. Why do we need an operating model?", "Those tools are the estate. The operating model makes them accountable, observable, and reusable across teams — so you can increase adoption without multiplying unmanaged cost and risk."];
+    const content = [
+      { title: "Open with their reality", prompt: `Say this in your own words to a ${state.audience}: “${audienceOpeners[state.audience]}”`, coaching: "Do not lead with products. Pause after the opening and ask whether this matches their current reality." },
+      { title: "Discover the decision", prompt: `Ask: “Where are agents already being used, built, or bought — and can you name the owner, data boundary, and business outcome for each?” Then follow the ${state.priority.toLowerCase()} thread.`, coaching: "Listen for a concrete scenario and a control gap. Restate both before moving to architecture." },
+      { title: "Frame the framework", prompt: "Explain the thesis: AI development will be federated; AI control cannot be. Walk from the customer scenario to open control points: MCP, A2A, OAuth/OIDC, OpenTelemetry, and an API gateway. Only then map an example Microsoft anchor stack.", coaching: "Keep the layers connected to outcomes: Experience = adoption; Build = speed; Connect = portability; Govern & Secure = trust." },
+      { title: "Practice the objection", prompt: `Customer says: “${objection[0]}” Respond without reading the answer.`, coaching: `Suggested response: “${objection[1]}” Then return to their specific scenario and ask which control they need to validate first.` },
+      { title: "Close with a mutual next step", prompt: `Propose: “Let’s select one ${state.priority.toLowerCase()}-relevant scenario, map its current controls, and define success as a business outcome plus validated identity, data, and evidence controls.”`, coaching: `For the ${state.stage} stage, name the engagement explicitly: ${state.stage === "Discover" ? "agent estate inventory workshop" : state.stage === "Diagnose" ? "maturity and control-gap assessment" : state.stage === "Design" ? "federated architecture workshop" : state.stage === "Prove" ? "governed pilot design" : "portfolio expansion review"}. Secure an owner, a scenario, and a date before ending.` },
+    ][step];
+    coach.dataset.step = String(step);
+    const coachingVisible = coach.dataset.coaching === "true";
+    coach.querySelector("#practiceContext").textContent = `${state.audience} · ${state.priority} · ${state.stage}`;
+    coach.querySelector("#practiceContent").innerHTML = `<div class="seller-practice-number">Step ${step + 1} of ${PRACTICE_STEPS.length}</div><h3>${content.title}</h3><p class="seller-practice-prompt">${content.prompt}</p><div class="seller-practice-coaching" ${coachingVisible ? "" : "hidden"}><strong>Coaching:</strong> ${content.coaching}</div>`;
+    coach.querySelectorAll("[data-practice-step]").forEach((button) => button.classList.toggle("active", Number(button.dataset.practiceStep) === step));
+    coach.querySelector("#practicePrev").disabled = step === 0;
+    coach.querySelector("#practiceNext").textContent = step === PRACTICE_STEPS.length - 1 ? "Start again" : "Next →";
+    coach.querySelector("#practiceNext").onclick = step === PRACTICE_STEPS.length - 1 ? () => renderPracticeStep(0) : () => shiftPractice(1);
+    coach.querySelector("#practiceReveal").textContent = coachingVisible ? "Hide coaching" : "Reveal coaching";
   }
 
   function sellerSelect(field, label, values, selected) {
