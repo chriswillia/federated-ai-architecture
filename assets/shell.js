@@ -58,6 +58,7 @@
   const THEME_KEY = "federated-ai-theme";
   const CUSTOMER_KEY = "federated-ai-customer";
   const SELLER_MODE_KEY = "federated-ai-seller-mode";
+  const SELLER_GUIDE_KEY = "federated-ai-seller-guide";
 
   function el(tag, attrs, ...children) {
     const node = document.createElement(tag);
@@ -186,6 +187,52 @@
     main.prepend(prompt);
   }
 
+  function addSellerMeetingGuide() {
+    const header = document.querySelector(".app-shell");
+    if (!header || document.querySelector(".seller-meeting-guide")) return;
+    let guide = {};
+    try { guide = JSON.parse(localStorage.getItem(SELLER_GUIDE_KEY) || "{}"); } catch (e) {}
+    const stage = guide.stage || "Discover";
+    const audience = guide.audience || "CIO";
+    const priority = guide.priority || "Security";
+    const container = el("div", { class: "seller-meeting-guide seller-only", "aria-label": "Seller meeting guide" },
+      el("div", { class: "seller-meeting-inner" },
+        el("span", { class: "seller-guide-label" }, "Meeting guide"),
+        sellerSelect("stage", "Stage", ["Discover", "Diagnose", "Design", "Prove", "Expand"], stage),
+        sellerSelect("audience", "Audience", ["CIO", "CISO", "Head of AI", "Business sponsor"], audience),
+        sellerSelect("priority", "Priority", ["Security", "Adoption", "Multi-cloud", "Cost", "Data protection"], priority),
+        el("span", { class: "seller-next-action", id: "sellerNextAction" }),
+      ),
+    );
+    header.after(container);
+    const update = () => {
+      const state = {
+        stage: container.querySelector("[data-seller-field='stage']").value,
+        audience: container.querySelector("[data-seller-field='audience']").value,
+        priority: container.querySelector("[data-seller-field='priority']").value,
+      };
+      try { localStorage.setItem(SELLER_GUIDE_KEY, JSON.stringify(state)); } catch (e) {}
+      const messages = {
+        Discover: "Next: map active agents and accountable owners.",
+        Diagnose: "Next: identify the highest-risk control gap.",
+        Design: "Next: agree the portable control pattern and anchor stack.",
+        Prove: "Next: select one governed scenario and success measures.",
+        Expand: "Next: establish portfolio review and scale plan.",
+      };
+      const action = container.querySelector("#sellerNextAction");
+      if (action) action.textContent = messages[state.stage];
+    };
+    container.querySelectorAll("select").forEach((select) => select.addEventListener("change", update));
+    update();
+  }
+
+  function sellerSelect(field, label, values, selected) {
+    const select = el("select", { "data-seller-field": field, "aria-label": label },
+      ...values.map((value) => el("option", { value, selected: value === selected }, value)),
+    );
+    return el("label", { class: "seller-guide-field" }, el("span", null, label), select);
+  }
+
   function wireCustomer(onChange) {
     const input = document.getElementById("shellCustomerInput");
     if (!input) return;
@@ -244,6 +291,7 @@
     wireSellerMode();
     wireCustomer(options.onCustomerChange);
     addSellerPrompt();
+    addSellerMeetingGuide();
 
     return { customer: readInitialCustomer(), sellerMode: sellerModeEnabled() };
   }

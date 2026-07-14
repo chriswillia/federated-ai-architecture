@@ -515,6 +515,21 @@
         `;
         section.appendChild(narrative);
 
+        const plays = {
+          "m365-hr": ["Reduce HR case deflection time while preserving trusted policy answers.", "Copilot Studio and M365 Copilot for the experience; Foundry and Agent 365 for governed scale.", "Entra workload identity, Purview DLP, and Sentinel/Defender evidence for personal-data access.", "Answer accuracy, policy citations, deflected cases, DLP events, and cost per resolved request.", "Run an HR agent discovery and data-boundary workshop."],
+          "customer-360": ["Give sellers a current, cited customer picture without centralizing every source system.", "Foundry and Agent 365 for orchestration and inventory; MCP, A2A, and API Management for connection.", "OAuth/OIDC scopes, source attribution, and OpenTelemetry traces across Salesforce, SAP, and order data.", "Time saved preparing for account meetings, source coverage, citation accuracy, and access-policy exceptions.", "Run a federated Customer 360 architecture workshop."],
+          "expense": ["Shorten expense processing while making AI spend accountable to a finance outcome.", "Copilot Studio or a chat experience, Foundry model routing, and Agent 365 inventory.", "Entra identity, Purview policy, approval gates, and traceable financial actions.", "Cycle time, approval accuracy, exceptions, cost per processed expense, and reviewer workload.", "Run an AI FinOps and governed workflow design session."],
+          "servicenow-incident": ["Reduce incident time-to-triage without allowing unsafe remediation.", "Foundry agent runtime, Agent 365 inventory, and Copilot surfaces where applicable.", "Entra identity, Defender/Sentinel monitoring, human-in-the-loop policy, and incident traces.", "MTTA, MTTR, recommended-action acceptance, automated-action rollback, and security alerts.", "Run an IT operations and AI security pilot design workshop."],
+          "engineering": ["Increase developer throughput while retaining secure human review at merge.", "GitHub Copilot or engineering surface, Foundry evaluations, and Agent 365 portfolio controls.", "Least-privilege repository access, Defender for DevOps, OpenTelemetry, tests, and approval gates.", "PR cycle time, test pass rate, security findings, review acceptance, and cost per merged change.", "Run an engineering copilot governance and evaluation workshop."],
+        };
+        const play = plays[uc.id];
+        if (play) {
+          const seller = document.createElement("aside");
+          seller.className = "seller-callout seller-only";
+          seller.innerHTML = `<div class="seller-kicker">Seller play</div><div class="seller-callout-body"><strong>Business value hypothesis:</strong> ${play[0]}<p><strong>AI/apps motion:</strong> ${play[1]}</p><p><strong>Security attach:</strong> ${play[2]}</p><p><strong>Evidence to collect:</strong> ${play[3]}</p><p><strong>Next workshop:</strong> ${play[4]}</p></div>`;
+          section.appendChild(seller);
+        }
+
         return { section, grid };
       }
 

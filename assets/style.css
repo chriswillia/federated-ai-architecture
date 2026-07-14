@@ -371,6 +371,13 @@ html[data-seller-mode] .seller-nav-link { display: inline !important; }
 .seller-callout-body strong { display: block; color: var(--text); }
 .seller-callout-body p { margin: var(--sp-1) 0 var(--sp-2); }
 .seller-callout-body a { font-weight: 600; }
+.seller-meeting-guide { background: var(--surface-2); border-bottom: 1px dashed var(--accent); }
+.seller-meeting-inner { max-width: 1320px; margin: 0 auto; padding: var(--sp-2) var(--sp-4); display: flex; gap: var(--sp-3); align-items: center; flex-wrap: wrap; }
+.seller-guide-label { font-size: 10.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.seller-guide-field { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text-soft); }
+.seller-guide-field select { font: inherit; font-size: var(--fs-12); color: var(--text); background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-2); padding: 3px 5px; }
+.seller-next-action { margin-left: auto; font-size: var(--fs-12); color: var(--text-muted); }
+@media (max-width: 760px) { .seller-next-action { margin-left: 0; width: 100%; } }
 
 /* App shell footer */
 .app-footer {
