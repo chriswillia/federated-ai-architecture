@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Trusted Federated AI &mdash; A framework for your AI estate</title>
-    <meta name="description" content="A vendor-neutral framework your enterprise can use to govern, build, connect, and operate AI agents across Microsoft, AWS, Google Cloud, Salesforce, SAP, ServiceNow, and on-prem." />
+    <meta name="description" content="A vendor-neutral framework for governing, building, and connecting AI agents across your enterprise." />
     <link rel="stylesheet" href="assets/style.css" />
     <script>
       (() => {
@@ -18,732 +18,96 @@
     <div id="app-header"></div>
 
     <main class="app-main" id="top">
-
-      <!-- HERO -->
       <section class="hero">
         <span class="eyebrow">A framework for the enterprise AI estate</span>
         <h1>Use, build, connect, and govern AI agents across your enterprise.</h1>
         <p class="punchline">AI development will be federated. AI control cannot be.</p>
-        <span class="agnostic">
-          <span class="dot"></span>
-          Works across Microsoft, AWS, Google Cloud, Salesforce, SAP, ServiceNow, and on-prem
-        </span>
-        <p class="for-customer" id="forCustomer" hidden>Prepared for <strong id="forCustomerName"></strong></p>
+        <span class="agnostic"><span class="dot"></span>Vendor-neutral and built on open standards</span>
         <div class="hero-actions">
-          <a class="btn btn--primary" id="leaveBehindBtn" href="leave-behind.html">
-            Read the executive summary
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-          </a>
-          <a class="btn btn--secondary" id="architectBtn" href="architect.html">
-            See the architecture
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>
-          </a>
+          <a class="btn btn--primary" href="architect.html">See the architecture</a>
+          <a class="btn btn--secondary" href="leave-behind.html">Read the executive summary</a>
         </div>
       </section>
 
-      <section class="seller-callout seller-only" aria-labelledby="e7-vision-heading">
-        <div class="seller-kicker">Seller-only positioning</div>
-        <div class="seller-callout-body">
-          <h2 id="e7-vision-heading">The E7 vision: one governed AI estate</h2>
-          <p>Position Microsoft as the connected operating model for employee AI, agent development, identity, data protection, and security operations — not as a requirement to replace every runtime. Start with portable controls, then use the Microsoft stack as an example anchor.</p>
-          <p><strong>Experience:</strong> Microsoft 365 Copilot and Copilot Studio. <strong>Build:</strong> Foundry and Agent 365. <strong>Connect:</strong> MCP, A2A, OAuth/OIDC, OpenTelemetry, and API Management. <strong>Govern &amp; Secure:</strong> Entra, Purview, Defender, and Sentinel.</p>
-        </div>
-      </section>
-
-      <!-- AUDIENCE EMPHASIS (role strip) -->
-      <div class="filter-bar" role="group" aria-label="Emphasize the pillar most relevant to your role">
-        <div class="filter-row">
-          <span class="filter-label">Your role</span>
-          <button type="button" class="chip" data-role="ciso">CISO</button>
-          <button type="button" class="chip" data-role="cio">CIO</button>
-          <button type="button" class="chip" data-role="business">Business leader</button>
-          <button type="button" class="chip active" data-role="all">All</button>
-          <span class="sub" style="margin-left: auto;">Highlights the pillar most relevant to your role.</span>
-        </div>
-      </div>
-
-      <!-- PILLARS -->
-      <section class="section">
+      <section class="section" aria-labelledby="decision-heading">
         <div class="section-head">
-          <span class="eyebrow">The four pillars</span>
-          <h2>One framework, every cloud.</h2>
-          <p class="lede">Each pillar lists open standards first, with Microsoft products as an example anchor stack. Substitute any vendor &mdash; the architecture holds.</p>
+          <span class="eyebrow">The decision</span>
+          <h2 id="decision-heading">Centralize the controls, not the innovation.</h2>
+          <p class="lede">Use the platforms that fit each team and workload. Apply a single model for identity, policy, evidence, and cost across all of them.</p>
         </div>
 
         <div class="pillar-grid">
           <article class="pillar" data-pillar="experience">
-            <span class="pillar-num">Pillar 01 &middot; Experience</span>
-            <h3>Where employees meet AI</h3>
-            <p>One chat surface, every business app, every backend system &mdash; with citizen-built agents inheriting identity, DLP, and audit by default.</p>
-            <div class="anchors">
-              <div class="anchors-label">Example anchors</div>
-              <ul>
-                <li>Chat surface in productivity suite <span class="vendor">M365 Copilot</span></li>
-                <li>In-app copilots <span class="vendor">SAP &middot; Salesforce &middot; ServiceNow</span></li>
-                <li>Citizen builder <span class="vendor">Copilot Studio</span></li>
-              </ul>
-              <div class="anchors-label">Standards alignment</div>
-              <div class="standards-line">OAuth/OIDC · NIST AI RMF</div>
-            </div>
+            <span class="pillar-num">01 &middot; Enable</span>
+            <h3>Give people useful AI</h3>
+            <p>Meet employees in the tools they already use, with safe paths for business teams to create agents.</p>
           </article>
-
           <article class="pillar" data-pillar="build">
-            <span class="pillar-num">Pillar 02 &middot; Build</span>
-            <h3>One place to build agents</h3>
-            <p>Pro-code for developers, low-code for business users &mdash; with logic, prompts, skills, and evals stored centrally and reusable across surfaces.</p>
-            <div class="anchors">
-              <div class="anchors-label">Example anchors</div>
-              <ul>
-                <li>Pro-code platform <span class="vendor">Foundry / Bedrock / Vertex</span></li>
-                <li>Low-code builder <span class="vendor">Copilot Studio</span></li>
-                <li>Open frameworks <span class="vendor">MAF / LangGraph</span></li>
-              </ul>
-              <div class="anchors-label">Standards alignment</div>
-              <div class="standards-line">NIST AI 600-1 · ISO/IEC 42001</div>
-            </div>
+            <span class="pillar-num">02 &middot; Build</span>
+            <h3>Reuse what works</h3>
+            <p>Share approved prompts, tools, evaluations, and delivery patterns instead of rebuilding them team by team.</p>
           </article>
-
           <article class="pillar" data-pillar="connect">
-            <span class="pillar-num">Pillar 03 &middot; Connect</span>
-            <h3>A shared fabric across clouds</h3>
-            <p>Agents reach every data source, business app, and tool &mdash; on every cloud, on-premises, and inside SaaS &mdash; without rebuilding integrations per team.</p>
-            <div class="anchors">
-              <div class="anchors-label">Example anchors</div>
-              <ul>
-                <li>Open standards <span class="vendor">MCP &middot; A2A</span></li>
-                <li>API gateway <span class="vendor">APIM / Kong / Apigee</span></li>
-                <li>Data fabric <span class="vendor">Fabric &middot; OneLake</span></li>
-              </ul>
-              <div class="anchors-label">Standards alignment</div>
-              <div class="standards-line">MCP · A2A · OpenTelemetry · CycloneDX ML-BOM</div>
-            </div>
+            <span class="pillar-num">03 &middot; Connect</span>
+            <h3>Work across the estate</h3>
+            <p>Connect agents to data and systems wherever they run, using MCP, A2A, OAuth/OIDC, and API gateways.</p>
           </article>
-
           <article class="pillar" data-pillar="govern">
-            <span class="pillar-num">Pillar 04 &middot; Govern &amp; Secure</span>
-            <h3>One control plane for every agent</h3>
-            <p>One identity model, one policy fabric, one set of traces &mdash; extending your existing security stack to AI, including the AI your employees use without telling you.</p>
-            <div class="anchors">
-              <div class="anchors-label">Example anchors</div>
-              <ul>
-                <li>Identity <span class="vendor">Entra / Okta / Ping</span></li>
-                <li>Policy &amp; DLP <span class="vendor">Purview</span></li>
-                <li>SIEM &amp; XDR <span class="vendor">Sentinel &middot; Defender</span></li>
-              </ul>
-              <div class="anchors-label">Standards alignment</div>
-              <div class="standards-line">AI TRiSM · ISO/IEC 42001 · OWASP Agentic AI · CSA MAESTRO · EU AI Act</div>
-            </div>
+            <span class="pillar-num">04 &middot; Govern</span>
+            <h3>Make every action accountable</h3>
+            <p>Give every agent an owner, identity, policy boundary, trace, and cost signal from day one.</p>
           </article>
         </div>
       </section>
 
-      <!-- REFERENCE SCENARIOS -->
-      <section class="section">
+      <section class="section" aria-labelledby="start-heading">
         <div class="section-head">
-          <span class="eyebrow">Reference scenarios</span>
-          <h2>What this looks like.</h2>
-          <p class="lede">Each scenario is a full reference architecture across multiple vendors &mdash; not a single-vendor demo.</p>
+          <span class="eyebrow">Start here</span>
+          <h2 id="start-heading">Three practical steps.</h2>
         </div>
-
         <div class="card-grid">
-          <a class="card" href="scenarios/citizen-hr.html">
-            <span class="card-tag" data-pillar="experience">Experience &middot; Build</span>
-            <h4>Citizen-built HR Benefits Agent</h4>
-            <p class="card-body">HR builds it in Copilot Studio; employees use it in Teams &mdash; identity, DLP, audit inherited.</p>
-            <div class="card-meta">
-              <span class="vendor-pill">M365</span>
-              <span class="vendor-pill">Workday</span>
-              <span class="vendor-pill">SharePoint</span>
-            </div>
-          </a>
-          <a class="card" href="scenarios/customer360.html">
-            <span class="card-tag" data-pillar="connect">Connect</span>
-            <h4>Multi-source Customer 360</h4>
-            <p class="card-body">Cross-vendor agent collaboration via A2A across Salesforce, SAP, and a foundation-model platform.</p>
-            <div class="card-meta">
-              <span class="vendor-pill">Salesforce</span>
-              <span class="vendor-pill">SAP</span>
-              <span class="vendor-pill">A2A</span>
-            </div>
-          </a>
-          <a class="card" href="scenarios/expense.html">
-            <span class="card-tag" data-pillar="build">Build &middot; Govern</span>
-            <h4>Cost-aware Expense Agent</h4>
-            <p class="card-body">Submit expenses in a chat surface; per-employee token tagging and model routing for Finance.</p>
-            <div class="card-meta">
-              <span class="vendor-pill">Concur</span>
-              <span class="vendor-pill">AMEX</span>
-              <span class="vendor-pill">Teams</span>
-            </div>
-          </a>
-          <a class="card" href="scenarios/it-incident-triage.html">
-            <span class="card-tag" data-pillar="govern">Govern &amp; Secure</span>
-            <h4>Autonomous IT Incident Triage</h4>
-            <p class="card-body">Autonomous triage with security-A2A handoff and human-in-the-loop escalation across an existing SIEM.</p>
-            <div class="card-meta">
-              <span class="vendor-pill">ServiceNow</span>
-              <span class="vendor-pill">Sentinel</span>
-              <span class="vendor-pill">PagerDuty</span>
-            </div>
-          </a>
-          <a class="card" href="scenarios/engineering-copilot.html">
-            <span class="card-tag" data-pillar="build">Build</span>
-            <h4>Engineering Copilot (code &rarr; PR)</h4>
-            <p class="card-body">MCP-grounded dev loop with pre-merge Foundry evals across multiple code hosts.</p>
-            <div class="card-meta">
-              <span class="vendor-pill">GitHub</span>
-              <span class="vendor-pill">Azure DevOps</span>
-              <span class="vendor-pill">MCP</span>
-            </div>
+          <a class="card" href="architect.html">
+            <span class="card-tag">1 &middot; Map</span>
+            <h4>Map your AI estate</h4>
+            <p class="card-body">Identify where agents are built, what they access, and who owns them.</p>
           </a>
           <a class="card" href="use-cases.html">
-            <span class="card-tag">All</span>
-            <h4>All use cases &rarr;</h4>
-            <p class="card-body">Five reference flows: HR, Customer 360, Expense, IT triage, and Engineering Copilot.</p>
-            <div class="card-meta">
-              <span class="vendor-pill">Catalog</span>
-            </div>
+            <span class="card-tag">2 &middot; Prove</span>
+            <h4>Choose one governed scenario</h4>
+            <p class="card-body">Start with a high-value workflow and validate the controls as part of delivery.</p>
+          </a>
+          <a class="card" href="leave-behind.html">
+            <span class="card-tag">3 &middot; Scale</span>
+            <h4>Establish the operating model</h4>
+            <p class="card-body">Set the reusable control pattern, portfolio review, and measures for expansion.</p>
           </a>
         </div>
       </section>
 
-      <!-- COMMON QUESTIONS -->
-      <section class="conversation" id="conversation" aria-labelledby="conversation-heading">
+      <section class="section" aria-labelledby="explore-heading">
         <div class="section-head">
-          <span class="eyebrow">Common questions</span>
-          <h2 id="conversation-heading">Questions worth asking your team.</h2>
-          <p class="lede">Pick the conversation that matters most in your enterprise right now. Each card surfaces the question you&rsquo;re likely already debating internally, a plain-English answer, the discovery questions worth running with your own team, and where in the reference architecture to look.</p>
+          <span class="eyebrow">Explore when needed</span>
+          <h2 id="explore-heading">Go deeper by question, not by framework layer.</h2>
         </div>
-
-        <div class="outcomes-bar" role="group" aria-label="Filter questions">
-          <div class="filter-row">
-            <span class="outcomes-label">Outcome</span>
-            <button type="button" class="outcome-chip" data-outcome="adoption">Faster adoption</button>
-            <button type="button" class="outcome-chip" data-outcome="cost">Predictable cost</button>
-            <button type="button" class="outcome-chip" data-outcome="risk">Lower risk</button>
-            <button type="button" class="outcome-chip" data-outcome="freedom">Cloud freedom</button>
-          </div>
-          <div class="filter-row">
-            <span class="outcomes-label">Owner</span>
-            <button type="button" class="persona-chip" data-persona="cio">CIO</button>
-            <button type="button" class="persona-chip" data-persona="ciso">CISO</button>
-            <button type="button" class="persona-chip" data-persona="cdo">CDO</button>
-            <button type="button" class="persona-chip" data-persona="ai">Head of AI</button>
-            <button type="button" class="persona-chip" data-persona="lob">Line of business</button>
-            <button type="button" class="filter-clear" id="clearFilters">Clear filters</button>
-          </div>
-        </div>
-
-        <div class="challenges">
-          <div class="challenge-grid" id="challengeGrid"></div>
-          <div class="challenge-panel" id="challengePanel" hidden>
-            <div class="cp-head">
-              <div class="cp-headline">
-                <div class="cp-outcome" id="cpOutcome"></div>
-                <div class="cp-quote" id="cpQuote"></div>
-              </div>
-              <button class="cp-clear" id="cpClear" type="button" title="Clear selection" aria-label="Clear selection">&times;</button>
-            </div>
-            <button class="cp-copy" id="cpCopy" type="button" title="Copy this answer to clipboard">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-              Copy answer
-            </button>
-            <div class="cp-soundbite" id="cpSoundbite"></div>
-            <div class="cp-answer" id="cpAnswer"></div>
-            <div class="cp-row">
-              <div class="cp-block">
-                <h4>Questions to ask your team</h4>
-                <ul id="cpPoints"></ul>
-              </div>
-              <div class="cp-block">
-                <h4>Where in the architecture</h4>
-                <div class="cp-pointat" id="cpPointAt"></div>
-                <div class="cp-see" id="cpSeeItWork"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="objections-wrap" aria-labelledby="objections-heading">
-          <h3 id="objections-heading">Common concerns &amp; how the framework answers them</h3>
-          <p class="sub">Two-sentence answers to the concerns that come up most often, grouped by the part of the organization that usually raises them. Each pivot opens the relevant view of the reference architecture or a full scenario walkthrough.</p>
-          <div id="objectionsContainer"></div>
+        <div class="card-grid">
+          <a class="card" href="use-cases.html">
+            <h4>What does this look like in practice?</h4>
+            <p class="card-body">Review five cross-platform reference scenarios.</p>
+          </a>
+          <a class="card" href="tensions.html">
+            <h4>What trade-offs should we expect?</h4>
+            <p class="card-body">See the tensions that should be named before scaling.</p>
+          </a>
+          <a class="card" href="references.html">
+            <h4>Which standards support it?</h4>
+            <p class="card-body">Review the open standards and primary sources behind the model.</p>
+          </a>
         </div>
       </section>
-
     </main>
 
     <div id="app-footer"></div>
-
     <script src="assets/shell.js"></script>
-    <script>
-      // ============================================================
-      // Page state: role + customer + CTA links
-      // ============================================================
-      const ROLE_TO_PILLAR = { ciso: "govern", cio: "connect", business: "experience" };
-      const ROLE_TO_LENS   = { ciso: "security", cio: "architecture", business: "experience" };
-
-      const forCustomer     = document.getElementById("forCustomer");
-      const forCustomerName = document.getElementById("forCustomerName");
-      const leaveBehindBtn  = document.getElementById("leaveBehindBtn");
-      const architectBtn    = document.getElementById("architectBtn");
-      const pillars         = document.querySelectorAll(".pillar");
-      const roleButtons     = document.querySelectorAll(".chip[data-role]");
-
-      let currentRole = "all";
-      let currentCustomer = "";
-
-      function applyRole(role) {
-        currentRole = role || "all";
-        if (currentRole === "all") document.documentElement.removeAttribute("data-role");
-        else document.documentElement.setAttribute("data-role", currentRole);
-        const match = ROLE_TO_PILLAR[currentRole];
-        pillars.forEach((p) => p.classList.toggle("role-match", p.dataset.pillar === match));
-        roleButtons.forEach((b) => b.classList.toggle("active", b.dataset.role === currentRole));
-        updateCtaLinks();
-        updateUrl();
-      }
-
-      function setCustomer(name) {
-        currentCustomer = (name || "").trim();
-        if (currentCustomer) {
-          forCustomerName.textContent = currentCustomer;
-          forCustomer.hidden = false;
-        } else {
-          forCustomer.hidden = true;
-        }
-        updateCtaLinks();
-      }
-
-      function updateCtaLinks() {
-        const lens = ROLE_TO_LENS[currentRole];
-        const lbParams = new URLSearchParams();
-        if (lens) lbParams.set("lens", lens);
-        if (currentCustomer) lbParams.set("customer", currentCustomer);
-        const lbQs = lbParams.toString();
-        if (leaveBehindBtn) leaveBehindBtn.href = "leave-behind.html" + (lbQs ? "?" + lbQs : "");
-        const archParams = new URLSearchParams();
-        if (lens) archParams.set("lens", lens);
-        const archQs = archParams.toString();
-        if (architectBtn) architectBtn.href = "architect.html" + (archQs ? "?" + archQs : "");
-      }
-
-      function updateUrl() {
-        try {
-          const url = new URL(window.location.href);
-          if (currentRole && currentRole !== "all") url.searchParams.set("role", currentRole);
-          else url.searchParams.delete("role");
-          window.history.replaceState({}, "", url.toString());
-        } catch (e) {}
-      }
-
-      roleButtons.forEach((b) => b.addEventListener("click", () => applyRole(b.dataset.role)));
-
-      // Mount shared shell; customer state comes via onCustomerChange.
-      Shell.mount({
-        activePath: "overview",
-        onCustomerChange: setCustomer,
-      });
-
-      // Init from URL role + existing customer in shell
-      try {
-        const params = new URL(window.location.href).searchParams;
-        const r = params.get("role");
-        if (r && (r in ROLE_TO_PILLAR || r === "all")) applyRole(r);
-        else applyRole("all");
-      } catch (e) { applyRole("all"); }
-      setCustomer(Shell.readInitialCustomer());
-
-      // ============================================================
-      // Common questions: cards + concerns by team
-      // ============================================================
-      const NODE_LABELS = {
-        "dev-platform": "Agent development platform",
-        "tools-sdks": "Tools & SDKs",
-        "governance": "Governance & inventory",
-        "runtime": "Agent runtime",
-        "mcp": "MCP (Model Context Protocol)",
-        "a2a": "A2A (Agent-to-Agent)",
-        "apis": "APIs (gateway)",
-        "vertical-copilots": "Business-app copilots",
-        "systems-of-record": "Systems of record",
-        "cost": "Cost & FinOps",
-        "models": "Models",
-        "identity": "Identity",
-        "security": "Security & threat",
-        "catalog-lineage": "Catalog & lineage",
-        "knowledge-grounding": "Knowledge grounding",
-        "human-oversight": "Human oversight",
-        "m365-copilot": "M365 Copilot",
-      };
-      function nodeLabelById(id) { return NODE_LABELS[id] || id; }
-
-      const SCENARIO_PAGE = {
-        citizen: "scenarios/citizen-hr.html",
-        customer360: "scenarios/customer360.html",
-        expense: "scenarios/expense.html",
-        itops: "scenarios/it-incident-triage.html",
-        swe: "scenarios/engineering-copilot.html",
-      };
-      const PLANE_LENS = {
-        control: "security", data: "security",
-        model: "architecture", fabric: "architecture",
-        experience: "experience",
-      };
-      function pivotHref(target, isScenario) {
-        if (isScenario) return SCENARIO_PAGE[target] || "architect.html";
-        const lens = PLANE_LENS[target];
-        return lens ? `architect.html?lens=${lens}#canvas` : "architect.html#canvas";
-      }
-
-      const CHALLENGES = [
-        {
-          id: "platform", accent: "--pillar-build", outcome: "adoption", outcomeLabel: "Faster adoption",
-          soundbite: "Build agents in one governed place, and you compound time-to-value across every team \u2014 instead of paying the integration tax in every department.",
-          metaLayer: "Build plane", personas: ["cio", "ai"],
-          customerQuote: "We want a singular Agent Development Platform.",
-          shortAnswer: "One place to build agents \u2014 Foundry / Bedrock / Vertex for pro developers, Copilot Studio for business users \u2014 with logic, prompts, skills, and evals stored centrally and reusable across surfaces.",
-          pointAt: ["dev-platform", "tools-sdks", "governance"],
-          points: [
-            "Are you trying to standardize <em>where</em> agents are built, or <em>how they\u2019re governed and secured once deployed?</em>",
-            "If teams build agents in different platforms today, how do you ensure <strong>consistent security and policy enforcement</strong> across them?",
-            "Do you have a way to <strong>observe and inventory all agents</strong>, regardless of where they are built?",
-            "What happens when an agent is created outside your &ldquo;preferred&rdquo; platform \u2014 how do you detect and govern it?",
-          ],
-          seeItWork: { label: "HR Benefits Agent", href: "scenarios/citizen-hr.html" },
-        },
-        {
-          id: "multi-cloud", accent: "--pillar-connect", outcome: "freedom", outcomeLabel: "Cloud freedom",
-          soundbite: "Your data, apps, and people don\u2019t live in one cloud \u2014 your agents shouldn\u2019t either. A federated fabric lets agents work where the work is.",
-          metaLayer: "Fabric & runtime", personas: ["cio", "ai"],
-          customerQuote: "We want to develop agents across clouds and SaaS apps.",
-          shortAnswer: "Build once, deploy anywhere. The same agent runs on Azure, AWS, GCP, on-prem, or inside Salesforce, SAP, and ServiceNow \u2014 reaching data wherever it lives.",
-          pointAt: ["runtime", "mcp", "a2a", "apis", "vertical-copilots", "systems-of-record"],
-          points: [
-            "How are your agents currently <strong>connecting to enterprise data, APIs, and SaaS platforms</strong>?",
-            "Are you able to <strong>monitor agent interactions across environments</strong> in a unified way?",
-            "Do you have a consistent model to apply <strong>security, identity, and governance policies across clouds</strong>?",
-            "Are teams rebuilding similar capabilities because there\u2019s no shared <strong>governed interoperability model</strong>?",
-          ],
-          seeItWork: { label: "Customer 360", href: "scenarios/customer360.html" },
-        },
-        {
-          id: "cost", accent: "--pillar-experience", outcome: "cost", outcomeLabel: "Predictable cost",
-          soundbite: "AI cost only feels unpredictable when nobody owns it. Token-level visibility plus showback turns agent spend into a managed budget line.",
-          metaLayer: "Cost & FinOps", personas: ["cio", "lob"],
-          customerQuote: "We want control over token usage and cost/billing.",
-          shortAnswer: "See every token, route to the right-sized model, and bill back to the business owner \u2014 so spend stays predictable even as agents proliferate.",
-          pointAt: ["cost", "models", "governance", "runtime"],
-          points: [
-            "Do you have visibility into <strong>which agents are driving cost and consumption</strong>?",
-            "Can you correlate <strong>agent activity (prompts, tool calls, outcomes)</strong> to cost drivers?",
-            "How do you <strong>govern usage policies</strong> to prevent runaway agent execution or overconsumption?",
-            "If an agent becomes inefficient or misconfigured, how quickly can you <strong>detect and act on it</strong>?",
-          ],
-          seeItWork: { label: "Cost-aware expense agent", href: "scenarios/expense.html" },
-        },
-        {
-          id: "control", accent: "--pillar-govern", outcome: "risk", outcomeLabel: "Lower risk",
-          soundbite: "One control plane is how \u2018governed AI\u2019 stops being a slide and becomes a daily operating posture \u2014 across every cloud, every agent.",
-          metaLayer: "Control plane", personas: ["ciso", "cio"],
-          customerQuote: "We want a unified control plane for identity, governance, and security.",
-          shortAnswer: "One identity, one set of policies, one trace per agent \u2014 across every cloud and SaaS app, aligned to NIST AI RMF.",
-          pointAt: ["identity", "governance", "security", "catalog-lineage"],
-          points: [
-            "Do your agents have <strong>identities with defined permissions and ownership</strong>, similar to users or apps?",
-            "Can you <strong>apply consistent policies (access, DLP, conditional access)</strong> across all agents?",
-            "How do you <strong>govern lifecycle</strong> \u2014 creation, approval, monitoring, and decommissioning of agents?",
-            "If an incident occurs, can you <strong>trace an agent\u2019s actions end-to-end</strong> and investigate it?",
-            "Do you have a <strong>single place to observe, govern, and secure all agents</strong>, including third-party ones?",
-          ],
-          seeItWork: { label: "IT Incident Triage", href: "scenarios/it-incident-triage.html" },
-        },
-        {
-          id: "risk", accent: "--pillar-govern", outcome: "risk", outcomeLabel: "Lower risk",
-          soundbite: "Prompt injection, leakage, and rogue agents are real \u2014 and solvable when every agent has identity, policy, and live monitoring from day one.",
-          metaLayer: "GenAI risk & security", personas: ["ciso"],
-          customerQuote: "We need to manage GenAI risk \u2014 prompt injection, leakage, rogue agents.",
-          shortAnswer: "Real-time monitoring, red-teaming, and runtime guardrails \u2014 from Foundry safety evals to Defender / Sentinel coverage for every agent action.",
-          pointAt: ["security", "governance", "identity"],
-          points: [
-            "How are you protecting against <strong>prompt injection, data leakage, or rogue agent behavior</strong>?",
-            "Do you have <strong>real-time monitoring and threat detection</strong> for agent activity?",
-          ],
-          seeItWork: { label: "IT Incident Triage", href: "scenarios/it-incident-triage.html" },
-        },
-        {
-          id: "sensitive", accent: "--pillar-govern", outcome: "risk", outcomeLabel: "Lower risk",
-          soundbite: "Sensitive data shouldn\u2019t have to move for AI to be useful. Ground agents on data where it lives \u2014 with the labels, controls, and audit you already trust.",
-          metaLayer: "Sensitive data & on-prem", personas: ["ciso", "cdo"],
-          customerQuote: "We can\u2019t move sensitive data to the cloud just to use agents.",
-          shortAnswer: "Ground agents in data that stays where it lives \u2014 Foundry Local + private MCP servers + Purview policies, with full lineage end to end.",
-          pointAt: ["knowledge-grounding", "catalog-lineage", "runtime", "mcp"],
-          points: [
-            "How are you ensuring agents respect <strong>data boundaries, labels, and compliance policies</strong>?",
-            "Can you track <strong>data flow from input \u2192 agent \u2192 output</strong> across systems?",
-          ],
-          seeItWork: { label: "HR Benefits Agent", href: "scenarios/citizen-hr.html" },
-        },
-        {
-          id: "scale", accent: "--pillar-build", outcome: "adoption", outcomeLabel: "Faster adoption",
-          soundbite: "Most AI programs don\u2019t fail at the pilot \u2014 they fail at production. Central registries, evals, and consumption limits make the leap repeatable.",
-          metaLayer: "Pilot \u2192 production", personas: ["cio", "ai"],
-          customerQuote: "Pilots work \u2014 production at scale is where it falls apart.",
-          shortAnswer: "Central registry, signed releases, pre-prod evals, consumption limits, and approval workflows turn one-off pilots into a managed agent portfolio.",
-          pointAt: ["dev-platform", "governance", "cost"],
-          points: [
-            "What changes when you move from pilot to production in terms of <strong>governance and control</strong>?",
-            "How do you prevent <strong>agent sprawl and unmanaged growth</strong>?",
-          ],
-          seeItWork: { label: "Customer 360", href: "scenarios/customer360.html" },
-        },
-        {
-          id: "modal", accent: "--pillar-experience", outcome: "adoption", outcomeLabel: "Faster adoption",
-          soundbite: "Voice and vision agents are coming fast. The cost of getting them wrong is letting them grow up outside your control plane.",
-          metaLayer: "Multi-modal & advanced", personas: ["ai", "lob"],
-          customerQuote: "Voice, vision, and tool-using agents are next \u2014 not just chat.",
-          shortAnswer: "Multi-modal agents inherit the same identity, policy, cost tagging, and trace fabric as text agents \u2014 no parallel control plane.",
-          pointAt: ["models", "runtime", "tools-sdks"],
-          points: [
-            "Do you have visibility into <strong>how different agent types behave and interact</strong>?",
-            "Can you enforce <strong>security and governance consistently across modalities</strong>?",
-          ],
-          seeItWork: { label: "Use cases catalog", href: "use-cases.html" },
-        },
-        {
-          id: "citizen-dev", accent: "--pillar-build", outcome: "adoption", outcomeLabel: "Faster adoption",
-          soundbite: "Letting business users build is the speed lever. A signed tool catalog and central approval keep it from becoming the risk lever.",
-          metaLayer: "Citizen dev + guardrails", personas: ["lob", "ai"],
-          customerQuote: "Citizen builders need to move fast \u2014 without breaking things.",
-          shortAnswer: "Copilot Studio for builders, central registry + signed MCP catalog + admin approval policies \u2014 fast paths with guardrails built in.",
-          pointAt: ["dev-platform", "tools-sdks", "governance", "human-oversight"],
-          points: [
-            "How are you enabling builders while still enforcing <strong>enterprise guardrails and policies</strong>?",
-            "Can new agents be created without <strong>security review or central visibility</strong>?",
-          ],
-          seeItWork: { label: "HR Benefits Agent", href: "scenarios/citizen-hr.html" },
-        },
-        {
-          id: "observability", accent: "--pillar-govern", outcome: "risk", outcomeLabel: "Lower risk",
-          soundbite: "If you can\u2019t trace what your agents are doing, you can\u2019t trust them \u2014 and you can\u2019t improve them. Trace every step, every time.",
-          metaLayer: "Observability & quality", personas: ["ciso", "cdo", "ai"],
-          customerQuote: "We can\u2019t debug or measure what our agents actually do.",
-          shortAnswer: "Foundry traces every step \u2014 prompt, reasoning, tool calls, results \u2014 and pairs it with evals for quality, safety, and cost across every runtime.",
-          pointAt: ["governance", "catalog-lineage", "cost"],
-          points: [
-            "Can you trace <strong>prompt \u2192 reasoning \u2192 tool \u2192 result \u2192 output</strong> for your agents?",
-            "Do you have a way to <strong>measure agent effectiveness, reliability, and risk</strong>?",
-            "How are you identifying <strong>which agents deliver value vs. introduce risk</strong>?",
-          ],
-          seeItWork: { label: "Cost-aware Expense Agent", href: "scenarios/expense.html" },
-        },
-      ];
-
-      const LENS_OBJECTIONS = {
-        security: {
-          label: "Security & Trust",
-          intro: "Concerns raised most often by the CISO, GRC, or SOC. Coverage, sensitive data, and operational load are the recurring themes.",
-          items: [
-            { quote: "We already use ChatGPT \u2014 we don't need this.", response: "Then you already have an AI estate \u2014 you just can't see it. Extending Defender for Cloud Apps and Purview to that traffic turns shadow AI into a governed inventory in a week.", pivot: { label: "See the Control plane", target: "control", isScenario: false } },
-            { quote: "We're an AWS shop. Microsoft Security doesn't fit us.", response: "Sentinel, Defender, and Purview were rebuilt as multi-cloud control planes years ago \u2014 they ingest AWS logs, AWS IAM, and Bedrock telemetry. The AI control plane sits above the runtime cloud.", pivot: { label: "See cross-cloud control", target: "control", isScenario: false } },
-            { quote: "Our SOC is already overwhelmed.", response: "AI-aware Sentinel reduces noise, not adds to it \u2014 auto-triage on Tier-1 incidents plus prompt-injection detections that didn't exist in the SOC before. The IT incident triage scenario shows the pattern.", pivot: { label: "Walk the IT triage scenario", target: "itops", isScenario: true } },
-            { quote: "Agents will leak our data.", response: "Only if identity and DLP don't follow them. Entra workload identity for the agent, Purview labels on the data, Defender on the runtime \u2014 the same controls you trust for users, applied to agents.", pivot: { label: "See the Data + Control planes", target: "data", isScenario: false } },
-          ],
-        },
-        architecture: {
-          label: "AI Architecture",
-          intro: "Concerns raised most often by the CIO, CTO, or enterprise architect. Lock-in, framework choice, and build-vs-buy are the recurring themes.",
-          items: [
-            { quote: "We've standardized on LangChain (or another framework).", response: "Keep it \u2014 LangChain agents speak MCP and A2A like everyone else. The control plane's value isn't replacing the framework, it's the central registry, evals, and identity that wrap whatever you build.", pivot: { label: "See the Build + Fabric planes", target: "model", isScenario: false } },
-            { quote: "We can build the control plane ourselves.", response: "You can, but every six months a new protocol (MCP, A2A, signed manifests, agent cards) ships and you'll re-build. A managed control plane tracks the standards so your team can build the agents that matter to the business.", pivot: { label: "See the Control plane", target: "control", isScenario: false } },
-            { quote: "We don't want vendor lock-in to one cloud.", response: "The federated model is the opposite of lock-in. MCP, A2A, and gateways like APIM/Kong/Apigee are open or open-style protocols. Agents run on the cloud closest to the data \u2014 the control plane sits above the runtime, not inside it.", pivot: { label: "See cross-cloud runtime", target: "model", isScenario: false } },
-            { quote: "Our integrations are all custom APIs \u2014 MCP is overkill.", response: "Custom APIs are fine for one or two agents. By the tenth agent, every team is rebuilding auth, schemas, and rate-limits. MCP servers fronted by an API gateway let you do it once and govern at the edge.", pivot: { label: "Walk the Customer 360 scenario", target: "customer360", isScenario: true } },
-          ],
-        },
-        experience: {
-          label: "AI Experience",
-          intro: "Concerns raised most often by the head of AI, employee experience, or a line-of-business leader. Adoption, surface choice, and citizen-development risk are the recurring themes.",
-          items: [
-            { quote: "We bought GitHub Copilot \u2014 isn't that enough?", response: "GitHub Copilot is one experience for developers. M365 Copilot, business-app copilots, and citizen-built agents are how the other 90% of employees see AI. Same control plane underneath, very different surfaces.", pivot: { label: "See the Experience plane", target: "experience", isScenario: false } },
-            { quote: "Adoption is stuck \u2014 people don't know what to ask.", response: "Citizen-built agents fix this. A business owner builds an agent for their team's most-asked question; usage spikes because the agent answers the question, not the human. The HR scenario is the pattern.", pivot: { label: "Walk the Citizen HR scenario", target: "citizen", isScenario: true } },
-            { quote: "We need agents inside our business apps, not just chat.", response: "Business-app copilots (SAP Joule, Salesforce Agentforce, ServiceNow Now Assist) live exactly there. With A2A, they collaborate; with one control plane, they're inventoried the same way. Same governance, different doorways.", pivot: { label: "See the Experience plane", target: "experience", isScenario: false } },
-            { quote: "Citizen developers will create a mess.", response: "Only if there's no platform. A central builder (e.g. Copilot Studio) plus the registry registers every citizen-built agent \u2014 with identity, DLP, evals, and cost tags inherited automatically. Freedom for the builder, control for IT.", pivot: { label: "Walk the Citizen HR scenario", target: "citizen", isScenario: true } },
-          ],
-        },
-      };
-
-      const challengeGrid = document.getElementById("challengeGrid");
-      const challengePanel = document.getElementById("challengePanel");
-      const cpOutcome = document.getElementById("cpOutcome");
-      const cpQuote = document.getElementById("cpQuote");
-      const cpSoundbite = document.getElementById("cpSoundbite");
-      const cpAnswer = document.getElementById("cpAnswer");
-      const cpPoints = document.getElementById("cpPoints");
-      const cpPointAt = document.getElementById("cpPointAt");
-      const cpSeeItWork = document.getElementById("cpSeeItWork");
-      const cpClear = document.getElementById("cpClear");
-      const cpCopy = document.getElementById("cpCopy");
-      const outcomesBar = document.querySelector(".outcomes-bar");
-      const clearFiltersBtn = document.getElementById("clearFilters");
-      let activeOutcome = null;
-      let activePersona = null;
-
-      function renderChallenges() {
-        const cards = CHALLENGES.map((c) => `
-          <button type="button" class="challenge-card" data-challenge="${c.id}" data-outcome="${c.outcome || ""}" style="--accent: var(${c.accent});">
-            <div class="challenge-meta"><span class="dot"></span>${c.metaLayer}</div>
-            <div class="challenge-quote">${c.customerQuote}</div>
-            <div class="challenge-outcome">${c.outcomeLabel || ""}</div>
-          </button>
-        `).join("");
-        challengeGrid.innerHTML = cards;
-        challengeGrid.querySelectorAll("button.challenge-card").forEach((btn) => {
-          btn.addEventListener("click", () => {
-            const id = btn.dataset.challenge;
-            if (btn.classList.contains("active")) applyChallenge(null);
-            else applyChallenge(id);
-          });
-        });
-      }
-
-      function applyChallenge(id) {
-        const c = CHALLENGES.find((x) => x.id === id);
-        challengeGrid.querySelectorAll(".challenge-card").forEach((b) =>
-          b.classList.toggle("active", b.dataset && b.dataset.challenge === id),
-        );
-        if (!c) {
-          challengePanel.hidden = true;
-          challengePanel.style.removeProperty("--accent");
-          return;
-        }
-        challengePanel.style.setProperty("--accent", `var(${c.accent})`);
-        cpOutcome.textContent = c.outcomeLabel || "";
-        cpOutcome.style.display = c.outcomeLabel ? "" : "none";
-        cpQuote.textContent = `\u201c${c.customerQuote}\u201d`;
-        cpSoundbite.textContent = c.soundbite || "";
-        cpSoundbite.style.display = c.soundbite ? "" : "none";
-        cpAnswer.innerHTML = `<strong>The short answer.</strong> ${c.shortAnswer}`;
-        cpPoints.innerHTML = c.points.map((p) => `<li>${p}</li>`).join("");
-        cpPointAt.innerHTML = c.pointAt.map((nid) => {
-          return `<a class="pa-chip" href="architect.html?lens=architecture#canvas" title="Open this in the architect view">${nodeLabelById(nid)}</a>`;
-        }).join("");
-        cpSeeItWork.innerHTML = `<strong>See it in action:</strong> <a href="${c.seeItWork.href}">${c.seeItWork.label} \u2192</a>`;
-        challengePanel.hidden = false;
-        challengePanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
-      }
-
-      function applyFilters() {
-        if (outcomesBar) {
-          outcomesBar.querySelectorAll(".outcome-chip").forEach((b) => {
-            b.classList.toggle("active", !!activeOutcome && b.dataset.outcome === activeOutcome);
-          });
-          outcomesBar.querySelectorAll(".persona-chip").forEach((b) => {
-            b.classList.toggle("active", !!activePersona && b.dataset.persona === activePersona);
-          });
-        }
-        challengeGrid.querySelectorAll(".challenge-card").forEach((b) => {
-          const id = b.dataset.challenge;
-          const ch = CHALLENGES.find((x) => x.id === id);
-          const outcomeOk = !activeOutcome || (ch && ch.outcome === activeOutcome);
-          const personaOk = !activePersona || (ch && Array.isArray(ch.personas) && ch.personas.includes(activePersona));
-          b.hidden = !(outcomeOk && personaOk);
-        });
-        const activeBtn = challengeGrid.querySelector(".challenge-card.active");
-        if (activeBtn && activeBtn.hidden) applyChallenge(null);
-      }
-
-      if (outcomesBar) {
-        outcomesBar.querySelectorAll(".outcome-chip").forEach((btn) => {
-          btn.addEventListener("click", () => {
-            const next = btn.dataset.outcome || "";
-            activeOutcome = next && activeOutcome === next ? null : (next || null);
-            applyFilters();
-          });
-        });
-        outcomesBar.querySelectorAll(".persona-chip").forEach((btn) => {
-          btn.addEventListener("click", () => {
-            const next = btn.dataset.persona || "";
-            activePersona = next && activePersona === next ? null : (next || null);
-            applyFilters();
-          });
-        });
-      }
-      if (clearFiltersBtn) {
-        clearFiltersBtn.addEventListener("click", () => {
-          activeOutcome = null; activePersona = null; applyFilters();
-        });
-      }
-      if (cpClear) cpClear.addEventListener("click", () => applyChallenge(null));
-
-      function copyTalkTrack() {
-        const activeBtn = challengeGrid.querySelector(".challenge-card.active");
-        if (!activeBtn) return;
-        const ch = CHALLENGES.find((x) => x.id === activeBtn.dataset.challenge);
-        if (!ch) return;
-        const stripHtml = (s) => s.replace(/<[^>]+>/g, "");
-        const seeHref = new URL(ch.seeItWork.href, location.href).href;
-        const text = [
-          `Outcome: ${ch.outcomeLabel || ""}`,
-          `The question: \u201c${ch.customerQuote}\u201d`,
-          ``,
-          `Why it matters: ${ch.soundbite || ""}`,
-          ``,
-          `The short answer: ${ch.shortAnswer}`,
-          ``,
-          `Questions to ask your team:`,
-          ...ch.points.map((p) => `  - ${stripHtml(p)}`),
-          ``,
-          `See it in action: ${ch.seeItWork.label} \u2014 ${seeHref}`,
-        ].join("\n");
-        const flash = () => {
-          if (!cpCopy) return;
-          cpCopy.classList.add("copied");
-          const label = cpCopy.childNodes[cpCopy.childNodes.length - 1];
-          const original = label && label.nodeType === 3 ? label.textContent : "";
-          if (label && label.nodeType === 3) label.textContent = " Copied!";
-          setTimeout(() => {
-            cpCopy.classList.remove("copied");
-            if (label && label.nodeType === 3) label.textContent = original;
-          }, 1600);
-        };
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(text).then(flash).catch(() => {
-            const ta = document.createElement("textarea");
-            ta.value = text; document.body.appendChild(ta); ta.select();
-            try { document.execCommand("copy"); flash(); } finally { document.body.removeChild(ta); }
-          });
-        }
-      }
-      if (cpCopy) cpCopy.addEventListener("click", copyTalkTrack);
-
-      renderChallenges();
-
-      const objContainer = document.getElementById("objectionsContainer");
-      if (objContainer) {
-        objContainer.innerHTML = Object.entries(LENS_OBJECTIONS).map(([lensId, lens]) => `
-          <div class="obj-group lens-${lensId}">
-            <div class="obj-group-head">
-              <h4>${lens.label}</h4>
-              <span class="lens-pill">${lens.label}</span>
-              <p>${lens.intro}</p>
-            </div>
-            <div class="obj-grid">
-              ${lens.items.map((o) => `
-                <div class="obj-card">
-                  <div class="obj-quote">${o.quote}</div>
-                  <div class="obj-response">${o.response}</div>
-                  ${o.pivot ? `<div class="obj-pivot">Pivot &rarr; <a href="${pivotHref(o.pivot.target, o.pivot.isScenario)}">${o.pivot.label}</a></div>` : ""}
-                </div>
-              `).join("")}
-            </div>
-          </div>
-        `).join("");
-      }
-
-      try {
-        const ch = new URL(window.location.href).searchParams.get("challenge");
-        if (ch && CHALLENGES.find((x) => x.id === ch)) applyChallenge(ch);
-      } catch (e) {}
-    </script>
+    <script>Shell.mount({ activePath: "overview", showCustomerInput: false });</script>
   </body>
 </html>
