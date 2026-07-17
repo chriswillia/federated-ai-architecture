@@ -39,6 +39,7 @@
   const NAV_ITEMS = [
     { id: "overview",     label: "Overview",     href: "index.html" },
     { id: "architecture", label: "Architecture", href: "architect.html" },
+    { id: "governance",   label: "Governance",   href: "governance.html" },
     { id: "use-cases",    label: "Use cases",    href: "use-cases.html" },
     { id: "summary",      label: "Summary",      href: "leave-behind.html" },
   ];
@@ -46,6 +47,7 @@
   const FOOTER_LINKS = [
     { label: "Overview",          href: "index.html" },
     { label: "Architecture",      href: "architect.html" },
+    { label: "Agentic governance", href: "governance.html" },
     { label: "Concepts",          href: "concepts.html" },
     { label: "Use cases",         href: "use-cases.html" },
     { label: "Trade-offs",        href: "tensions.html" },

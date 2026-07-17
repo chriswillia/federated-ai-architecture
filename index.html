@@ -18,45 +18,80 @@
     <div id="app-header"></div>
 
     <main class="app-main" id="top">
-      <section class="hero">
-        <span class="eyebrow">A framework for the enterprise AI estate</span>
-        <h1>Use, build, connect, and govern AI agents across your enterprise.</h1>
-        <p class="punchline">AI development will be federated. AI control cannot be.</p>
-        <span class="agnostic"><span class="dot"></span>Vendor-neutral and built on open standards</span>
-        <div class="hero-actions">
-          <a class="btn btn--primary" href="architect.html">See the architecture</a>
-          <a class="btn btn--secondary" href="leave-behind.html">Read the executive summary</a>
+      <section class="hero home-hero">
+        <div class="home-hero-copy">
+          <span class="eyebrow">The enterprise AI framework</span>
+          <h1>Build AI everywhere.<br />Keep trust in one place.</h1>
+          <p class="punchline">AI development will be federated. AI control cannot be.</p>
+          <p class="home-hero-intro">A practical framework for leaders who need to accelerate useful AI without creating an estate they cannot see, secure, or steer.</p>
+          <div class="hero-actions">
+            <a class="btn btn--primary" href="#framework">Explore the framework</a>
+            <a class="btn btn--secondary" href="leave-behind.html">Executive summary</a>
+          </div>
         </div>
+        <aside class="home-manifesto" aria-label="Framework principles">
+          <div class="home-manifesto-kicker">The mandate</div>
+          <ol>
+            <li><span>01</span><strong>Enable people</strong><p>Put useful AI in the flow of work.</p></li>
+            <li><span>02</span><strong>Reuse capability</strong><p>Share the patterns that make agents dependable.</p></li>
+            <li><span>03</span><strong>Connect openly</strong><p>Let data and systems remain where they belong.</p></li>
+            <li><span>04</span><strong>Govern continuously</strong><p>Make every consequential action accountable.</p></li>
+          </ol>
+          <div class="home-manifesto-foot"><span class="dot"></span> Standards-led. Vendor-agnostic.</div>
+        </aside>
       </section>
 
-      <section class="section" aria-labelledby="decision-heading">
+      <section class="home-intent" aria-label="Who this framework serves">
+        <span>For business leaders who need outcomes.</span>
+        <span>For AI teams who need velocity.</span>
+        <span>For security teams who need evidence.</span>
+      </section>
+
+      <section class="section" id="framework" aria-labelledby="decision-heading">
         <div class="section-head">
-          <span class="eyebrow">The decision</span>
+          <span class="eyebrow">The framework</span>
           <h2 id="decision-heading">Centralize the controls, not the innovation.</h2>
           <p class="lede">Use the platforms that fit each team and workload. Apply a single model for identity, policy, evidence, and cost across all of them.</p>
         </div>
-
         <div class="pillar-grid">
           <article class="pillar" data-pillar="experience">
             <span class="pillar-num">01 &middot; Enable</span>
             <h3>Give people useful AI</h3>
             <p>Meet employees in the tools they already use, with safe paths for business teams to create agents.</p>
+            <a class="pillar-cta" href="use-cases.html">Explore employee AI &rarr;</a>
           </article>
           <article class="pillar" data-pillar="build">
             <span class="pillar-num">02 &middot; Build</span>
             <h3>Reuse what works</h3>
             <p>Share approved prompts, tools, evaluations, and delivery patterns instead of rebuilding them team by team.</p>
+            <a class="pillar-cta" href="concepts.html">Explore the operating model &rarr;</a>
           </article>
           <article class="pillar" data-pillar="connect">
             <span class="pillar-num">03 &middot; Connect</span>
             <h3>Work across the estate</h3>
             <p>Connect agents to data and systems wherever they run, using MCP, A2A, OAuth/OIDC, and API gateways.</p>
+            <a class="pillar-cta" href="architect.html?lens=architecture#canvas">Explore the shared fabric &rarr;</a>
           </article>
           <article class="pillar" data-pillar="govern">
             <span class="pillar-num">04 &middot; Govern</span>
             <h3>Make every action accountable</h3>
             <p>Give every agent an owner, identity, policy boundary, trace, and cost signal from day one.</p>
+            <a class="pillar-cta" href="governance.html">Explore agentic governance &rarr;</a>
           </article>
+        </div>
+      </section>
+
+      <section class="section seller-only" aria-labelledby="seller-journey-heading">
+        <div class="section-head">
+          <span class="eyebrow">Seller journey</span>
+          <h2 id="seller-journey-heading">Lead with the customer framework. Pivot to the Microsoft anchor when a control gap is clear.</h2>
+          <p class="lede">The site keeps the customer conversation vendor-neutral first, then helps AI and Security sellers jointly map an agreed control need to an example Microsoft architecture.</p>
+        </div>
+        <div class="card-grid">
+          <a class="card" href="index.html"><span class="card-tag">1 &middot; Frame</span><h4>Start with the federated reality</h4><p class="card-body">Agree that innovation will occur across platforms; the decision is how identity, policy, evidence, and cost remain consistent.</p></a>
+          <a class="card" href="governance.html"><span class="card-tag">2 &middot; Diagnose</span><h4>Find the first unmanaged boundary</h4><p class="card-body">Use the lifecycle to identify whether the immediate gap is discovery, identity, data, enforcement, or evidence.</p></a>
+          <a class="card" href="governance.html#top"><span class="card-tag">3 &middot; Anchor</span><h4>Pivot to the Agent 365 architecture</h4><p class="card-body">Show how Agent 365 can bridge discovery to managed identity and lifecycle, with Purview, Defender, and Sentinel enforcing the security model.</p></a>
+          <a class="card" href="battlecards.html"><span class="card-tag">4 &middot; Advance</span><h4>Agree the next workshop</h4><p class="card-body">Use the AI and Security seller plays to define the scenario, owner, control evidence, and outcome measure.</p></a>
         </div>
       </section>
 
@@ -90,6 +125,10 @@
           <h2 id="explore-heading">Go deeper by question, not by framework layer.</h2>
         </div>
         <div class="card-grid">
+          <a class="card" href="governance.html">
+            <h4>How do we govern agentic AI?</h4>
+            <p class="card-body">Follow the path from discovery to accountable, enforceable automation.</p>
+          </a>
           <a class="card" href="use-cases.html">
             <h4>What does this look like in practice?</h4>
             <p class="card-body">Review five cross-platform reference scenarios.</p>

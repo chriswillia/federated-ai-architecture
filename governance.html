@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Agentic Governance &mdash; Trusted Federated AI</title>
+    <meta name="description" content="A practical operating model for discovering, governing, securing, and improving AI agents across a federated enterprise estate." />
+    <link rel="stylesheet" href="assets/style.css" />
+    <script>
+      (() => {
+        const saved = (() => { try { return localStorage.getItem("federated-ai-theme"); } catch (e) { return null; } })();
+        const theme = saved || (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <style>
+      .governance-hero { padding: var(--sp-6) 0 var(--sp-10); border-bottom: 1px solid var(--border); margin-bottom: var(--sp-14); }
+      .governance-hero h1 { font-size: clamp(var(--fs-32), 5vw, var(--fs-48)); max-width: 850px; margin: var(--sp-3) 0 var(--sp-4); }
+      .governance-hero .lede { max-width: 760px; }
+      .governance-hero .eyebrow { display: block; }
+      .governance-callout { margin-top: var(--sp-6); max-width: 820px; padding: var(--sp-4) var(--sp-5); border-left: 3px solid var(--pillar-govern); background: var(--layer-control-soft); border-radius: var(--r-4); color: var(--text-muted); }
+      .governance-callout strong { color: var(--text); }
+
+      .a365-pivot { margin: 0 0 var(--sp-14); padding: var(--sp-6); background: var(--surface); border-top: 3px solid var(--pillar-govern); border-radius: 0; }
+      .a365-pivot-head { display: flex; justify-content: space-between; gap: var(--sp-5); align-items: flex-start; margin-bottom: var(--sp-5); }
+      .a365-pivot h2 { font-size: var(--fs-24); margin: var(--sp-1) 0 var(--sp-2); }
+      .a365-pivot-head p { max-width: 780px; color: var(--text-muted); font-size: var(--fs-13); }
+      .a365-pivot .seller-kicker { color: var(--pillar-govern); }
+      .a365-architecture { display: grid; grid-template-columns: minmax(235px, 1.25fr) 32px minmax(190px, .8fr) 32px minmax(220px, 1fr); gap: var(--sp-2); align-items: stretch; }
+      .a365-column { display: grid; gap: var(--sp-3); }
+      .a365-stage { padding: var(--sp-4); border: 1px solid var(--border); border-radius: 0; background: var(--surface-2); }
+      .a365-stage h3 { font-size: var(--fs-15); margin-bottom: 6px; }
+      .a365-stage p { color: var(--text-muted); font-size: var(--fs-12); }
+      .a365-stage ul { margin: var(--sp-2) 0 0; padding-left: 17px; color: var(--text-muted); font-size: var(--fs-12); }
+      .a365-stage li { margin-bottom: 4px; }
+      .a365-stage--control { background: var(--layer-control-soft); border-color: color-mix(in srgb, var(--pillar-govern) 50%, var(--border)); }
+      .a365-stage--security { background: var(--layer-data-soft); }
+      .a365-stage--outcome { background: var(--layer-build-soft); }
+      .a365-label { display: block; margin-bottom: 5px; color: var(--text-soft); font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+      .a365-arrow { display: grid; place-items: center; color: var(--pillar-govern); font-size: var(--fs-24); font-weight: 700; }
+      .a365-arrow::after { content: "→"; }
+      .a365-pivot-foot { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); margin-top: var(--sp-5); }
+      .a365-pivot-foot > div { padding: var(--sp-4); border-left: 3px solid var(--pillar-govern); background: var(--surface-2); border-radius: 0; font-size: var(--fs-13); color: var(--text-muted); }
+      .a365-pivot-foot strong { display: block; color: var(--text); margin-bottom: 3px; }
+      .a365-source { display: grid; grid-template-columns: 24px 1fr; gap: var(--sp-2); align-items: start; padding: var(--sp-3) 0; border-top: 1px solid var(--border); }
+      .a365-source:first-of-type { border-top: 0; }
+      .a365-source-number { display: grid; place-items: center; width: 22px; height: 22px; color: var(--accent-fg); background: var(--pillar-govern); border-radius: 50%; font-size: 11px; font-weight: 700; }
+      .a365-source strong { display: block; font-size: var(--fs-13); color: var(--text); }
+      .a365-source span { display: block; margin-top: 2px; font-size: 11px; line-height: 1.4; color: var(--text-muted); }
+      .a365-inventory-list { list-style: none; padding: 0; margin: var(--sp-3) 0 0; }
+      .a365-inventory-list li { display: flex; gap: var(--sp-2); padding: 7px 0; border-top: 1px solid var(--border); color: var(--text-muted); font-size: var(--fs-12); }
+      .a365-inventory-list li::before { content: "✓"; color: var(--pillar-govern); font-weight: 700; }
+      .a365-observe { margin-top: var(--sp-5); display: grid; grid-template-columns: .8fr 1.2fr; border-top: 1px solid var(--border); }
+      .a365-observe-copy { padding: var(--sp-5) var(--sp-5) var(--sp-5) 0; }
+      .a365-observe-copy h3 { margin: 5px 0 var(--sp-3); font-size: var(--fs-24); }
+      .a365-observe-copy p { color: var(--text-muted); font-size: var(--fs-13); }
+      .a365-observe-grid { display: grid; grid-template-columns: 1fr 1fr; border-left: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+      .a365-observe-card { padding: var(--sp-4); border-right: 1px solid var(--border); border-top: 1px solid var(--border); }
+      .a365-observe-card:nth-child(even) { border-right: 0; }
+      .a365-observe-card strong { display: block; margin-bottom: 3px; font-family: var(--font-sans); font-size: var(--fs-13); color: var(--text); }
+      .a365-observe-card span { color: var(--text-muted); font-size: var(--fs-12); line-height: 1.4; }
+
+      .principle-grid, .control-grid, .evidence-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-4); }
+      .governance-card { min-height: 100%; padding: var(--sp-5); background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-6); }
+      .governance-card .number { display: block; margin-bottom: var(--sp-2); color: var(--pillar-govern); font-size: var(--fs-12); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+      .governance-card h3 { margin-bottom: var(--sp-2); font-size: var(--fs-18); }
+      .governance-card p { color: var(--text-muted); font-size: var(--fs-13); }
+
+      .lifecycle { display: grid; grid-template-columns: minmax(220px, .9fr) 2fr; gap: var(--sp-6); align-items: start; }
+      .lifecycle-list { display: grid; gap: var(--sp-2); }
+      .lifecycle-step { appearance: none; width: 100%; display: flex; gap: var(--sp-3); align-items: center; text-align: left; font: inherit; cursor: pointer; padding: var(--sp-3); color: var(--text-muted); background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-4); }
+      .lifecycle-step:hover, .lifecycle-step.active { color: var(--text); border-color: var(--pillar-govern); background: var(--layer-control-soft); }
+      .lifecycle-step .step-number { display: grid; place-items: center; flex: 0 0 28px; height: 28px; border-radius: 50%; background: var(--surface-2); color: var(--text-soft); font-size: var(--fs-12); font-weight: 700; }
+      .lifecycle-step.active .step-number { color: var(--accent-fg); background: var(--pillar-govern); }
+      .lifecycle-step strong { display: block; font-size: var(--fs-13); }
+      .lifecycle-step span:not(.step-number) { display: block; color: var(--text-soft); font-size: var(--fs-12); }
+      .lifecycle-detail { padding: var(--sp-6); background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-6); min-height: 355px; }
+      .lifecycle-detail .eyebrow { display: block; margin-bottom: var(--sp-2); }
+      .lifecycle-detail h3 { margin-bottom: var(--sp-3); }
+      .lifecycle-detail > p { color: var(--text-muted); margin-bottom: var(--sp-5); }
+      .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); }
+      .detail-grid h4 { font-size: var(--fs-13); margin-bottom: var(--sp-2); }
+      .detail-grid ul { margin: 0; padding-left: 18px; color: var(--text-muted); font-size: var(--fs-13); }
+      .detail-grid li { margin-bottom: 6px; }
+      .detail-grid .outcome { padding: var(--sp-4); background: var(--surface-2); border-left: 3px solid var(--pillar-govern); border-radius: var(--r-2); color: var(--text-muted); font-size: var(--fs-13); }
+      .detail-grid .outcome strong { display: block; color: var(--text); margin-bottom: 3px; }
+
+      .tier-table { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--r-6); }
+      .tier-row { min-width: 780px; display: grid; grid-template-columns: 150px 1.05fr 1.25fr 1.25fr; border-bottom: 1px solid var(--border); }
+      .tier-row:last-child { border-bottom: 0; }
+      .tier-cell { padding: var(--sp-3) var(--sp-4); font-size: var(--fs-13); color: var(--text-muted); }
+      .tier-row.header .tier-cell { background: var(--surface-2); color: var(--text-soft); font-size: var(--fs-12); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+      .tier-cell strong { color: var(--text); }
+      .tier-badge { display: inline-block; padding: 2px 7px; background: var(--layer-control-soft); color: var(--pillar-govern); border-radius: var(--r-pill); font-size: var(--fs-12); font-weight: 700; }
+
+      .boundary { padding: var(--sp-5); border: 1px solid var(--border); border-radius: var(--r-6); background: var(--surface); }
+      .boundary h3 { font-size: var(--fs-18); margin-bottom: var(--sp-2); }
+      .boundary p { color: var(--text-muted); font-size: var(--fs-13); }
+      .boundary .standard-line { margin-top: var(--sp-3); color: var(--text-soft); font-size: var(--fs-12); }
+      .boundary .standard-line strong { color: var(--text-muted); }
+
+      .next-step { padding: var(--sp-6); background: var(--layer-control-soft); border: 1px solid color-mix(in srgb, var(--pillar-govern) 35%, var(--border)); border-radius: var(--r-6); }
+      .next-step h2 { margin-bottom: var(--sp-3); }
+      .next-step p { max-width: 760px; color: var(--text-muted); }
+      .next-step .hero-actions { margin-top: var(--sp-5); display: flex; gap: var(--sp-3); flex-wrap: wrap; }
+
+      @media (max-width: 900px) {
+        .principle-grid, .control-grid, .evidence-grid { grid-template-columns: 1fr; }
+        .lifecycle { grid-template-columns: 1fr; }
+        .a365-architecture { grid-template-columns: 1fr; }
+        .a365-arrow { min-height: 20px; transform: rotate(90deg); }
+        .a365-pivot-foot { grid-template-columns: 1fr; }
+        .a365-observe { grid-template-columns: 1fr; }
+        .a365-observe-copy { padding-right: 0; }
+        .a365-observe-grid { border-left: 0; }
+      }
+      @media (max-width: 600px) {
+        .detail-grid { grid-template-columns: 1fr; }
+        .lifecycle-detail { min-height: 0; padding: var(--sp-4); }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app-header"></div>
+
+    <main class="app-main" id="top">
+      <section class="governance-hero">
+        <span class="eyebrow">Agentic governance</span>
+        <h1>Turn an unknown agent estate into accountable automation.</h1>
+        <p class="lede">Agentic governance is the operating model that discovers agents across your estate, establishes ownership and boundaries, applies controls at runtime, and creates evidence that those controls work.</p>
+        <div class="governance-callout"><strong>Discovery is not governance.</strong> Finding an agent gives you a signal. Governance begins when the agent has a known owner, identity, purpose, risk tier, permitted tools and data boundaries, and an auditable lifecycle.</div>
+      </section>
+
+      <section class="a365-pivot seller-only" aria-labelledby="a365-pivot-heading">
+        <div class="a365-pivot-head">
+          <div>
+            <div class="seller-kicker">Seller-only solution architecture</div>
+            <h2 id="a365-pivot-heading">Agent 365 turns discovery signals into a managed, observable agent estate.</h2>
+            <p>Use this after agreeing that the customer has a federated agent estate. Lead with the control gap: signals exist in many places, but important agents need a durable identity, inventory record, and enforceable lifecycle.</p>
+          </div>
+          <a class="btn btn--secondary" href="battlecards.html">Open battlecards</a>
+        </div>
+
+        <div class="a365-architecture" aria-label="Agent 365 seller architecture pivot">
+          <div class="a365-column">
+            <article class="a365-stage">
+              <span class="a365-label">1 &middot; Discovery sources</span>
+              <h3>Find managed agents and shadow usage</h3>
+              <div class="a365-source"><span class="a365-source-number">1</span><div><strong>Endpoint and browser activity</strong><span>Local agents, browser usage, developer and device signals.</span></div></div>
+              <div class="a365-source"><span class="a365-source-number">2</span><div><strong>Cloud and SaaS inventories</strong><span>Generative AI services, copilots, apps, and platform-native agents.</span></div></div>
+              <div class="a365-source"><span class="a365-source-number">3</span><div><strong>Identity, data, and API telemetry</strong><span>Permissions, data interactions, connected tools, and risk signals.</span></div></div>
+            </article>
+          </div>
+          <div class="a365-arrow" aria-hidden="true"></div>
+          <div class="a365-column">
+            <article class="a365-stage a365-stage--control">
+              <span class="a365-label">2 &middot; Ingest and correlate</span>
+              <h3>Build the agent record</h3>
+              <p>Agent 365 brings discovery signals together, normalizes attributes, correlates identity, and classifies the agent as managed or shadow.</p>
+              <ul class="a365-inventory-list"><li>Resolve agent identity and owner</li><li>Record source, permissions, and environment</li><li>Assign risk and compliance posture</li><li>Maintain first-seen and last-seen activity</li></ul>
+            </article>
+          </div>
+          <div class="a365-arrow" aria-hidden="true"></div>
+          <div class="a365-column">
+            <article class="a365-stage a365-stage--security">
+              <span class="a365-label">3 &middot; Agent 365 inventory</span>
+              <h3>Make consequential agents manageable</h3>
+              <p>A managed agent can receive an Entra Agent ID, a defined owner, a lifecycle state, and policy-aligned access.</p>
+              <ul class="a365-inventory-list"><li>Agent identity and configuration</li><li>Permissions and data access</li><li>Infrastructure and environment</li><li>Risk, compliance, and activity evidence</li></ul>
+            </article>
+            <article class="a365-stage a365-stage--outcome">
+              <span class="a365-label">The seller pivot</span>
+              <h3>Discovery becomes an operating model</h3>
+              <p><strong>Registry-only:</strong> visible but not reliably enforceable. <strong>Managed:</strong> the agent can be routed through Purview, Defender, Sentinel, and the control model the customer already trusts.</p>
+            </article>
+          </div>
+        </div>
+        <div class="a365-observe">
+          <div class="a365-observe-copy"><span class="a365-label">4 &middot; Observe</span><h3>Give Security and business leaders the same estate view.</h3><p>Extend oversight with role-based reporting: risk and control posture for Security, plus adoption, activity, and value signals for business owners.</p></div>
+          <div class="a365-observe-grid">
+            <div class="a365-observe-card"><strong>Security posture</strong><span>Prioritize high-risk agents, permissions, data exposure, and policy exceptions.</span></div>
+            <div class="a365-observe-card"><strong>Business impact</strong><span>Track adoption, activity, outcomes, and accountable ownership.</span></div>
+            <div class="a365-observe-card"><strong>Agent activity</strong><span>Follow lifecycle, last-seen signals, and connected tools across the estate.</span></div>
+            <div class="a365-observe-card"><strong>Operational response</strong><span>Connect risk events and investigation workflows to the security operations model.</span></div>
+          </div>
+        </div>
+        <div class="a365-pivot-foot">
+          <div><strong>Talk track</strong>“You do not need to replace every agent runtime. You need a way to turn discovery signals into an accountable inventory, then apply the controls and reporting your organization already trusts.”</div>
+          <div><strong>Discovery question</strong>“When an unknown agent is found today, can you identify its owner, permissions, data boundary, and full action trail&mdash;or only that it exists?”</div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="principles-heading">
+        <div class="section-head">
+          <span class="eyebrow">The operating principle</span>
+          <h2 id="principles-heading">Let teams build. Require agents to earn trust.</h2>
+          <p class="lede">The objective is not to route every agent through a single runtime. It is to make the controls that matter portable across every runtime.</p>
+        </div>
+        <div class="principle-grid">
+          <article class="governance-card"><span class="number">01 &middot; Know</span><h3>Discover the whole estate</h3><p>Combine inventory, cloud, SaaS, endpoint, network, and developer signals. Treat managed agents and shadow usage as different states in one estate view.</p></article>
+          <article class="governance-card"><span class="number">02 &middot; Bound</span><h3>Define accountable autonomy</h3><p>Record the agent's owner, business purpose, risk tier, identity, tools, data sources, approvals, and stop conditions in a versioned trust contract.</p></article>
+          <article class="governance-card"><span class="number">03 &middot; Prove</span><h3>Enforce and evidence</h3><p>Apply identity, data policy, tool controls, monitoring, and human oversight at the right boundaries. Preserve the evidence needed to investigate and improve.</p></article>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="lifecycle-heading">
+        <div class="section-head">
+          <span class="eyebrow">The lifecycle</span>
+          <h2 id="lifecycle-heading">Six control points from signal to retirement.</h2>
+          <p class="lede">Select a stage to see the decision, control evidence, and outcome it should produce.</p>
+        </div>
+        <div class="lifecycle">
+          <div class="lifecycle-list" role="tablist" aria-label="Agent governance lifecycle">
+            <button class="lifecycle-step active" type="button" role="tab" aria-selected="true" data-stage="discover"><span class="step-number">1</span><span><strong>Discover</strong><span>Find managed and unknown agents</span></span></button>
+            <button class="lifecycle-step" type="button" role="tab" aria-selected="false" data-stage="register"><span class="step-number">2</span><span><strong>Register</strong><span>Establish identity and ownership</span></span></button>
+            <button class="lifecycle-step" type="button" role="tab" aria-selected="false" data-stage="classify"><span class="step-number">3</span><span><strong>Classify</strong><span>Set risk and required controls</span></span></button>
+            <button class="lifecycle-step" type="button" role="tab" aria-selected="false" data-stage="enforce"><span class="step-number">4</span><span><strong>Enforce</strong><span>Apply policy at runtime boundaries</span></span></button>
+            <button class="lifecycle-step" type="button" role="tab" aria-selected="false" data-stage="observe"><span class="step-number">5</span><span><strong>Observe</strong><span>Trace behavior, quality, and cost</span></span></button>
+            <button class="lifecycle-step" type="button" role="tab" aria-selected="false" data-stage="retire"><span class="step-number">6</span><span><strong>Review &amp; retire</strong><span>Re-authorize, improve, or stop</span></span></button>
+          </div>
+          <article class="lifecycle-detail" id="lifecycleDetail" role="tabpanel" aria-live="polite"></article>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="controls-heading">
+        <div class="section-head">
+          <span class="eyebrow">Control design</span>
+          <h2 id="controls-heading">Controls scale with impact, not platform.</h2>
+          <p class="lede">A low-risk knowledge agent should move quickly. An agent that changes records, handles sensitive data, or influences regulated decisions earns stronger safeguards.</p>
+        </div>
+        <div class="tier-table" role="table" aria-label="Agent governance control tiers">
+          <div class="tier-row header" role="row"><div class="tier-cell" role="columnheader">Tier</div><div class="tier-cell" role="columnheader">Typical behavior</div><div class="tier-cell" role="columnheader">Baseline controls</div><div class="tier-cell" role="columnheader">Additional evidence</div></div>
+          <div class="tier-row" role="row"><div class="tier-cell"><span class="tier-badge">T0&ndash;T1</span></div><div class="tier-cell"><strong>Personal productivity or knowledge retrieval</strong></div><div class="tier-cell">Named owner, approved data boundary, basic use policy, activity visibility.</div><div class="tier-cell">Purpose statement and periodic usage review.</div></div>
+          <div class="tier-row" role="row"><div class="tier-cell"><span class="tier-badge">T2</span></div><div class="tier-cell"><strong>Workflow agent with bounded actions</strong></div><div class="tier-cell">Workload identity, least-privilege tools, risk tier, evaluation baseline, trace retention.</div><div class="tier-cell">Trust contract, approval path, tool allowlist, exception handling.</div></div>
+          <div class="tier-row" role="row"><div class="tier-cell"><span class="tier-badge">T3</span></div><div class="tier-cell"><strong>Autonomous process agent</strong></div><div class="tier-cell">Policy enforcement, runtime monitoring, human escalation, change control, cost guardrails.</div><div class="tier-cell">Pre-production testing, decision logs, incident playbook, business outcome measures.</div></div>
+          <div class="tier-row" role="row"><div class="tier-cell"><span class="tier-badge">T4</span></div><div class="tier-cell"><strong>High-impact or regulated agent</strong></div><div class="tier-cell">All T3 controls plus strict data boundaries, separation of duties, enhanced oversight, and formal authorization.</div><div class="tier-cell">Risk assessment, independent review, continuous evaluation, audit-ready records.</div></div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="boundaries-heading">
+        <div class="section-head">
+          <span class="eyebrow">Portable control boundaries</span>
+          <h2 id="boundaries-heading">Enforce where the agent meets the enterprise.</h2>
+          <p class="lede">This creates a vendor-neutral control pattern. Products can change; the boundaries remain.</p>
+        </div>
+        <div class="control-grid">
+          <article class="boundary"><h3>Identity boundary</h3><p>Use a distinct workload identity, least-privilege scopes, and delegated access only where needed. An agent should never inherit a human's broad access by default.</p><div class="standard-line"><strong>Portable pattern:</strong> OAuth/OIDC, workload identity, scoped credentials.</div></article>
+          <article class="boundary"><h3>Tool and API boundary</h3><p>Route tool calls through governed interfaces. Allow known tools, validate inputs and outputs, rate-limit actions, and require approval for irreversible operations.</p><div class="standard-line"><strong>Portable pattern:</strong> MCP, API gateway, signed tool catalog, policy-as-code.</div></article>
+          <article class="boundary"><h3>Data boundary</h3><p>Apply data classification, retrieval restrictions, DLP, and retention rules to prompts, context, outputs, and tool calls&mdash;not just the source repository.</p><div class="standard-line"><strong>Portable pattern:</strong> data labels, DLP, access policy, governed retrieval.</div></article>
+          <article class="boundary"><h3>Runtime boundary</h3><p>Apply safety, model-routing, execution limits, and stop conditions where the agent reasons and acts. Escalate when confidence, risk, or policy thresholds are crossed.</p><div class="standard-line"><strong>Portable pattern:</strong> guardrails, quotas, human-in-the-loop, kill switch.</div></article>
+          <article class="boundary"><h3>Evidence boundary</h3><p>Capture a coherent trace from request to tool call to outcome. Tie activity to the agent identity, policy decision, data classification, and business owner.</p><div class="standard-line"><strong>Portable pattern:</strong> OpenTelemetry, common event schema, immutable audit records.</div></article>
+          <article class="boundary"><h3>Lifecycle boundary</h3><p>Require review when an agent changes its model, tools, data sources, autonomy, or audience. Remove access when the use case or ownership ends.</p><div class="standard-line"><strong>Portable pattern:</strong> ABOM, change approval, re-certification, decommissioning workflow.</div></article>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="evidence-heading">
+        <div class="section-head">
+          <span class="eyebrow">What good looks like</span>
+          <h2 id="evidence-heading">A governance record that supports action.</h2>
+        </div>
+        <div class="evidence-grid">
+          <article class="governance-card"><span class="number">Inventory</span><h3>One record per production agent</h3><p>Owner, sponsor, purpose, runtime, model, tools, data sources, permissions, risk tier, and current lifecycle state.</p></article>
+          <article class="governance-card"><span class="number">Trust contract</span><h3>Machine-enforceable boundaries</h3><p>Allowed tools, allowed data, approval requirements, logging obligations, escalation conditions, and review cadence.</p></article>
+          <article class="governance-card"><span class="number">Operational evidence</span><h3>Proof the controls operate</h3><p>Evaluation results, policy decisions, traces, exceptions, incidents, cost signals, and measured business outcomes.</p></article>
+        </div>
+      </section>
+
+      <section class="next-step" aria-labelledby="next-step-heading">
+        <span class="eyebrow">A practical starting point</span>
+        <h2 id="next-step-heading">Pick one real agent, then map its path to trust.</h2>
+        <p>Inventory its identity, tools, data, actions, owner, and evidence. Identify the first unmanaged boundary. Improve that boundary before expanding to the next scenario.</p>
+        <div class="hero-actions">
+          <a class="btn btn--primary" href="architect.html?lens=security#canvas">See the control plane</a>
+          <a class="btn btn--secondary" href="concepts.html">Explore the governance concepts</a>
+        </div>
+      </section>
+    </main>
+
+    <div id="app-footer"></div>
+    <script src="assets/shell.js"></script>
+    <script>
+      const LIFECYCLE_STAGES = {
+        discover: {
+          label: "Stage 1", title: "Discover signals, not just registered agents.",
+          description: "Build an estate view from the places agents appear: development platforms, SaaS applications, cloud accounts, endpoint activity, network and API telemetry, and security findings.",
+          decisions: ["Which discovery signals are authoritative?", "How will you distinguish an agent from a model call or ordinary automation?", "Who investigates unknown or high-risk discoveries?"],
+          evidence: "Source signal, first and last seen, environment, observed connections, confidence, and an accountable triage queue.",
+          outcome: "Unknown agents become governed candidates. Discovery alone does not grant access or establish compliance."
+        },
+        register: {
+          label: "Stage 2", title: "Create an accountable agent record.",
+          description: "Assign a durable agent identifier and connect the technical artifact to an owner, business sponsor, purpose, runtime, and lifecycle state. Link related agents rather than letting duplicates accumulate.",
+          decisions: ["What minimum record is required before production?", "Which system is the authoritative agent registry?", "How will the registry reconcile multiple platform inventories?"],
+          evidence: "Agent ID, owner, sponsor, business purpose, platform and runtime, source of discovery, and registration date.",
+          outcome: "The agent can be found, contacted, reviewed, and managed as an enterprise asset."
+        },
+        classify: {
+          label: "Stage 3", title: "Classify risk and define the trust contract.",
+          description: "Evaluate the agent's autonomy, reversibility of actions, data sensitivity, user impact, and regulatory context. Use the result to select proportional controls rather than a one-size-fits-all gate.",
+          decisions: ["What risk tier does this behavior justify?", "Which tools, data and actions are allowed?", "What must trigger approval, escalation, or a stop?"],
+          evidence: "Risk assessment, Agent Bill of Materials, trust contract, control requirements, and named approvers.",
+          outcome: "The expected behavior and safeguards are explicit before the agent operates at scale."
+        },
+        enforce: {
+          label: "Stage 4", title: "Make the contract real at control boundaries.",
+          description: "Enforce least privilege at identity, data, tool, API, and runtime boundaries. Keep the pattern portable so agents can run across clouds and SaaS while the controls remain coherent.",
+          decisions: ["Where are policy decisions evaluated?", "Which calls must pass through a gateway or approved tool catalog?", "Which actions need human confirmation?"],
+          evidence: "Identity assignments, policy configuration, approved tool and data access, runtime guardrails, and exception records.",
+          outcome: "The agent cannot silently exceed the authority defined for its risk tier."
+        },
+        observe: {
+          label: "Stage 5", title: "Trace behavior, quality, risk, and cost together.",
+          description: "Collect end-to-end events from prompt or request through reasoning, tool calls, policy decisions, and outcome. Correlate technical evidence with quality, safety, and economic measures.",
+          decisions: ["What common event fields are required?", "How long must traces and policy decisions be retained?", "Which thresholds create an alert, case, or automatic pause?"],
+          evidence: "OpenTelemetry traces, policy decisions, evaluation results, security events, spend, and business outcome metrics.",
+          outcome: "Teams can reconstruct what happened, prove controls operated, and improve the agent with evidence."
+        },
+        retire: {
+          label: "Stage 6", title: "Re-authorize, improve, or retire.",
+          description: "Treat changes to models, permissions, tools, data sources, autonomy, or audience as a governance event. Periodically re-certify agents and remove access when ownership or value ends.",
+          decisions: ["What changes require a new review?", "Who confirms ongoing business value and ownership?", "How are credentials, tools, data access, and records handled at retirement?"],
+          evidence: "Review history, change approvals, current evaluation, decommission checklist, and access revocation record.",
+          outcome: "The portfolio improves over time instead of accumulating abandoned, over-privileged automation."
+        }
+      };
+
+      const detail = document.getElementById("lifecycleDetail");
+      const stageButtons = Array.from(document.querySelectorAll(".lifecycle-step"));
+      function renderStage(stageId) {
+        const stage = LIFECYCLE_STAGES[stageId];
+        if (!stage) return;
+        detail.innerHTML = `<span class="eyebrow">${stage.label}</span><h3>${stage.title}</h3><p>${stage.description}</p><div class="detail-grid"><div><h4>Decisions to make</h4><ul>${stage.decisions.map((decision) => `<li>${decision}</li>`).join("")}</ul></div><div><div class="outcome"><strong>Required evidence</strong>${stage.evidence}</div><div class="outcome" style="margin-top: var(--sp-3);"><strong>Outcome</strong>${stage.outcome}</div></div></div>`;
+        stageButtons.forEach((button) => {
+          const active = button.dataset.stage === stageId;
+          button.classList.toggle("active", active);
+          button.setAttribute("aria-selected", String(active));
+        });
+      }
+      stageButtons.forEach((button) => button.addEventListener("click", () => renderStage(button.dataset.stage)));
+      renderStage("discover");
+      Shell.mount({ activePath: "governance" });
+    </script>
+  </body>
+</html>
